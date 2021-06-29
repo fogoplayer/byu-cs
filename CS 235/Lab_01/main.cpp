@@ -2,6 +2,7 @@
  * Zarin Loosli - 6/30/21
 **/
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -75,13 +76,25 @@ int main(int argc, char *argv[])
     cout << "Arrays should be filled in" << endl;
     printArrays(students, numOfStudents, exams, numOfExams);
 
+    //Generate output file
+    printStudentScores(out, students, numOfStudents, exams, numOfExams);
+    printExamAverages(out, students, numOfStudents, exams, numOfExams);
+    printStudentGrades(out, students, numOfStudents, exams, numOfExams);
+    printExamGrades(out, students, numOfStudents, exams, numOfExams);
+
+    // Cleanup
+    // delete students;
+    delete2dArray(exams, numOfStudents);
+    in.close();
+    out.close();
+
     return 0;
 }
 
 //------------------------------------------------ Function Definitions -------------------------------------------------//
 int **createExamArray(int numOfStudents, int numOfExams)
 {
-    int** outerArray = new int*[numOfStudents];
+    int **outerArray = new int *[numOfStudents];
     for (int i = 0; i < numOfStudents; i++)
     {
         outerArray[i] = new int[numOfExams];
@@ -89,27 +102,28 @@ int **createExamArray(int numOfStudents, int numOfExams)
     return outerArray;
 }
 
-void addSingleStudentsData(string data, int studentIndex, string* students, int** exams)
+void addSingleStudentsData(string data, int studentIndex, string *students, int **exams)
 {
     cout << data << endl;
 
     // Student name
     size_t p = 0;
-    while ((data[p] != ' ') || (data[p+1] != ' '))  //Looks for the two consecutive spaces after a user's name
+    while ((data[p] != ' ') || (data[p + 1] != ' ')) //Looks for the two consecutive spaces after a user's name
     {
         ++p;
     }
-    students[studentIndex] = data.substr(0,p);
+    students[studentIndex] = data.substr(0, p);
 
     // Scores
-    while (!isdigit(data[p])) ++p;	// data[p] is the first digit
+    while (!isdigit(data[p]))
+        ++p; // data[p] is the first digit
     data = data.substr(p);
-    
+
     istringstream scores(data);
     int i = 0;
     int score = 9999;
-    
-    while(scores >> score)
+
+    while (scores >> score)
     {
         // int score = 999999;
         // scores >> score;
@@ -117,14 +131,10 @@ void addSingleStudentsData(string data, int studentIndex, string* students, int*
         i++;
     }
 
-    // TODO close file streams
-    // TODO delete students
-    // TODO delete exams (recursive)
-
     return;
 }
 
-void printArrays(string* studentsArray, int studentsCount, int** examsArray, int examsCount)
+void printArrays(string *studentsArray, int studentsCount, int **examsArray, int examsCount)
 {
     for (size_t i = 0; i < studentsCount; i++)
     {
@@ -136,4 +146,201 @@ void printArrays(string* studentsArray, int studentsCount, int** examsArray, int
         cout << endl;
     }
     cout << endl;
+}
+
+int *calcAverageExamScores(int studentsCount, int **examsArray, int examsCount)
+{
+    int *averageExamScores = new int[examsCount];
+    for (int i = 0; i < examsCount; i++) // Loop through each exam
+    {
+        double averageScore = 0;
+        for (size_t j = 0; j < studentsCount; j++)
+        {
+            averageScore += examsArray[j][i];
+        }
+        averageScore /= studentsCount;
+        averageExamScores[i] = averageScore;
+    }
+    return averageExamScores;
+}
+
+void delete2dArray(int **pointer, int numRows)
+{
+    for (size_t i = 0; i < numRows; i++)
+    {
+        delete pointer[i]; // Delete cells
+    }
+    delete pointer; // Delete rows
+}
+
+// Output Functions -------------------------------------------------------------------------------------------------------
+void printStudentScores(ostream &output, string *studentsArray, int studentsCount, int **examsArray, int examsCount)
+{
+    output << "Student Scores:\n";
+    for (size_t i = 0; i < studentsCount; i++)
+    {
+        output << setw(20) << right << studentsArray[i] << " ";
+        for (size_t j = 0; j < examsCount; j++)
+        {
+            output << fixed << setprecision(0) << setw(6) << examsArray[i][j];
+        }
+        output << endl;
+    }
+}
+
+void printExamAverages(ostream &output, string *studentsArray, int studentsCount, int **examsArray, int examsCount)
+{
+    output << "Exam Averages:" << endl;
+    for (int i = 0; i < examsCount; i++) // Loop through each exam
+    {
+        // Calculate average score
+        double averageScore = 0;
+        for (size_t j = 0; j < studentsCount; j++)
+        {
+            averageScore += examsArray[j][i];
+        }
+        averageScore /= studentsCount;
+
+        // Print average score
+        string examName = "Exam " + to_string(i + 1) + " Average = ";
+        output << setw(21) << right << examName;
+        output << fixed << setprecision(1) << setw(6) << averageScore << endl;
+    }
+}
+
+void printStudentGrades(ostream &output, string *studentsArray, int studentsCount, int **examsArray, int examsCount)
+{
+    // Get array of average scores
+    int *averageExamScores = calcAverageExamScores(studentsCount, examsArray, examsCount);
+
+    // Determine letter grades and output
+    output << "Student Exam Grades:" << endl;
+    for (size_t i = 0; i < studentsCount; i++)
+    {
+        output << setw(20) << right << studentsArray[i];
+        for (size_t j = 0; j < examsCount; j++)
+        {
+            char letterGrade;
+            if (examsArray[i][j] - averageExamScores[j] > 15)
+            {
+                letterGrade = 'A';
+            }
+            else if (examsArray[i][j] - averageExamScores[j] > 5)
+            {
+                letterGrade = 'B';
+            }
+            else if (examsArray[i][j] - averageExamScores[j] > -5)
+            {
+                letterGrade = 'C';
+            }
+            else if (examsArray[i][j] - averageExamScores[j] > -15)
+            {
+                letterGrade = 'D';
+            }
+            else
+            {
+                letterGrade = 'E';
+            }
+            output << fixed << setprecision(0) << setw(6) << examsArray[i][j] << "(" << letterGrade << ")";
+        }
+        output << endl;
+    }
+
+    delete averageExamScores;
+}
+
+void printExamGrades(ostream &output, string *studentsArray, int studentsCount, int **examsArray, int examsCount)
+{
+    // Get array of average scores
+    int *averageExamScores = calcAverageExamScores(studentsCount, examsArray, examsCount);
+
+    // Create array to store totals
+    int **examGrades = new int *[examsCount];
+    for (size_t i = 0; i < examsCount; i++)
+    {
+        examGrades[i] = new int[5]; // Array is initialized so all values are 0
+    }
+
+    /* 
+        examGrades structure
+                [A][B][C][D][E]
+        [Exam 1][ ][ ][ ][ ][ ]
+        [Exam 2][ ][ ][ ][ ][ ]
+        [Exa...][ ][ ][ ][ ][ ]
+    */
+
+    // Determine letter grades and output
+    for (size_t i = 0; i < studentsCount; i++)
+    {
+        // output << setw(20) << right << studentsArray[i];
+        for (size_t j = 0; j < examsCount; j++)
+        {
+            char letterGrade;
+            if (examsArray[i][j] - averageExamScores[j] > 15)
+            {
+                examGrades[j][0]++; // A
+            }
+            else if (examsArray[i][j] - averageExamScores[j] > 5)
+            {
+                examGrades[j][1]++; // B
+            }
+            else if (examsArray[i][j] - averageExamScores[j] > -5)
+            {
+                examGrades[j][2]++; // C
+            }
+            else if (examsArray[i][j] - averageExamScores[j] > -15)
+            {
+                examGrades[j][3]++; // D
+            }
+            else
+            {
+                examGrades[j][4]++; // E
+            }
+        }
+    }
+
+    // Print scores
+    output << "Exam Grades:" << endl;
+    for (int i = 0; i < examsCount; i++) // Loop through each exam
+    {
+        string examName = "Exam  " + to_string(i + 1);
+        output << setw(11) << right << examName;
+        for (size_t j = 0; j < 5; j++) // Loop through each letter grade
+        {
+            output << fixed << setprecision(1) << setw(5) << examGrades[i][j] << "(";
+
+            switch (j) // Display a letter grade next to the count
+            {
+            case 0:
+                output << 'A';
+                break;
+
+            case 1:
+                output << 'B';
+                break;
+
+            case 2:
+                output << 'C';
+                break;
+
+            case 3:
+                output << 'D';
+                break;
+
+            case 4:
+                output << 'E';
+                break;
+
+            default:
+                break;
+            }
+
+            output << ")";
+        }
+
+        output << endl;
+    }
+
+    delete averageExamScores;
+    delete2dArray(examGrades, examsCount);
 }
