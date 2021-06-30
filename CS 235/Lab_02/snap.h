@@ -27,10 +27,7 @@ public:
         this->studentPhone = studentPhone;
     }
 
-    ~Snap()
-    {
-        return;
-    }
+    ~Snap() {}
 
     /**
      * @return studentID as int
