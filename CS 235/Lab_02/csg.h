@@ -1,10 +1,13 @@
 #ifndef CSG_H_
 #define CSG_H_
+
 #include <string>
 #include <iostream>
 #include <sstream>
 
-class Csg
+#include "courseInterface.h"
+
+class Csg : CourseInterface
 {
 private:
     std::string courseName;
@@ -17,7 +20,7 @@ public:
      * @param studentID defaults to 0
      * @param studentGrade defaults to 'Z'
     **/
-    Csg(std::string courseName = "No Name Provided", int studentID = 0, char studentGrade = 'Z')
+    Csg(std::string courseName = "No Name Provided", int studentID = 0, char studentGrade = 'Z') : CourseInterface()
     {
         this->courseName = courseName;
         this->studentID = studentID;
