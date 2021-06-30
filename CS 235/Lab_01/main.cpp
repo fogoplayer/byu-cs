@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     printExamGrades(out, students, numOfStudents, exams, numOfExams);
 
     // Cleanup
-    delete students;
+    delete[] students;
     delete2dArray(exams, numOfStudents);
     in.close();
     out.close();
@@ -105,44 +105,23 @@ int **createExamArray(int numOfStudents, int numOfExams)
 void addSingleStudentsData(string data, int studentIndex, string *students, int **exams)
 {
     cout << data << endl;
-
-    // Student name
     size_t p = 0;
-    /* FIXME
-    This seems to be giving me a lot of problems. Valgrind is flagging it, saying that it's trying to access an unmapped region (which is coordinated to my 0/40 points for "attempted access out of bounds data with input file"). Am I supposed to do it a different way?
-
-    Invalid read of size 1
-    ==21900==    at 0x10B665: addSingleStudentsData(basic_string, allocator >, int, basic_string, allocator >*, int**) (main.cpp:111)
-    ==21900==    by 0x10B34A: main (main.cpp:74)
-    ==21900==  Address 0x5b85677 is 0 bytes after a block of size 39 alloc'd
-    ==21900==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
-    ==21900==    by 0x10E925: __gnu_cxx::new_allocator::allocate(unsigned long, void const*) (new_allocator.h:111)
-    ==21900==    by 0x10E8A1: allocator_traits >::allocate(allocator&, unsigned long) (alloc_traits.h:436)
-    ==21900==    by 0x10E665: basic_string, allocator >::_M_create(unsigned long&, unsigned long) (basic_string.tcc:153)
-    ==21900==    by 0x10E4F5: void basic_string, allocator >::_M_construct(char*, char*, forward_iterator_tag) (basic_string.tcc:219)
-    ==21900==    by 0x10DCA9: void basic_string, allocator >::_M_construct_aux(char*, char*, __false_type) (basic_string.h:236)
-    ==21900==    by 0x10D6CE: void basic_string, allocator >::_M_construct(char*, char*) (basic_string.h:255)
-    ==21900==    by 0x10CE75: basic_string, allocator >::basic_string(basic_string, allocator > const&) (basic_string.h:440)
-    ==21900==    by 0x10B327: main (main.cpp:74) 
-    ==21900== Process terminating with default action of signal 11 (SIGSEGV)
-    ==21900==  Access not within mapped region at address 0x5F6E000
-    ==21900==    at 0x10B665: addSingleStudentsData(basic_string, allocator >, int, basic_string, allocator >*, int**) (main.cpp:111)
-    ==21900==    by 0x10B34A: main (main.cpp:74)
-    ==21900==  If you believe this happened as a result of a stack
-    ==21900==  overflow in your program's main thread (unlikely but
-    ==21900==  possible), you can try to increase the size of the
-    ==21900==  main thread stack using the --main-stacksize= flag.
-    ==21900==  The main thread stack size used in this run was 8388608.
-    */
-    while ((data[p] != ' ') || (data[p + 1] != ' ')) //Looks for the two consecutive spaces after a user's name
+    while (!isdigit(data[p]))
     {
-        ++p;
+        ++p; // data[p] is the first digit
     }
-    students[studentIndex] = data.substr(0, p);
+    // Student name
+    string beforeScores = data.substr(0, p);
+    istringstream name(beforeScores);
+
+    string partOfName = "";
+    while (name >> partOfName)
+    {
+        students[studentIndex] += partOfName + " ";
+    }
+    students[studentIndex].substr(0, students[studentIndex].size() - 2);
 
     // Scores
-    while (!isdigit(data[p]))
-        ++p; // data[p] is the first digit
     data = data.substr(p);
 
     istringstream scores(data);
@@ -194,9 +173,9 @@ void delete2dArray(int **pointer, int numRows)
 {
     for (size_t i = 0; i < numRows; i++)
     {
-        delete pointer[i]; // Delete cells
+        delete[] pointer[i]; // Delete cells
     }
-    delete pointer; // Delete rows
+    delete[] pointer; // Delete rows
 }
 
 // Output Functions -------------------------------------------------------------------------------------------------------
@@ -272,7 +251,7 @@ void printStudentGrades(ostream &output, string *studentsArray, int studentsCoun
         output << endl;
     }
 
-    delete averageExamScores;
+    delete[] averageExamScores;
 }
 
 void printExamGrades(ostream &output, string *studentsArray, int studentsCount, int **examsArray, int examsCount)
@@ -369,6 +348,6 @@ void printExamGrades(ostream &output, string *studentsArray, int studentsCount, 
         output << endl;
     }
 
-    delete averageExamScores;
+    delete[] averageExamScores;
     delete2dArray(examGrades, examsCount);
 }
