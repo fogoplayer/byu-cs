@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
 {
     VS_MEM_CHECK
     Snap snap;
-    cout << snap.to_string();
     cout << snap;
     return 0;
 }
