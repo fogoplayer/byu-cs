@@ -12,7 +12,10 @@ public:
     CourseInterface() {}
     ~CourseInterface() {}
 
-    virtual std::string getCourseName() = 0;
+    virtual std::string getCourseName()
+    {
+        return courseName;
+    };
 };
 
 #endif

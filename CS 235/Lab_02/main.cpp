@@ -7,6 +7,7 @@
 #include "main.h"
 #include "snap.h"
 #include "csg.h"
+#include "cdh.h"
 
 using namespace std;
 
@@ -22,8 +23,9 @@ int main(int argc, char *argv[])
 {
     VS_MEM_CHECK
     Snap snap;
-    Csg csg;
-    cout << snap << csg;
+    Csg csg("Course name");
+    Cdh cdh("name", "day", "time");
+    cout << snap << csg << cdh;
     return 0;
 }
 
