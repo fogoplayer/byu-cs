@@ -3,6 +3,7 @@
 **/
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "main.h"
 #include "Snap.h"
@@ -23,11 +24,33 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     VS_MEM_CHECK
-    Snap snap;
-    Csg csg("Course name");
-    Cdh cdh("name", "day", "time");
-    Cr cr("name2", "room");
-    cout << snap << csg << cdh << cr;
+    // Inputs -------------------------------------------------------------------------------------------------------------
+    // Check number of inputs
+    if (argc < 3)
+    {
+        cerr << "Please provide name of input and output files";
+        return 1;
+    }
+
+    // Try to open input file
+    cout << "Input file: " << argv[1] << endl;
+    std::ifstream in(argv[1]);
+    if (!in)
+    {
+        cerr << "Unable to open " << argv[1] << " for input";
+        return 2;
+    }
+
+    // Try to open output file
+    cout << "Output file: " << argv[2] << endl;
+    std::ofstream out(argv[2]);
+    if (!out)
+    {
+        in.close();
+        cerr << "Unable to open " << argv[2] << " for output";
+        return 3;
+    }
+
     return 0;
 }
 
