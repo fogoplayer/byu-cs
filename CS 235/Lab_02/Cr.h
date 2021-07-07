@@ -13,8 +13,8 @@ public:
      * @param courseName defaults to "No Name Provided"
      * @param room defaults to "No Room Provided"
     **/
-    Cr(std::string courseName = "No Name Provided", std::string room = "No Room provided") : CourseInterface(courseName), room(room){};
-    ~Cr(){};
+    Cr(std::string courseName = "No Name Provided", std::string room = "No Room provided") : CourseInterface(courseName), room(room) {}
+    ~Cr() {}
 
     /**
      * @return the room number as a string
