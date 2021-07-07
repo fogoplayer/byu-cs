@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "courseInterface.h"
+#include "CourseInterface.h"
 
 class Cdh : public CourseInterface
 {
