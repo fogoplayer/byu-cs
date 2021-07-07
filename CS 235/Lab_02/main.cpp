@@ -5,9 +5,9 @@
 #include <string>
 
 #include "main.h"
-#include "snap.h"
-#include "csg.h"
-#include "cdh.h"
+#include "Snap.h"
+#include "Csg.h"
+#include "Cdh.h"
 
 using namespace std;
 
