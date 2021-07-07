@@ -9,7 +9,7 @@ protected:
     std::string courseName;
 
 public:
-    CourseInterface() {}
+    CourseInterface(std::string courseName) : courseName(courseName) {}
     ~CourseInterface() {}
 
     virtual std::string getCourseName()
