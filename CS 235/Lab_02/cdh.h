@@ -16,20 +16,12 @@ private:
 public:
     /**
      * @param courseName defaults to "No Name Provided"
-     * @param day defaults to 'Z'
+     * @param day defaults to "No Day Provided"
      * @param time defaults to "No Time Provided"
     **/
     Cdh(std::string courseName = "No Name Provided", std::string day = "No Day Provided", std::string time = "No Time Provided") : CourseInterface(courseName), day(day), time(time) {}
 
     ~Cdh() {}
-
-    // /**
-    //  * @return courseName as string
-    // **/
-    // std::string getCourseName()
-    // {
-    //     return this->courseName;
-    // }
 
     /**
      * @return day as string
