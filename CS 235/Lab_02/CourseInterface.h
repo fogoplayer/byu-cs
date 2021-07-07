@@ -9,13 +9,22 @@ protected:
     std::string courseName;
 
 public:
+    /**
+     * @param courseName
+    **/
     CourseInterface(std::string courseName) : courseName(courseName) {}
     ~CourseInterface() {}
 
-    virtual std::string getCourseName()
+    /**
+     * @return courseName as a string
+    **/
+    std::string getCourseName()
     {
         return courseName;
     };
+
+    // Require a to_string
+    virtual std::string to_string() = 0;
 };
 
 #endif

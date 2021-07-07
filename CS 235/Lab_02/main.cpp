@@ -8,6 +8,7 @@
 #include "Snap.h"
 #include "Csg.h"
 #include "Cdh.h"
+#include "Cr.h"
 
 using namespace std;
 
@@ -25,7 +26,8 @@ int main(int argc, char *argv[])
     Snap snap;
     Csg csg("Course name");
     Cdh cdh("name", "day", "time");
-    cout << snap << csg << cdh;
+    Cr cr("name2", "room");
+    cout << snap << csg << cdh << cr;
     return 0;
 }
 
