@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
         else if (command == "Empty")
         {
             out << "Empty ";
-            out << strList.empty() << endl;
+            out << (strList.empty() ? "true" : "false") << endl;
             cout << "Empty? " << strList.empty() << endl;
         }
 

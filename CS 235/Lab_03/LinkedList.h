@@ -84,6 +84,7 @@ public:
     bool empty(void) const
     {
         std::cout << "Empty" << std::endl;
+        bool temp = (head == nullptr); //FIXME delete
         return (head == nullptr);
     }
 
