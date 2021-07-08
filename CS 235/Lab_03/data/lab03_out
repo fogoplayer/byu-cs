@@ -1,30 +1,46 @@
 Insert The very quick brown fox jumped over the very lazy dog.
 PrintList dog. lazy very the over jumped fox brown quick very The
 First dog.
-Reverse 
-Delete 
+Last
+Reverse OK
+Delete OK
 PrintList very quick brown fox jumped over the very lazy dog.
+Drop
 PrintList very quick brown fox jumped over the very lazy dog.
 First very
+Last
 Remove 
 PrintList quick brown fox jumped over the lazy dog.
-Reverse 
+Reverse OK
 PrintList dog. lazy the over jumped fox brown quick
-Delete 
+Delete OK
 PrintList lazy the over jumped fox brown quick
 Insert The
 Remove 
 PrintList The lazy the over jumped fox brown
 Remove 
+Append
 Remove 
 PrintList lazy over jumped fox brown
 Empty 0
 Clear  OK
+Append
 PrintList
+Last
+Drop
 PrintList
 Clear  OK
+Append
 PrintList
+Last
+Drop
 PrintList
+Last
+Drop
 PrintList
+Last
+Drop
 PrintList
+Last
+Drop
 PrintList
