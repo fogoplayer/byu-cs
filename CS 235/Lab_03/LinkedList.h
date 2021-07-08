@@ -130,6 +130,14 @@ public:
     void clear(void)
     {
         std::cout << "Clear" << std::endl;
+        Node *currNode = head;
+        while (currNode != NULL)
+        {
+            Node *nextNode = currNode->next;
+            delete currNode;
+            currNode = nextNode;
+        }
+        head = NULL;
     }
 
     /**
