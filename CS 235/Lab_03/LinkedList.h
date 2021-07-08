@@ -33,6 +33,16 @@ public:
     void pop_front(void)
     {
         std::cout << "Pop front" << std::endl;
+        if (head != NULL)
+        {
+            Node *newHead = head->next;
+            delete head;
+            head = newHead;
+        }
+        else
+        {
+            head = NULL;
+        }
     }
 
     T &front(void)
