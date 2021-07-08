@@ -119,6 +119,15 @@ public:
      * @return the contents of the list as a string
      */
     std::string toString(void) const;
+
+    /**
+     * @return an ostream with the contents of all private data members
+    **/
+    friend std::ostream &operator<<(std::ostream &os, LinkedList<T> &list)
+    {
+        os << list.to_string();
+        return os;
+    }
 };
 
 template <typename T>
