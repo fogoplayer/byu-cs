@@ -15,12 +15,12 @@ private:
     {
         T data;
         Node *next;
-        Node(const T &data, Node *next = NULL) : data(data), next(next) {}
+        Node(const T &data, Node *next = nullptr) : data(data), next(next) {}
     };
     Node *head;
 
 public:
-    LinkedList() : LinkedListInterface<T>(), head(NULL) {}
+    LinkedList() : LinkedListInterface<T>(), head(nullptr) {}
     ~LinkedList() {}
 
     /**
@@ -42,16 +42,16 @@ public:
     void pop_front(void)
     {
         std::cout << "Pop front" << std::endl;
-        if (head == NULL) // If list is empty
+        if (head == nullptr) // If list is empty
         {
             std::string errMsg = "Empty!";
             throw errMsg;
         }
 
-        if (head->next == NULL) // If list is only 1 node long
+        if (head->next == nullptr) // If list is only 1 node long
         {
             delete head;
-            head = NULL;
+            head = nullptr;
             return;
         }
 
@@ -69,7 +69,7 @@ public:
     T &front(void)
     {
         std::cout << "Front" << std::endl;
-        if (head == NULL)
+        if (head == nullptr)
         {
             std::string errMsg = "Empty!";
             throw errMsg;
@@ -84,7 +84,7 @@ public:
     bool empty(void) const
     {
         std::cout << "Empty" << std::endl;
-        return (head == NULL);
+        return (head == nullptr);
     }
 
     /**
@@ -96,12 +96,12 @@ public:
     {
         std::cout << "Remove" << std::endl;
         Node *currNode = head;
-        Node *prevNode = NULL;
-        while (currNode != NULL)
+        Node *prevNode = nullptr;
+        while (currNode != nullptr)
         {
             if (currNode->data == value)
             {
-                if (prevNode == NULL) // If the first node, set the next node to head and delete the current node
+                if (prevNode == nullptr) // If the first node, set the next node to head and delete the current node
                 {
                     head = currNode->next;
                     delete currNode;
@@ -131,13 +131,13 @@ public:
     {
         std::cout << "Clear" << std::endl;
         Node *currNode = head;
-        while (currNode != NULL)
+        while (currNode != nullptr)
         {
             Node *nextNode = currNode->next;
             delete currNode;
             currNode = nextNode;
         }
-        head = NULL;
+        head = nullptr;
     }
 
     /**
@@ -147,6 +147,32 @@ public:
     void reverse(void)
     {
         std::cout << "Reverse" << std::endl;
+        if (head == nullptr) // If list is empty
+        {
+            std::string errMsg = "Empty!";
+            throw errMsg;
+        }
+
+        if (head->next == nullptr) // If list is only one item
+        {
+            return;
+        }
+
+        Node *initialHead = head;
+        while (initialHead->next != nullptr)
+        {
+            Node *lastNode = head;
+            Node *prevNode = nullptr;
+            while (lastNode->next != nullptr) // Loop until lastNode is actually the last node
+            {
+                lastNode = lastNode->next; // Move up a node
+                prevNode = lastNode;       // Move up a node
+            }
+
+            prevNode->next = nullptr; // Make the previous node the new final node
+            lastNode->next = head;    // Make the last node point to the old first node
+            head = lastNode;          // Make the last node the new first node;
+        }
     }
 
     /**
@@ -169,7 +195,7 @@ public:
         std::ostringstream listAsString("");
 
         Node *currNode = head;
-        while (currNode != NULL)
+        while (currNode != nullptr)
         {
             listAsString << " " << currNode->data;
             currNode = currNode->next;
