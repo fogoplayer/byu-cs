@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
         // Execute command
         if (command == "Clear")
         {
+            out << "Clear ";
             strList.clear();
             out << " OK" << endl;
             cout << " OK" << endl;
@@ -79,15 +80,18 @@ int main(int argc, char *argv[])
 
         else if (command == "Empty")
         {
+            out << "Empty ";
             out << strList.empty() << endl;
             cout << "Empty? " << strList.empty() << endl;
         }
 
         else if (command == "Delete")
         {
+            out << "Delete ";
             try
             {
                 strList.pop_front();
+                out << endl;
             }
             catch (string e)
             {
@@ -98,6 +102,7 @@ int main(int argc, char *argv[])
 
         else if (command == "First")
         {
+            out << "First ";
             try
             {
                 out << strList.front() << endl;
@@ -112,6 +117,7 @@ int main(int argc, char *argv[])
 
         else if (command == "Insert")
         {
+            out << "Insert " << endl;
             string nodeData = "";
             while (currLine >> nodeData)
             {
@@ -121,12 +127,14 @@ int main(int argc, char *argv[])
 
         else if (command == "PrintList")
         {
+            out << "PrintList ";
             out << strList.toString() << endl;
             cout << strList.toString() << endl;
         }
 
         else if (command == "Remove")
         {
+            out << "Remove " << endl;
             string nodeData = "";
             while (currLine >> nodeData)
             {
@@ -136,9 +144,11 @@ int main(int argc, char *argv[])
 
         else if (command == "Reverse")
         {
+            out << "Reverse ";
             try
             {
                 strList.reverse();
+                out << endl;
             }
             catch (string e)
             {
@@ -149,6 +159,7 @@ int main(int argc, char *argv[])
 
         else if (command == "Size")
         {
+            out << "Size ";
             out << strList.size() << endl;
             cout << strList.size() << endl;
         }
