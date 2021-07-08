@@ -182,7 +182,14 @@ public:
     size_t size(void) const
     {
         std::cout << "Size" << std::endl;
-        return 1;
+        size_t nodeCount = 0;
+        Node *currPointer = head;
+        while (currPointer != nullptr)
+        {
+            nodeCount++;
+            currPointer = currPointer->next;
+        }
+        return nodeCount;
     }
 
     /**

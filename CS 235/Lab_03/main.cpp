@@ -141,7 +141,8 @@ int main(int argc, char *argv[])
 
         else if (command == "Size")
         {
-            strList.size();
+            out << strList.size() << endl;
+            cout << strList.size() << endl;
         }
     }
 
