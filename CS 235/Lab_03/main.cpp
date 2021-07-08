@@ -1,5 +1,7 @@
 /**
  * Zarin Loosli - 7/9/21
+ * Takes in a file, processes the commands in that file to manipulate a 
+ * string list, and produces an output for a new file
 **/
 #include <iostream>
 #include <fstream>
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
     }
 
     // Instatiate List ----------------------------------------------------------------------------------------------------
-    LinkedList<string> strList;
+    LinkedList<string> StrList;
 
     // Process file -------------------------------------------------------------------------------------------------------
     string currLineString = "";
@@ -73,7 +75,7 @@ int main(int argc, char *argv[])
         if (command == "Clear")
         {
             out << "Clear ";
-            strList.clear();
+            StrList.clear();
             out << "OK" << endl;
             cout << "OK" << endl;
         }
@@ -81,8 +83,8 @@ int main(int argc, char *argv[])
         else if (command == "Empty")
         {
             out << "Empty ";
-            out << (strList.empty() ? "true" : "false") << endl;
-            cout << "Empty? " << strList.empty() << endl;
+            out << (StrList.empty() ? "true" : "false") << endl;
+            cout << "Empty? " << StrList.empty() << endl;
         }
 
         else if (command == "Delete")
@@ -90,7 +92,7 @@ int main(int argc, char *argv[])
             out << "Delete ";
             try // Try-catch block to handle empty array
             {
-                strList.pop_front();
+                StrList.pop_front();
                 out << "OK" << endl;
             }
             catch (string e)
@@ -105,8 +107,8 @@ int main(int argc, char *argv[])
             out << "First ";
             try // Try-catch block to handle empty array
             {
-                out << strList.front() << endl;
-                cout << strList.front() << endl;
+                out << StrList.front() << endl;
+                cout << StrList.front() << endl;
             }
             catch (string e)
             {
@@ -122,7 +124,7 @@ int main(int argc, char *argv[])
             while (currLine >> nodeData)
             {
                 out << " " << nodeData;
-                strList.push_front(nodeData);
+                StrList.push_front(nodeData);
             }
             out << endl;
         }
@@ -130,8 +132,8 @@ int main(int argc, char *argv[])
         else if (command == "PrintList")
         {
             out << "PrintList";
-            out << strList.toString() << endl;
-            cout << strList.toString() << endl;
+            out << StrList.toString() << endl;
+            cout << StrList.toString() << endl;
         }
 
         else if (command == "Remove")
@@ -141,7 +143,7 @@ int main(int argc, char *argv[])
             while (currLine >> nodeData)
             {
                 out << " " << nodeData;
-                strList.remove(nodeData);
+                StrList.remove(nodeData);
             }
             out << endl;
         }
@@ -151,7 +153,7 @@ int main(int argc, char *argv[])
             out << "Reverse ";
             try // Try-catch block to handle empty array
             {
-                strList.reverse();
+                StrList.reverse();
                 out << "OK" << endl;
             }
             catch (string e)
@@ -164,8 +166,8 @@ int main(int argc, char *argv[])
         else if (command == "Size")
         {
             out << "Size ";
-            out << strList.size() << endl;
-            cout << strList.size() << endl;
+            out << StrList.size() << endl;
+            cout << StrList.size() << endl;
         }
 
         else
@@ -175,7 +177,7 @@ int main(int argc, char *argv[])
     }
 
     // Memory Cleanup
-    strList.clear();
+    StrList.clear();
 
     return 0;
 }
