@@ -74,7 +74,7 @@ public:
     bool empty(void) const
     {
         std::cout << "Empty" << std::endl;
-        return true;
+        return (head == NULL);
     }
 
     /**

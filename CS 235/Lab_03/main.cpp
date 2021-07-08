@@ -74,10 +74,13 @@ int main(int argc, char *argv[])
         {
             strList.clear();
         }
+
         else if (command == "Empty")
         {
-            strList.empty();
+            out << strList.empty() << endl;
+            cout << "Empty? " << strList.empty() << endl;
         }
+
         else if (command == "Delete")
         {
             try
@@ -90,6 +93,7 @@ int main(int argc, char *argv[])
                 cout << e << endl;
             }
         }
+
         else if (command == "First")
         {
             try
@@ -103,19 +107,23 @@ int main(int argc, char *argv[])
                 cout << e << endl;
             }
         }
+
         else if (command == "Insert")
         {
             strList.push_front("1");
         }
+
         else if (command == "PrintList")
         {
-            out << strList.toString();
+            out << strList.toString() << endl;
             cout << strList.toString() << endl;
         }
+
         else if (command == "Remove")
         {
             strList.remove("1");
         }
+
         else if (command == "Reverse")
         {
             try
@@ -128,6 +136,7 @@ int main(int argc, char *argv[])
                 cout << e << endl;
             }
         }
+
         else if (command == "Size")
         {
             strList.size();
