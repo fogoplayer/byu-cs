@@ -42,15 +42,24 @@ public:
     void pop_front(void)
     {
         std::cout << "Pop front" << std::endl;
-        if (head != NULL)
+        if (head == NULL) // If list is empty
         {
             std::string errMsg = "Empty!";
             throw errMsg;
         }
 
-                Node *newHead = head->next;
+        if (head->next == NULL) // If list is only 1 node long
+        {
+            delete head;
+            head = NULL;
+            return;
+        }
+
+        // Otherwise
+        Node *newHead = head->next;
         delete head;
         head = newHead;
+        return;
     }
 
     /**
@@ -86,11 +95,6 @@ public:
     void remove(const T &value) // FIXME move out of class definition
     {
         std::cout << "Remove" << std::endl;
-        if (head == NULL)
-        {
-            std::string errMsg = "Empty!";
-            throw errMsg;
-        }
         Node *currNode = head;
         Node *prevNode = NULL;
         while (currNode != NULL)
