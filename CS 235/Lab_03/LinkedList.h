@@ -158,20 +158,31 @@ public:
             return;
         }
 
+        // Reverse the array
         Node *initialHead = head;
+        // Node *prevNode = head;
+        Node *ptrToMove = initialHead->next;
+
+        // Move the first node (while loop assumes head has been moved)
+        initialHead->next = ptrToMove->next;
+        ptrToMove->next = head;
+        head = ptrToMove;
+
         while (initialHead->next != nullptr)
         {
-            Node *lastNode = head;
-            Node *prevNode = nullptr;
-            while (lastNode->next != nullptr) // Loop until lastNode is actually the last node
-            {
-                lastNode = lastNode->next; // Move up a node
-                prevNode = lastNode;       // Move up a node
-            }
+            // prevNode = head;
+            // while (prevNode->next != initialHead) // Loop until prevNode is right before the initial head
+            // {
+            //     prevNode = prevNode->next;
+            // }
+            Node *ptrToMove = initialHead->next;
+            initialHead->next = ptrToMove->next;
+            ptrToMove->next = head;
+            head = ptrToMove;
 
-            prevNode->next = nullptr; // Make the previous node the new final node
-            lastNode->next = head;    // Make the last node point to the old first node
-            head = lastNode;          // Make the last node the new first node;
+            // prevNode->next = nullptr; // Make the previous node the new final node
+            // lastNode->next = head;    // Make the last node point to the old first node
+            // head = lastNode;          // Make the last node the new first node;
         }
     }
 
