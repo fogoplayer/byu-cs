@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
         else if (command == "Delete")
         {
             out << "Delete ";
-            try
+            try // Try-catch block to handle empty array
             {
                 strList.pop_front();
                 out << "OK" << endl;
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
         else if (command == "First")
         {
             out << "First ";
-            try
+            try // Try-catch block to handle empty array
             {
                 out << strList.front() << endl;
                 cout << strList.front() << endl;
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
         else if (command == "Reverse")
         {
             out << "Reverse ";
-            try
+            try // Try-catch block to handle empty array
             {
                 strList.reverse();
                 out << "OK" << endl;
@@ -173,6 +173,9 @@ int main(int argc, char *argv[])
             out << command << endl; // Print out double-linked commands for diffchecker
         }
     }
+
+    // Memory Cleanup
+    strList.clear();
 
     return 0;
 }
