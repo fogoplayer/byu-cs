@@ -92,8 +92,8 @@ int main(int argc, char *argv[])
         }
         else if (command == "PrintList")
         {
-            // FIXME more needed
-            strList.toString();
+            out << strList.toString();
+            cout << strList.toString() << endl;
         }
         else if (command == "Remove")
         {

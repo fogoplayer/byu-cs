@@ -2,6 +2,7 @@
 #define LINKEDLIST_H_
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "LinkedListInterface.h"
@@ -71,7 +72,16 @@ public:
     std::string toString(void) const
     {
         std::cout << "To String" << std::endl;
-        return "returnVal";
+        std::ostringstream listAsString("");
+
+        Node *currNode = head;
+        while (currNode != NULL)
+        {
+            listAsString << " " << currNode->data;
+            currNode = currNode->next;
+        }
+
+        return listAsString.str();
     }
 };
 
