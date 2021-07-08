@@ -219,6 +219,11 @@ public:
             currNode = currNode->next;
         }
 
+        if (head == nullptr)
+        {
+            listAsString << " Empty!";
+        }
+
         return listAsString.str();
     }
 };

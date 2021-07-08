@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
         {
             out << "Clear ";
             strList.clear();
-            out << " OK" << endl;
-            cout << " OK" << endl;
+            out << "OK" << endl;
+            cout << "OK" << endl;
         }
 
         else if (command == "Empty")
