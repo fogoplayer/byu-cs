@@ -112,7 +112,11 @@ int main(int argc, char *argv[])
 
         else if (command == "Insert")
         {
-            strList.push_front("1");
+            string nodeData = "";
+            while (currLine >> nodeData)
+            {
+                strList.push_front(nodeData);
+            }
         }
 
         else if (command == "PrintList")
@@ -123,7 +127,11 @@ int main(int argc, char *argv[])
 
         else if (command == "Remove")
         {
-            strList.remove("1");
+            string nodeData = "";
+            while (currLine >> nodeData)
+            {
+                strList.remove(nodeData);
+            }
         }
 
         else if (command == "Reverse")
