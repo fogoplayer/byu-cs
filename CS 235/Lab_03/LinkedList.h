@@ -47,7 +47,8 @@ public:
             std::string errMsg = "Empty!";
             throw errMsg;
         }
-        Node *newHead = head->next;
+
+                Node *newHead = head->next;
         delete head;
         head = newHead;
     }
@@ -78,13 +79,44 @@ public:
     }
 
     /**
-     * Find value and remove it. Throws a string error message if list is empty
+     * Find value and remove it.
      * @param value the value to be removed
      * @return void
      */
-    void remove(const T &value)
+    void remove(const T &value) // FIXME move out of class definition
     {
         std::cout << "Remove" << std::endl;
+        if (head == NULL)
+        {
+            std::string errMsg = "Empty!";
+            throw errMsg;
+        }
+        Node *currNode = head;
+        Node *prevNode = NULL;
+        while (currNode != NULL)
+        {
+            if (currNode->data == value)
+            {
+                if (prevNode == NULL) // If the first node, set the next node to head and delete the current node
+                {
+                    head = currNode->next;
+                    delete currNode;
+                    currNode = head;
+                    continue;
+                }
+                else // Otherwise, set the previous node to point to the next node and delete it
+                {
+                    prevNode->next = currNode->next;
+                    delete currNode;
+                    currNode = prevNode->next;
+                    continue;
+                }
+            }
+
+            //If it's not a match, increment currNode and prevNode;
+            prevNode = currNode;
+            currNode = currNode->next;
+        }
     }
 
     /**
