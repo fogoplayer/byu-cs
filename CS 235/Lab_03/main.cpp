@@ -117,17 +117,19 @@ int main(int argc, char *argv[])
 
         else if (command == "Insert")
         {
-            out << "Insert " << endl;
+            out << "Insert";
             string nodeData = "";
             while (currLine >> nodeData)
             {
+                out << " " << nodeData;
                 strList.push_front(nodeData);
             }
+            out << endl;
         }
 
         else if (command == "PrintList")
         {
-            out << "PrintList ";
+            out << "PrintList";
             out << strList.toString() << endl;
             cout << strList.toString() << endl;
         }
@@ -162,6 +164,11 @@ int main(int argc, char *argv[])
             out << "Size ";
             out << strList.size() << endl;
             cout << strList.size() << endl;
+        }
+
+        else
+        {
+            out << command << endl; // Print out double-linked commands for diffchecker
         }
     }
 
