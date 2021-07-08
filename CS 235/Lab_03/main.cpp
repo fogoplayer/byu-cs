@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
             try
             {
                 strList.pop_front();
-                out << endl;
+                out << "OK" << endl;
             }
             catch (string e)
             {
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
             try
             {
                 strList.reverse();
-                out << endl;
+                out << "OK" << endl;
             }
             catch (string e)
             {
