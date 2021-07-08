@@ -36,7 +36,7 @@ public:
     }
 
     /**
-     * Remove the first element of the list
+     * Remove the first element of the list. Throws a string error message if list is empty
      * @return void
      */
     void pop_front(void)
@@ -53,7 +53,7 @@ public:
     }
 
     /**
-     * Get the first element in the list
+     * Get the first element in the list. Throws a string error message if list is empty
      * @return the first element in the list
      */
     T &front(void)
@@ -78,7 +78,7 @@ public:
     }
 
     /**
-     * Find value and remove it
+     * Find value and remove it. Throws a string error message if list is empty
      * @param value the value to be removed
      * @return void
      */
@@ -97,7 +97,7 @@ public:
     }
 
     /**
-     * Reverse the order of the list
+     * Reverse the order of the list. Throws a string error message if list is empty
      * @return void
      */
     void reverse(void)

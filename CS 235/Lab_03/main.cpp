@@ -118,7 +118,15 @@ int main(int argc, char *argv[])
         }
         else if (command == "Reverse")
         {
-            strList.reverse();
+            try
+            {
+                strList.reverse();
+            }
+            catch (string e)
+            {
+                out << e << endl;
+                cout << e << endl;
+            }
         }
         else if (command == "Size")
         {
