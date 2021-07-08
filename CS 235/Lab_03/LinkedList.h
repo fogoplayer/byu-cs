@@ -25,6 +25,8 @@ public:
     void push_front(const T &value)
     {
         std::cout << "Push front" << std::endl;
+        head = new Node(value, head);
+        return;
     }
 
     void pop_front(void)
