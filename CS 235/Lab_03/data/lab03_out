@@ -3,20 +3,20 @@ PrintList dog. lazy the over jumped fox brown quick The
 First dog.
 Delete OK
 PrintList lazy the over jumped fox brown quick The
-Remove 
-Remove 
-Remove 
+Remove The
+Remove dog.
+Remove lazy
 PrintList the over jumped fox brown quick
 Clear OK
-Remove 
+Remove The
 PrintList Empty!
 Insert dog dog dog dog cat pig pig pig
 PrintList pig pig pig cat dog dog dog dog
-Remove 
+Remove pig
 PrintList cat dog dog dog dog
-Remove 
+Remove dog
 PrintList cat
-Remove 
+Remove cat
 PrintList Empty!
 Delete Empty!
 Empty true

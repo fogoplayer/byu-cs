@@ -136,12 +136,14 @@ int main(int argc, char *argv[])
 
         else if (command == "Remove")
         {
-            out << "Remove " << endl;
+            out << "Remove";
             string nodeData = "";
             while (currLine >> nodeData)
             {
+                out << " " << nodeData;
                 strList.remove(nodeData);
             }
+            out << endl;
         }
 
         else if (command == "Reverse")
