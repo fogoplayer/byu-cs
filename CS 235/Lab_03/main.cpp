@@ -80,7 +80,15 @@ int main(int argc, char *argv[])
         }
         else if (command == "Delete")
         {
-            strList.pop_front();
+            try
+            {
+                strList.pop_front();
+            }
+            catch (string e)
+            {
+                out << e << endl;
+                cout << e << endl;
+            }
         }
         else if (command == "First")
         {
