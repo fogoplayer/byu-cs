@@ -15,7 +15,7 @@ private:
     {
         T data;
         Node *next;
-        Node(const T &data, Node *next) : data(data), next(next) {}
+        Node(const T &data, Node *next = NULL) : data(data), next(next) {}
     };
     Node *head;
 
@@ -48,8 +48,12 @@ public:
     T &front(void)
     {
         std::cout << "Front" << std::endl;
-        T tVar;
-        return tVar;
+        if (head == NULL)
+        {
+            std::string errMsg = "Empty!";
+            throw errMsg;
+        }
+        return head->data;
     }
 
     bool empty(void) const

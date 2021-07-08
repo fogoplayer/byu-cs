@@ -84,7 +84,16 @@ int main(int argc, char *argv[])
         }
         else if (command == "First")
         {
-            strList.front();
+            try
+            {
+                out << strList.front() << endl;
+                cout << strList.front() << endl;
+            }
+            catch (string e)
+            {
+                out << e << endl;
+                cout << e << endl;
+            }
         }
         else if (command == "Insert")
         {
