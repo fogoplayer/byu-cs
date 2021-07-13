@@ -65,8 +65,18 @@ public:
          * Get the next value for the node the iterator is pointing to
          * @return a pointer to a node
          */
-        Node* getNext(){
+        Node *getNext() const
+        {
             return iNode->next;
+        }
+
+        /**
+         * Change the next value for the node the iterator is pointing to
+         * @param nodePtr a pointer to a node;
+         */
+        void setNext(Node *nodePtr)
+        {
+            iNode->next = nodePtr;
         }
     };
 
@@ -100,17 +110,17 @@ public:
     /** Return iterator pointing to inserted value in linked list */
     Iterator insert(Iterator position, const T &value)
     {
-        Node* beforePosition = head;
+        Node *beforePosition = head;
         while (beforePosition != nullptr)
         {
-            if (beforePosition->next->data == *position &&          // If they point to the same data
-                beforePosition->next->next == position.getNext())   // And the same next value
+            if (beforePosition->next->data == *position &&        // If they point to the same data
+                beforePosition->next->next == position.getNext()) // And the same next value
             {
                 break;
             }
             beforePosition = beforePosition->next;
         }
-        Node* newNode = new Node(value, beforePosition->next);
+        Node *newNode = new Node(value, beforePosition->next);
         beforePosition->next = newNode;
         return Iterator(newNode);
     }
@@ -118,9 +128,9 @@ public:
     /** Return iterator pointing to inserted value in linked list */
     Iterator insert_after(Iterator position, const T &value)
     {
-        std::cout << std::endl
-                  << "insert_after " << value << " after " << *position;
-        return LinkedList<T>::Iterator(head);
+        Node *newNode = new Node(value, position.getNext());
+        position.setNext(newNode);
+        return newNode;
     }
 
     /** Return iterator pointing to next item after deleted node linked list */

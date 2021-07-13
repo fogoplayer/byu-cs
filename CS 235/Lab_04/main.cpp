@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
     cout << StrList.toString() << endl;
     cout << *StrList.begin() << " " << *++StrList.begin() << endl;
     StrList.insert(StrList.find(StrList.begin(), StrList.end(), "name"), "BOO");
+    StrList.insert_after(StrList.find(StrList.begin(), StrList.end(), "name"), "BAH");
     cout << StrList << endl;
 
 #endif
