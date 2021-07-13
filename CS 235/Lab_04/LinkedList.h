@@ -60,6 +60,14 @@ public:
         {
             return iNode->data;
         }
+
+        /**
+         * Get the next value for the node the iterator is pointing to
+         * @return a pointer to a node
+         */
+        Node* getNext(){
+            return iNode->next;
+        }
     };
 
     /** Return iterator pointing to the first value in linked list */
@@ -92,9 +100,19 @@ public:
     /** Return iterator pointing to inserted value in linked list */
     Iterator insert(Iterator position, const T &value)
     {
-        std::cout << std::endl
-                  << "insert " << value << " at " << *position;
-        return LinkedList<T>::Iterator(head);
+        Node* beforePosition = head;
+        while (beforePosition != nullptr)
+        {
+            if (beforePosition->next->data == *position &&          // If they point to the same data
+                beforePosition->next->next == position.getNext())   // And the same next value
+            {
+                break;
+            }
+            beforePosition = beforePosition->next;
+        }
+        Node* newNode = new Node(value, beforePosition->next);
+        beforePosition->next = newNode;
+        return Iterator(newNode);
     }
 
     /** Return iterator pointing to inserted value in linked list */
@@ -223,7 +241,7 @@ public:
     **/
     friend std::ostream &operator<<(std::ostream &os, LinkedList<T> &list)
     {
-        os << list.to_string();
+        os << list.toString();
         return os;
     }
 };
