@@ -8,3 +8,8 @@ Iterate
  [amet]
 Find ipsu Not Found
 Find ipsum OK
+InsertAfter amet tudis Not Found
+InsertBefore amet tudis Not Found
+InsertAfter tudis amet OK
+PrintList lorem ipsum dolor sit amet tudis
+InsertBefore tudis amet OK

@@ -195,7 +195,9 @@ int main(int argc, char *argv[])
         {
             cout << "Iterate";
             out << "Iterate";
+
             LinkedList<string>::Iterator iter = StrList.begin();
+
             if (iter == StrList.end()) // If list is empty
             {
                 cout << " Empty!";
@@ -227,8 +229,60 @@ int main(int argc, char *argv[])
             cout << " " << findValue;
             out << " " << findValue;
 
-            LinkedList<string>::Iterator location = StrList.find(StrList.begin(), StrList.end(), findValue);
-            if (location == nullptr)
+            LinkedList<string>::Iterator Location = StrList.find(StrList.begin(), StrList.end(), findValue);
+            if (Location == nullptr)
+            {
+                cout << " Not Found" << endl;
+                out << " Not Found" << endl;
+            }
+            else
+            {
+                cout << " OK" << endl;
+                out << " OK" << endl;
+            }
+        }
+
+        else if (command == "InsertAfter")
+        {
+            string itemToInsert, target;
+            currLine >> itemToInsert >> target;
+
+            cout << "InsertAfter";
+            out << "InsertAfter";
+            cout << " " << itemToInsert;
+            out << " " << itemToInsert;
+            cout << " " << target;
+            out << " " << target;
+
+            LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
+            LinkedList<string>::Iterator ResultIterator = StrList.insert_after(TargetIterator, itemToInsert);
+            if (ResultIterator == nullptr)
+            {
+                cout << " Not Found" << endl;
+                out << " Not Found" << endl;
+            }
+            else
+            {
+                cout << " OK" << endl;
+                out << " OK" << endl;
+            }
+        }
+
+        else if (command == "InsertBefore")
+        {
+            string itemToInsert, target;
+            currLine >> itemToInsert >> target;
+
+            cout << "InsertBefore";
+            out << "InsertBefore";
+            cout << " " << itemToInsert;
+            out << " " << itemToInsert;
+            cout << " " << target;
+            out << " " << target;
+
+            LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
+            LinkedList<string>::Iterator ResultIterator = StrList.insert(TargetIterator, itemToInsert);
+            if (ResultIterator == nullptr)
             {
                 cout << " Not Found" << endl;
                 out << " Not Found" << endl;

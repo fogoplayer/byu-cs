@@ -3,3 +3,8 @@ Insert amet sit dolor ipsum lorem
 Iterate
 Find ipsu
 Find ipsum
+InsertAfter amet tudis
+InsertBefore amet tudis
+InsertAfter tudis amet 
+PrintList
+InsertBefore tudis amet 

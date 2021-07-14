@@ -130,6 +130,10 @@ public:
     /** Return iterator pointing to inserted value in linked list */
     Iterator insert(Iterator position, const T &value)
     {
+        if (position == Iterator(nullptr))
+        {
+            return nullptr;
+        }
         Node *beforePosition = head;
         while (beforePosition->next != nullptr)
         {
@@ -148,6 +152,10 @@ public:
     /** Return iterator pointing to inserted value in linked list */
     Iterator insert_after(Iterator position, const T &value)
     {
+        if (position == Iterator(nullptr))
+        {
+            return nullptr;
+        }
         Node *newNode = new Node(value, position.getNext());
         position.setNext(newNode);
         return newNode;
