@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
 
             cout << " " << findValue;
             out << " " << findValue;
-            try
+            try //Try-catch block to handle target not being there
             {
                 LinkedList<string>::Iterator Location = StrList.find(StrList.begin(), StrList.end(), findValue);
 
@@ -233,9 +233,9 @@ int main(int argc, char *argv[])
             cout << " " << target;
             out << " " << target;
 
-            try
+            try // Try-catch block to handle target not being there
             {
-                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
+                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target);
                 LinkedList<string>::Iterator ResultIterator = StrList.insert_after(TargetIterator, itemToInsert);
 
                 cout << " OK" << endl;
@@ -260,9 +260,9 @@ int main(int argc, char *argv[])
             cout << " " << target;
             out << " " << target;
 
-            try
+            try // Try-catch block to handle target not being there
             {
-                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
+                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target);
                 LinkedList<string>::Iterator ResultIterator = StrList.insert(TargetIterator, itemToInsert);
 
                 cout << " OK" << endl;
@@ -285,9 +285,9 @@ int main(int argc, char *argv[])
             cout << " " << target;
             out << " " << target;
 
-            try
+            try // Try-catch block to handle target not being there
             {
-                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
+                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target);
                 LinkedList<string>::Iterator ResultIterator = StrList.erase(TargetIterator);
 
                 cout << " OK" << endl;

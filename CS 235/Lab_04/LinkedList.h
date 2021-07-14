@@ -126,7 +126,7 @@ public:
     /** Return iterator pointing found value in linked list */
     Iterator find(Iterator first, Iterator last, const T &value)
     {
-
+        // Go through each element between first and last and check its value against the argument
         Iterator searchPosition(first);
         while (searchPosition != last)
         {
@@ -136,6 +136,8 @@ public:
             }
             ++searchPosition;
         }
+
+        // If search went beyond the list, value wasn't in there
         if (searchPosition == last)
         {
             std::string errMsg = " Not Found";
@@ -145,67 +147,70 @@ public:
     }
 
     /** Return iterator pointing to inserted value in linked list */
-    Iterator insert(Iterator position, const T &value)
+    Iterator insert(Iterator Position, const T &value)
     {
-        if (position == Iterator(nullptr))
+        if (Position == Iterator(nullptr))
         {
             std::string errMsg = " Not Found";
             throw errMsg;
         }
 
-        if (position.getNext() == head->next) // Special case--first elem is match
+        if (Position.getNext() == head->next) // Special case--first elem is match
         {
             Node *newNode = new Node(value, head);
             head = newNode;
             return Iterator(newNode);
         }
 
+        // Check all other elems for match
         Node *beforePosition = head;
         while (beforePosition->next != nullptr)
         {
-            if (beforePosition->next->data == *position &&        // If they point to the same data
-                beforePosition->next->next == position.getNext()) // And the same next value
+            if (beforePosition->next->data == *Position &&        // If they point to the same data
+                beforePosition->next->next == Position.getNext()) // And the same next value
             {
                 break;
             }
             beforePosition = beforePosition->next;
         }
+
         Node *newNode = new Node(value, beforePosition->next);
         beforePosition->next = newNode;
         return Iterator(newNode);
     }
 
     /** Return iterator pointing to inserted value in linked list */
-    Iterator insert_after(Iterator position, const T &value)
+    Iterator insert_after(Iterator Position, const T &value)
     {
-        if (position == Iterator(nullptr))
+        if (Position == Iterator(nullptr))
         {
             std::string errMsg = " Not Found";
             throw errMsg;
         }
 
-        Node *newNode = new Node(value, position.getNext());
-        position.setNext(newNode);
+        Node *newNode = new Node(value, Position.getNext());
+        Position.setNext(newNode);
         return newNode;
     }
 
     /** Return iterator pointing to next item after deleted node linked list */
-    Iterator erase(Iterator position)
+    Iterator erase(Iterator Position)
     {
-        if (position == Iterator(nullptr))
+        if (Position == Iterator(nullptr))
         {
             std::string errMsg = " Not Found";
             throw errMsg;
         }
 
+        // Loop through and find Position (CurrNode) and the node before Position (PrevNode)
         Node *CurrNode = head;
         Node *PrevNode = nullptr;
         while (CurrNode != nullptr)
         {
-            if ((CurrNode->data == *position) &&        // If they point to the same data
-                (CurrNode->next == position.getNext())) // And to the same next value
+            if ((CurrNode->data == *Position) &&        // If they point to the same data
+                (CurrNode->next == Position.getNext())) // And to the same next value
             {
-                break;
+                break; // Escape once a match is found
             }
             PrevNode = CurrNode;
             CurrNode = CurrNode->next;
@@ -213,14 +218,14 @@ public:
 
         if (PrevNode == nullptr)
         {
-            head = position.getNext();
-            position.deleteNode();
+            head = Position.getNext();
+            Position.deleteNode();
             return head;
         }
         else
         {
-            PrevNode->next = position.getNext();
-            position.deleteNode();
+            PrevNode->next = Position.getNext();
+            Position.deleteNode();
             return PrevNode->next;
         }
     }
