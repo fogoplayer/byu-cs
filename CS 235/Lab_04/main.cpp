@@ -216,6 +216,30 @@ int main(int argc, char *argv[])
             out << endl;
         }
 
+        else if (command == "Find")
+        {
+            cout << "Find";
+            out << "Find";
+
+            string findValue;
+            currLine >> findValue;
+
+            cout << " " << findValue;
+            out << " " << findValue;
+
+            LinkedList<string>::Iterator location = StrList.find(StrList.begin(), StrList.end(), findValue);
+            if (location == nullptr)
+            {
+                cout << " Not Found" << endl;
+                out << " Not Found" << endl;
+            }
+            else
+            {
+                cout << " OK" << endl;
+                out << " OK" << endl;
+            }
+        }
+
         else
         {
             out << command << endl; // Print out double-linked commands for diffchecker
