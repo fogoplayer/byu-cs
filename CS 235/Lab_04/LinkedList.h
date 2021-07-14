@@ -43,6 +43,16 @@ public:
         }
 
         /**
+         * Determine if two Iterators are pointing to the same object
+         * @param rhs an Iterator object to compare to the current Iterator object
+         * @return a boolean sharing if they are equal
+         */
+        bool operator==(const Iterator &rhs) const
+        {
+            return this->iNode == rhs.iNode;
+        }
+
+        /**
          * Preincrement operator
          * @return an Iterator pointing to the next element in the list
          */

@@ -196,13 +196,21 @@ int main(int argc, char *argv[])
             cout << "Iterate";
             out << "Iterate";
             LinkedList<string>::Iterator iter = StrList.begin();
-            while (iter != StrList.end())
+            if (iter == StrList.end()) // If list is empty
             {
-                cout << endl
-                     << " [" << *iter << "]";
-                out << endl
-                    << " [" << *iter << "]";
-                ++iter;
+                cout << " Empty!";
+                out << " Empty!";
+            }
+            else
+            {
+                while (iter != StrList.end())
+                {
+                    cout << endl
+                         << " [" << *iter << "]";
+                    out << endl
+                        << " [" << *iter << "]";
+                    ++iter;
+                }
             }
             cout << endl;
             out << endl;
