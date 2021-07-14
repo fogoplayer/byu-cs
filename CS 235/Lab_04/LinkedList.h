@@ -146,20 +146,20 @@ public:
     /** Return iterator pointing to next item after deleted node linked list */
     Iterator erase(Iterator position)
     {
-        Node *currNode = head;
-        Node *prevNode = nullptr;
-        while (currNode != nullptr)
+        Node *CurrNode = head;
+        Node *PrevNode = nullptr;
+        while (CurrNode != nullptr)
         {
-            if ((currNode->data == *position) &&        // If they point to the same data
-                (currNode->next == position.getNext())) // And to the same next value
+            if ((CurrNode->data == *position) &&        // If they point to the same data
+                (CurrNode->next == position.getNext())) // And to the same next value
             {
                 break;
             }
-            prevNode = currNode;
-            currNode = currNode->next;
+            PrevNode = CurrNode;
+            CurrNode = CurrNode->next;
         }
 
-        if (prevNode == nullptr)
+        if (PrevNode == nullptr)
         {
             head = position.getNext();
             position.deleteNode();
@@ -167,31 +167,17 @@ public:
         }
         else
         {
-            prevNode->next = position.getNext();
+            PrevNode->next = position.getNext();
             position.deleteNode();
-            return prevNode->next;
+            return PrevNode->next;
         }
-
-        // Node *beforePosition = Node(NULL, head);
-        // while (beforePosition.next != nullptr)
-        // {
-        //     if ((beforePosition.next->data == *position) &&        // If they point to the same data
-        //         (beforePosition.next->next == position.getNext())) // And the same next value
-        //     {
-        //         break;
-        //     }
-        //     beforePosition = beforePosition.next;
-        // }
-        // beforePosition.next = position.getNext();
-        // position.deleteNode();
-        // return Iterator(beforePosition.next);
     }
 
     /** Replace first found old_value(s) with new_value */
     void replace(Iterator first, Iterator last, const T &old_value, const T &new_value)
     {
-        std::cout << std::endl
-                  << "replace " << old_value << " with " << new_value;
+        Iterator NodeToReplace = find(first, last, old_value);
+        *NodeToReplace = new_value;
         return;
     }
 
@@ -253,12 +239,12 @@ public:
     void clear(void)
     {
         std::cout << "Clear" << std::endl;
-        Node *currNode = head;
-        while (currNode != nullptr)
+        Node *CurrNode = head;
+        while (CurrNode != nullptr)
         {
-            Node *nextNode = currNode->next;
-            delete currNode;
-            currNode = nextNode;
+            Node *nextNode = CurrNode->next;
+            delete CurrNode;
+            CurrNode = nextNode;
         }
         head = nullptr;
     }
@@ -330,31 +316,31 @@ template <typename T>
 void LinkedList<T>::remove(const T &value) // FIXME move out of class definition
 {
     std::cout << "Remove" << std::endl;
-    Node *currNode = head;
-    Node *prevNode = nullptr;
-    while (currNode != nullptr)
+    Node *CurrNode = head;
+    Node *PrevNode = nullptr;
+    while (CurrNode != nullptr)
     {
-        if (currNode->data == value)
+        if (CurrNode->data == value)
         {
-            if (prevNode == nullptr) // If the first node, set the next node to head and delete the current node
+            if (PrevNode == nullptr) // If the first node, set the next node to head and delete the current node
             {
-                head = currNode->next;
-                delete currNode;
-                currNode = head;
+                head = CurrNode->next;
+                delete CurrNode;
+                CurrNode = head;
                 continue;
             }
             else // Otherwise, set the previous node to point to the next node and delete it
             {
-                prevNode->next = currNode->next;
-                delete currNode;
-                currNode = prevNode->next;
+                PrevNode->next = CurrNode->next;
+                delete CurrNode;
+                CurrNode = PrevNode->next;
                 continue;
             }
         }
 
-        //If it's not a match, increment currNode and prevNode;
-        prevNode = currNode;
-        currNode = currNode->next;
+        //If it's not a match, increment CurrNode and PrevNode;
+        PrevNode = CurrNode;
+        CurrNode = CurrNode->next;
     }
 }
 
@@ -375,7 +361,7 @@ void LinkedList<T>::reverse(void)
 
     // Reverse the array
     Node *initialHead = head;
-    // Node *prevNode = head;
+    // Node *PrevNode = head;
     Node *ptrToMove = initialHead->next;
 
     // Move the first node (while loop assumes head has been moved)
@@ -385,17 +371,17 @@ void LinkedList<T>::reverse(void)
 
     while (initialHead->next != nullptr)
     {
-        // prevNode = head;
-        // while (prevNode->next != initialHead) // Loop until prevNode is right before the initial head
+        // PrevNode = head;
+        // while (PrevNode->next != initialHead) // Loop until PrevNode is right before the initial head
         // {
-        //     prevNode = prevNode->next;
+        //     PrevNode = PrevNode->next;
         // }
         Node *ptrToMove = initialHead->next;
         initialHead->next = ptrToMove->next;
         ptrToMove->next = head;
         head = ptrToMove;
 
-        // prevNode->next = nullptr; // Make the previous node the new final node
+        // PrevNode->next = nullptr; // Make the previous node the new final node
         // lastNode->next = head;    // Make the last node point to the old first node
         // head = lastNode;          // Make the last node the new first node;
     }
@@ -407,11 +393,11 @@ std::string LinkedList<T>::toString(void) const
     std::cout << "To String" << std::endl;
     std::ostringstream listAsString("");
 
-    Node *currNode = head;
-    while (currNode != nullptr)
+    Node *CurrNode = head;
+    while (CurrNode != nullptr)
     {
-        listAsString << " " << currNode->data;
-        currNode = currNode->next;
+        listAsString << " " << CurrNode->data;
+        CurrNode = CurrNode->next;
     }
 
     if (head == nullptr)

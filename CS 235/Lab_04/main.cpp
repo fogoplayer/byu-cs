@@ -73,7 +73,9 @@ int main(int argc, char *argv[])
     StrList.insert_after(StrList.find(StrList.begin(), StrList.end(), "name"), "BAH");
     cout << StrList << endl;
     StrList.erase(StrList.begin());
-    StrList.erase(StrList.find(StrList.begin(), StrList.end(), "BAH"));
+    StrList.erase(StrList.find(StrList.begin(), StrList.end(), "BOO"));
+    cout << StrList << endl;
+    StrList.replace(StrList.begin(), StrList.end(), "BAH", "probably");
     cout << StrList << endl;
 
 #endif
