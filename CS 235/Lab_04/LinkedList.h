@@ -115,11 +115,6 @@ public:
     /** Return iterator pointing found value in linked list */
     Iterator find(Iterator first, Iterator last, const T &value)
     {
-        if (position == Iterator(nullptr))
-        {
-            std::string errMsg = "Not Found";
-            throw errMsg;
-        }
 
         Iterator searchPosition(first);
         while (searchPosition != last)
@@ -130,6 +125,11 @@ public:
             }
             ++searchPosition;
         }
+        if (searchPosition == last)
+        {
+            std::string errMsg = " Not Found";
+            throw errMsg;
+        }
         return searchPosition;
     }
 
@@ -138,8 +138,15 @@ public:
     {
         if (position == Iterator(nullptr))
         {
-            std::string errMsg = "Not Found";
+            std::string errMsg = " Not Found";
             throw errMsg;
+        }
+
+        if (position.getNext() == head->next) // Special case--first elem is match
+        {
+            Node *newNode = new Node(value, head);
+            head = newNode;
+            return Iterator(newNode);
         }
 
         Node *beforePosition = head;
@@ -162,7 +169,7 @@ public:
     {
         if (position == Iterator(nullptr))
         {
-            std::string errMsg = "Not Found";
+            std::string errMsg = " Not Found";
             throw errMsg;
         }
 
@@ -176,7 +183,7 @@ public:
     {
         if (position == Iterator(nullptr))
         {
-            std::string errMsg = "Not Found";
+            std::string errMsg = " Not Found";
             throw errMsg;
         }
 
@@ -210,8 +217,14 @@ public:
     /** Replace first found old_value(s) with new_value */
     void replace(Iterator first, Iterator last, const T &old_value, const T &new_value)
     {
-        Iterator NodeToReplace = find(first, last, old_value);
-        *NodeToReplace = new_value;
+        while (first != last)
+        {
+            if (*first == old_value)
+            {
+                *first = new_value;
+            }
+            ++first;
+        }
         return;
     }
 
