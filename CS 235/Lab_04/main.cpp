@@ -194,14 +194,18 @@ int main(int argc, char *argv[])
         else if (command == "Iterate")
         {
             cout << "Iterate";
+            out << "Iterate";
             LinkedList<string>::Iterator iter = StrList.begin();
             while (iter != StrList.end())
             {
                 cout << endl
                      << " [" << *iter << "]";
+                out << endl
+                    << " [" << *iter << "]";
                 ++iter;
             }
             cout << endl;
+            out << endl;
         }
 
         else
@@ -217,4 +221,3 @@ int main(int argc, char *argv[])
 }
 
 /*------------------------------------------------ Function Definitions ------------------------------------------------*/
-What is a deque ? How does a deque differ from queue ? How does a deque differ from a IRDeque and ORDeque ?
