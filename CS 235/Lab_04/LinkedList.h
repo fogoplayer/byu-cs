@@ -122,19 +122,19 @@ public:
     };
 
     /** Return iterator pointing to the first value in linked list */
-    Iterator begin(void)
+    Iterator begin(void) const
     {
         return LinkedList<T>::Iterator(head);
     }
 
     /** Return iterator pointing to something not in linked list */
-    Iterator end(void)
+    Iterator end(void) const
     {
         return LinkedList<T>::Iterator(NULL);
     }
 
     /** Return iterator pointing found value in linked list */
-    Iterator find(Iterator first, Iterator last, const T &value)
+    Iterator find(Iterator first, Iterator last, const T &value) const
     {
         // Go through each element between first and last and check its value against the argument
         Iterator searchPosition(first);
