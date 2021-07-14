@@ -166,18 +166,7 @@ public:
     Iterator erase(Iterator Position);
 
     /** Replace first found old_value(s) with new_value */
-    void replace(Iterator First, Iterator Last, const T &old_value, const T &new_value)
-    {
-        while (First != Last)
-        {
-            if (*First == old_value)
-            {
-                *First = new_value;
-            }
-            ++First;
-        }
-        return;
-    }
+    void replace(Iterator First, Iterator Last, const T &old_value, const T &new_value);
 
     /**
      * Add an element to the front of the list
@@ -286,7 +275,7 @@ public:
 };
 
 template <typename T>
-LinkedList<T>::Iterator LinkedList<T>::insert(Iterator Position, const T &value)
+typename LinkedList<T>::Iterator LinkedList<T>::insert(Iterator Position, const T &value)
 {
     if (Position == Iterator(nullptr))
     {
@@ -319,7 +308,7 @@ LinkedList<T>::Iterator LinkedList<T>::insert(Iterator Position, const T &value)
 }
 
 template <typename T>
-LinkedList<T>::Iterator LinkedList<T>::insert_after(Iterator Position, const T &value)
+typename LinkedList<T>::Iterator LinkedList<T>::insert_after(Iterator Position, const T &value)
 {
     if (Position == Iterator(nullptr))
     {
@@ -333,7 +322,7 @@ LinkedList<T>::Iterator LinkedList<T>::insert_after(Iterator Position, const T &
 }
 
 template <typename T>
-LinkedList<T>::Iterator LinkedList<T>::erase(Iterator Position)
+typename LinkedList<T>::Iterator LinkedList<T>::erase(Iterator Position)
 {
     if (Position == Iterator(nullptr))
     {
