@@ -8,3 +8,6 @@ InsertBefore amet tudis
 InsertAfter tudis amet 
 PrintList
 InsertBefore tudis amet 
+Erase tudis
+Replace amet amun
+PrintList

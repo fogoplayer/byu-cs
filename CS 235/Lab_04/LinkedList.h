@@ -115,6 +115,12 @@ public:
     /** Return iterator pointing found value in linked list */
     Iterator find(Iterator first, Iterator last, const T &value)
     {
+        if (position == Iterator(nullptr))
+        {
+            std::string errMsg = "Not Found";
+            throw errMsg;
+        }
+
         Iterator searchPosition(first);
         while (searchPosition != last)
         {
@@ -132,8 +138,10 @@ public:
     {
         if (position == Iterator(nullptr))
         {
-            return nullptr;
+            std::string errMsg = "Not Found";
+            throw errMsg;
         }
+
         Node *beforePosition = head;
         while (beforePosition->next != nullptr)
         {
@@ -154,8 +162,10 @@ public:
     {
         if (position == Iterator(nullptr))
         {
-            return nullptr;
+            std::string errMsg = "Not Found";
+            throw errMsg;
         }
+
         Node *newNode = new Node(value, position.getNext());
         position.setNext(newNode);
         return newNode;
@@ -164,6 +174,12 @@ public:
     /** Return iterator pointing to next item after deleted node linked list */
     Iterator erase(Iterator position)
     {
+        if (position == Iterator(nullptr))
+        {
+            std::string errMsg = "Not Found";
+            throw errMsg;
+        }
+
         Node *CurrNode = head;
         Node *PrevNode = nullptr;
         while (CurrNode != nullptr)

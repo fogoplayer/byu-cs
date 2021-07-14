@@ -13,3 +13,6 @@ InsertBefore amet tudis Not Found
 InsertAfter tudis amet OK
 PrintList lorem ipsum dolor sit amet tudis
 InsertBefore tudis amet OK
+Erase tudis OK
+Replace amet amun OK
+PrintList lorem ipsum dolor sit amun tudis

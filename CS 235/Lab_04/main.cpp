@@ -228,17 +228,17 @@ int main(int argc, char *argv[])
 
             cout << " " << findValue;
             out << " " << findValue;
+            try
+            {
+                LinkedList<string>::Iterator Location = StrList.find(StrList.begin(), StrList.end(), findValue);
 
-            LinkedList<string>::Iterator Location = StrList.find(StrList.begin(), StrList.end(), findValue);
-            if (Location == nullptr)
-            {
-                cout << " Not Found" << endl;
-                out << " Not Found" << endl;
-            }
-            else
-            {
                 cout << " OK" << endl;
                 out << " OK" << endl;
+            }
+            catch (string e)
+            {
+                out << e << endl;
+                cout << e << endl;
             }
         }
 
@@ -254,17 +254,18 @@ int main(int argc, char *argv[])
             cout << " " << target;
             out << " " << target;
 
-            LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
-            LinkedList<string>::Iterator ResultIterator = StrList.insert_after(TargetIterator, itemToInsert);
-            if (ResultIterator == nullptr)
+            try
             {
-                cout << " Not Found" << endl;
-                out << " Not Found" << endl;
-            }
-            else
-            {
+                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
+                LinkedList<string>::Iterator ResultIterator = StrList.insert_after(TargetIterator, itemToInsert);
+
                 cout << " OK" << endl;
                 out << " OK" << endl;
+            }
+            catch (string e)
+            {
+                out << e << endl;
+                cout << e << endl;
             }
         }
 
@@ -280,18 +281,52 @@ int main(int argc, char *argv[])
             cout << " " << target;
             out << " " << target;
 
-            LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
-            LinkedList<string>::Iterator ResultIterator = StrList.insert(TargetIterator, itemToInsert);
-            if (ResultIterator == nullptr)
+            try
             {
-                cout << " Not Found" << endl;
-                out << " Not Found" << endl;
-            }
-            else
-            {
+                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
+                LinkedList<string>::Iterator ResultIterator = StrList.insert(TargetIterator, itemToInsert);
+
                 cout << " OK" << endl;
                 out << " OK" << endl;
             }
+            catch (string e)
+            {
+                out << e << endl;
+                cout << e << endl;
+            }
+        }
+
+        else if (command == "Erase")
+        {
+            string target;
+            currLine >> target;
+
+            cout << "Erase";
+            out << "Erase";
+            cout << " " << target;
+            out << " " << target;
+
+            try
+            {
+                LinkedList<string>::Iterator TargetIterator = StrList.find(StrList.begin(), StrList.end(), target); // FIXME make sure all iterators are captialized
+                LinkedList<string>::Iterator ResultIterator = StrList.erase(TargetIterator);
+
+                cout << " OK" << endl;
+                out << " OK" << endl;
+            }
+            catch (string e)
+            {
+                out << e << endl;
+                cout << e << endl;
+            }
+        }
+
+        else if (command == "Replace")
+        {
+            string oldVal, newVal;
+            currLine >> oldVal >> newVal;
+            StrList.replace(StrList.begin(), StrList.end(), oldVal, newVal);
+            out << "Replace " << oldVal << " " << newVal << " OK" << endl;
         }
 
         else
