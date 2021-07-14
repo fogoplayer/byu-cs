@@ -78,6 +78,16 @@ public:
         {
             iNode->next = nodePtr;
         }
+
+        Iterator deleteNode()
+        {
+            Node *returnVal = iNode->next;
+            delete iNode;
+            return Iterator(returnVal);
+        }
+
+        // FIXME Tostring
+        // FIXME Insertion operator
     };
 
     /** Return iterator pointing to the first value in linked list */
@@ -111,7 +121,7 @@ public:
     Iterator insert(Iterator position, const T &value)
     {
         Node *beforePosition = head;
-        while (beforePosition != nullptr)
+        while (beforePosition->next != nullptr)
         {
             if (beforePosition->next->data == *position &&        // If they point to the same data
                 beforePosition->next->next == position.getNext()) // And the same next value
@@ -136,9 +146,45 @@ public:
     /** Return iterator pointing to next item after deleted node linked list */
     Iterator erase(Iterator position)
     {
-        std::cout << std::endl
-                  << "erase " << *position;
-        return LinkedList<T>::Iterator(head);
+        Node *currNode = head;
+        Node *prevNode = nullptr;
+        while (currNode != nullptr)
+        {
+            if ((currNode->data == *position) &&        // If they point to the same data
+                (currNode->next == position.getNext())) // And to the same next value
+            {
+                break;
+            }
+            prevNode = currNode;
+            currNode = currNode->next;
+        }
+
+        if (prevNode == nullptr)
+        {
+            head = position.getNext();
+            position.deleteNode();
+            return head;
+        }
+        else
+        {
+            prevNode->next = position.getNext();
+            position.deleteNode();
+            return prevNode->next;
+        }
+
+        // Node *beforePosition = Node(NULL, head);
+        // while (beforePosition.next != nullptr)
+        // {
+        //     if ((beforePosition.next->data == *position) &&        // If they point to the same data
+        //         (beforePosition.next->next == position.getNext())) // And the same next value
+        //     {
+        //         break;
+        //     }
+        //     beforePosition = beforePosition.next;
+        // }
+        // beforePosition.next = position.getNext();
+        // position.deleteNode();
+        // return Iterator(beforePosition.next);
     }
 
     /** Replace first found old_value(s) with new_value */
