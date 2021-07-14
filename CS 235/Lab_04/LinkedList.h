@@ -96,8 +96,19 @@ public:
             return Iterator(returnVal);
         }
 
-        // FIXME Tostring
-        // FIXME Insertion operator
+        T toString()
+        {
+            return iNode.data;
+        }
+
+        /**
+         * @return an ostream with the data pointed to by the iterator
+         */
+        friend std::ostream &operator<<(std::ostream &os, Iterator &Iterator)
+        {
+            os << Iterator.toString();
+            return os;
+        }
     };
 
     /** Return iterator pointing to the first value in linked list */
