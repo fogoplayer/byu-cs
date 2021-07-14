@@ -89,6 +89,10 @@ public:
             iNode->next = nodePtr;
         }
 
+        /**
+         * Delete the node the Iterator is pointing to
+         * @return an interator pointing to the node following the deleted node
+         */
         Iterator deleteNode()
         {
             Node *returnVal = iNode->next;
@@ -96,9 +100,15 @@ public:
             return Iterator(returnVal);
         }
 
-        T toString()
+        /**
+         * Return the data in the iterator as a string
+         * @return a string
+         */
+        std::string toString()
         {
-            return iNode.data;
+            std::stringstream s;
+            s << iNode.data;
+            return s.str();
         }
 
         /**
