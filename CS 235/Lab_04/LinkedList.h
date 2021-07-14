@@ -157,88 +157,13 @@ public:
     }
 
     /** Return iterator pointing to inserted value in linked list */
-    Iterator insert(Iterator Position, const T &value)
-    {
-        if (Position == Iterator(nullptr))
-        {
-            std::string errMsg = " Not Found";
-            throw errMsg;
-        }
-
-        if (Position.getNext() == head->next) // Special case--first elem is match
-        {
-            Node *newNode = new Node(value, head);
-            head = newNode;
-            return Iterator(newNode);
-        }
-
-        // Check all other elems for match
-        Node *beforePosition = head;
-        while (beforePosition->next != nullptr)
-        {
-            if (beforePosition->next->data == *Position &&        // If they point to the same data
-                beforePosition->next->next == Position.getNext()) // And the same next value
-            {
-                break;
-            }
-            beforePosition = beforePosition->next;
-        }
-
-        Node *newNode = new Node(value, beforePosition->next);
-        beforePosition->next = newNode;
-        return Iterator(newNode);
-    }
+    Iterator insert(Iterator Position, const T &value);
 
     /** Return iterator pointing to inserted value in linked list */
-    Iterator insert_after(Iterator Position, const T &value)
-    {
-        if (Position == Iterator(nullptr))
-        {
-            std::string errMsg = " Not Found";
-            throw errMsg;
-        }
-
-        Node *newNode = new Node(value, Position.getNext());
-        Position.setNext(newNode);
-        return newNode;
-    }
+    Iterator insert_after(Iterator Position, const T &value);
 
     /** Return iterator pointing to next item after deleted node linked list */
-    Iterator erase(Iterator Position)
-    {
-        if (Position == Iterator(nullptr))
-        {
-            std::string errMsg = " Not Found";
-            throw errMsg;
-        }
-
-        // Loop through and find Position (CurrNode) and the node before Position (PrevNode)
-        Node *CurrNode = head;
-        Node *PrevNode = nullptr;
-        while (CurrNode != nullptr)
-        {
-            if ((CurrNode->data == *Position) &&        // If they point to the same data
-                (CurrNode->next == Position.getNext())) // And to the same next value
-            {
-                break; // Escape once a match is found
-            }
-            PrevNode = CurrNode;
-            CurrNode = CurrNode->next;
-        }
-
-        if (PrevNode == nullptr)
-        {
-            head = Position.getNext();
-            Position.deleteNode();
-            return head;
-        }
-        else
-        {
-            PrevNode->next = Position.getNext();
-            Position.deleteNode();
-            return PrevNode->next;
-        }
-    }
+    Iterator erase(Iterator Position);
 
     /** Replace first found old_value(s) with new_value */
     void replace(Iterator First, Iterator Last, const T &old_value, const T &new_value)
@@ -359,6 +284,104 @@ public:
         return os;
     }
 };
+
+template <typename T>
+LinkedList<T>::Iterator LinkedList<T>::insert(Iterator Position, const T &value)
+{
+    if (Position == Iterator(nullptr))
+    {
+        std::string errMsg = " Not Found";
+        throw errMsg;
+    }
+
+    if (Position.getNext() == head->next) // Special case--first elem is match
+    {
+        Node *newNode = new Node(value, head);
+        head = newNode;
+        return Iterator(newNode);
+    }
+
+    // Check all other elems for match
+    Node *beforePosition = head;
+    while (beforePosition->next != nullptr)
+    {
+        if (beforePosition->next->data == *Position &&        // If they point to the same data
+            beforePosition->next->next == Position.getNext()) // And the same next value
+        {
+            break;
+        }
+        beforePosition = beforePosition->next;
+    }
+
+    Node *newNode = new Node(value, beforePosition->next);
+    beforePosition->next = newNode;
+    return Iterator(newNode);
+}
+
+template <typename T>
+LinkedList<T>::Iterator LinkedList<T>::insert_after(Iterator Position, const T &value)
+{
+    if (Position == Iterator(nullptr))
+    {
+        std::string errMsg = " Not Found";
+        throw errMsg;
+    }
+
+    Node *newNode = new Node(value, Position.getNext());
+    Position.setNext(newNode);
+    return newNode;
+}
+
+template <typename T>
+LinkedList<T>::Iterator LinkedList<T>::erase(Iterator Position)
+{
+    if (Position == Iterator(nullptr))
+    {
+        std::string errMsg = " Not Found";
+        throw errMsg;
+    }
+
+    // Loop through and find Position (CurrNode) and the node before Position (PrevNode)
+    Node *CurrNode = head;
+    Node *PrevNode = nullptr;
+    while (CurrNode != nullptr)
+    {
+        if ((CurrNode->data == *Position) &&        // If they point to the same data
+            (CurrNode->next == Position.getNext())) // And to the same next value
+        {
+            break; // Escape once a match is found
+        }
+        PrevNode = CurrNode;
+        CurrNode = CurrNode->next;
+    }
+
+    if (PrevNode == nullptr)
+    {
+        head = Position.getNext();
+        Position.deleteNode();
+        return head;
+    }
+    else
+    {
+        PrevNode->next = Position.getNext();
+        Position.deleteNode();
+        return PrevNode->next;
+    }
+}
+
+template <typename T>
+void LinkedList<T>::replace(Iterator First, Iterator Last, const T &old_value, const T &new_value)
+{
+    while (First != Last)
+    {
+        if (*First == old_value)
+        {
+            *First = new_value;
+        }
+        ++First;
+    }
+    return;
+}
 
 template <typename T>
 void LinkedList<T>::pop_front(void)
