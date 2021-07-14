@@ -58,28 +58,7 @@ int main(int argc, char *argv[])
         cerr << "Unable to open " << argv[2] << " for output";
         return 3;
     }
-#if 0 // FIXME delete
-    // Iterator Tests
 
-    LinkedList<string> StrList;
-    StrList.push_front("is");
-    StrList.push_front("name");
-    StrList.push_front("my");
-    StrList.push_front("Hello");
-
-    cout << StrList.toString() << endl;
-    cout << *StrList.begin() << " " << *++StrList.begin() << endl;
-    StrList.insert(StrList.find(StrList.begin(), StrList.end(), "name"), "BOO");
-    StrList.insert_after(StrList.find(StrList.begin(), StrList.end(), "name"), "BAH");
-    cout << StrList << endl;
-    StrList.erase(StrList.begin());
-    StrList.erase(StrList.find(StrList.begin(), StrList.end(), "BOO"));
-    cout << StrList << endl;
-    StrList.replace(StrList.begin(), StrList.end(), "BAH", "probably");
-    cout << StrList << endl;
-
-#endif
-#if 1
     // Instatiate List ----------------------------------------------------------------------------------------------------
     LinkedList<string> StrList;
 
@@ -337,7 +316,6 @@ int main(int argc, char *argv[])
 
     // Memory Cleanup
     StrList.clear();
-#endif
     return 0;
 }
 

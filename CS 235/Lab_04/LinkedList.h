@@ -279,7 +279,6 @@ public:
     bool empty(void) const
     {
         std::cout << "Empty" << std::endl;
-        bool temp = (head == nullptr); //FIXME delete
         return (head == nullptr);
     }
 
@@ -371,7 +370,7 @@ void LinkedList<T>::pop_front(void)
 }
 
 template <typename T>
-void LinkedList<T>::remove(const T &value) // FIXME move out of class definition
+void LinkedList<T>::remove(const T &value)
 {
     std::cout << "Remove" << std::endl;
     Node *CurrNode = head;
