@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
         cerr << "Unable to open " << argv[2] << " for output";
         return 3;
     }
-#if 1
+#if 0 // FIXME delete
     // Iterator Tests
 
     LinkedList<string> StrList;
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     cout << StrList << endl;
 
 #endif
-#if 0
+#if 1
     // Instatiate List ----------------------------------------------------------------------------------------------------
     LinkedList<string> StrList;
 
