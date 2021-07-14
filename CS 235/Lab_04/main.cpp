@@ -175,22 +175,22 @@ int main(int argc, char *argv[])
             cout << "Iterate";
             out << "Iterate";
 
-            LinkedList<string>::Iterator iter = StrList.begin();
+            LinkedList<string>::Iterator Iter = StrList.begin();
 
-            if (iter == StrList.end()) // If list is empty
+            if (Iter == StrList.end()) // If list is empty
             {
                 cout << " Empty!";
                 out << " Empty!";
             }
             else
             {
-                while (iter != StrList.end())
+                while (Iter != StrList.end())
                 {
                     cout << endl
-                         << " [" << *iter << "]";
+                         << " [" << *Iter << "]";
                     out << endl
-                        << " [" << *iter << "]";
-                    ++iter;
+                        << " [" << *Iter << "]";
+                    ++Iter;
                 }
             }
             cout << endl;

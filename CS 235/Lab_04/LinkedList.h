@@ -226,15 +226,15 @@ public:
     }
 
     /** Replace first found old_value(s) with new_value */
-    void replace(Iterator first, Iterator last, const T &old_value, const T &new_value)
+    void replace(Iterator First, Iterator Last, const T &old_value, const T &new_value)
     {
-        while (first != last)
+        while (First != Last)
         {
-            if (*first == old_value)
+            if (*First == old_value)
             {
-                *first = new_value;
+                *First = new_value;
             }
-            ++first;
+            ++First;
         }
         return;
     }
