@@ -11,40 +11,62 @@ class ExpressionManager : public ExpressionManagerInterface
 {
 private:
     std::string expression;
-    std::vector<string> expVector;
+    std::vector<std::string> expVector;
 
     int getPrecedence(const char &myChar);
 
 public:
-    ExpressionManager(std::string expression) : ExpressionManagerInterface(), expression(expression){};
-    ~ExpressionManager();
+    ExpressionManager(std::string expression) : ExpressionManagerInterface(), expression(expression) {}
+    ~ExpressionManager() {}
+
+    virtual int value() { return 1; }
 
     /** Return the infix items from the expression
 		Throw an error if not a valid infix expression as follows:
 		First check to see if the expression is balanced ("Unbalanced"),
 		then throw the appropriate error immediately when an error is found
 		(ie., "Missing Operand", "Illegal Operator", "Missing Operator") */
-    virtual std::string infix(const string &exp)
+    virtual std::string
+    infix()
     {
-        std::istringstream expStream(exp);
+        std::istringstream expStream(expression);
         std::string token;
         while (expStream >> token)
         {
             expVector.push_back(token);
         }
+
+        return this->toString();
     }
 
     /** Return a postfix representation of the infix expression */
-    virtual std::string postfix(const string &exp);
+    virtual std::string postfix();
 
     /** Return a prefix representation of the infix expression */
-    virtual std::string prefix(void)
+    virtual std::string prefix()
     {
+        return "";
     }
 
     /** Return the infix vector'd expression items */
-    virtual std::string toString(void) const
+    virtual std::string toString() const
     {
+        std::ostringstream os;
+        for (size_t i = 0; i < expVector.size(); ++i)
+        {
+            os << " " << expVector[i];
+        };
+        return os.str();
+    }
+
+    /**
+     * @return an ostream with the contents of the infix vector
+     */
+    friend std::ostream &
+    operator<<(std::ostream &os, ExpressionManager &obj)
+    {
+        os << obj.toString();
+        return os;
     }
 };
 
@@ -69,7 +91,7 @@ int ExpressionManager::getPrecedence(const char &myChar)
     }
 }
 
-std::string ExpressionManager::postfix(const string &exp)
+std::string ExpressionManager::postfix()
 {
     /* std::string postfix = "";
     stack<char> operatorStack;

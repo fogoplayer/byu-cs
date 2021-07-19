@@ -65,6 +65,9 @@ int main(int argc, char *argv[])
         cout << line << endl;
     }
 
+    ExpressionManager expManager("1 + 2 +  3");
+    cout << expManager.infix() << endl;
+
     return 0;
 }
 
