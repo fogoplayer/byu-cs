@@ -13,6 +13,7 @@ class ExpressionManager : public ExpressionManagerInterface
 private:
     std::string expression;
     std::vector<string> expVector;
+    std::vector<string> postfixVector;
     int operatorCount;
     int operandCount;
 
@@ -20,7 +21,7 @@ private:
     getPrecedence(const std::string &tokenChar);
     void balanceCheck();
     void otherChecks();
-    void aOperatorB(size_t aIndex, size_t bIndex, std::string operatorString);
+    int aOperatorB(std::string a, std::string b, std::string operatorString);
 
 public:
     ExpressionManager(std::string expression) : ExpressionManagerInterface(), expression(expression)
@@ -178,62 +179,59 @@ void ExpressionManager::otherChecks()
     }
 }
 
-void aOperatorB(size_t aIndex, size_t bIndex, std::string operatorString)
+int ExpressionManager::aOperatorB(std::string a, std::string b, std::string operatorString)
 {
-    if (token.compare("(") == 0 ||
-        token.compare("{") == 0 ||
-        token.compare("[") == 0)
-    {
-        //snip out parenthetical
-        std::ostringstream os;
-        for (i = i + 1; i < expVector.size(); i++)
-        {
-            if (expVector[i][0] - 1 == token[0] || expVector[i][0] - 1 == token[0])
-            {
-                break;
-            }
+    int aInt, bInt;
+    std::istringstream args(a + " " + b);
+    args >> aInt >> bInt;
 
-            os << " " << expVector[i];
-        }
+    if (operatorString == "+")
+    {
+        return aInt + bInt;
+    }
+    if (operatorString == "-")
+    {
+        return aInt - bInt;
+    }
+    if (operatorString == "*")
+    {
+        return aInt * bInt;
+    }
+    if (operatorString == "/")
+    {
+        return aInt / bInt;
+    }
+    if (operatorString == "%")
+    {
+        return aInt % bInt;
     }
 
-    if (expVector[i] == "+")
-    {
-    }
-    if (expVector[i] == "-")
-    {
-    }
-    if (expVector[i] == "*")
-    {
-    }
-    if (expVector[i] == "/")
-    {
-    }
-    if (expVector[i] == "%")
-    {
-    }
+    return 0;
 }
 
-std::string ExpressionManager::value()
+int ExpressionManager::value()
 {
-    int totalVal = 0 for (size_t i = 0; i < expVector.size(); ++i)
+    std::stack<std::string> operandStack;
+    for (size_t i = 0; i < postfixVector.size(); i++)
     {
-        if (expVector[i] == "+")
+        if (string("+-*/%").find(postfixVector[i]) != std::string::npos)
         {
+            std::string operand = postfixVector[i];
+            std::string b = operandStack.top();
+            operandStack.pop();
+            std::string a = operandStack.top();
+            operandStack.pop();
+            operandStack.push(std::to_string(aOperatorB(a, b, postfixVector[i])));
         }
-        if (expVector[i] == "-")
+        else
         {
-        }
-        if (expVector[i] == "*")
-        {
-        }
-        if (expVector[i] == "/")
-        {
-        }
-        if (expVector[i] == "%")
-        {
+            operandStack.push(postfixVector[i]);
         }
     }
+    std::istringstream is(operandStack.top());
+    int finalVal;
+    is >> finalVal;
+    return finalVal;
 }
 
 std::string ExpressionManager::postfix()
@@ -255,6 +253,7 @@ std::string ExpressionManager::postfix()
             while (!operatorStack.empty() &&
                    this->getPrecedence(token) <= getPrecedence(operatorStack.top()))
             {
+                postfixVector.push_back(operatorStack.top());
                 postfix += operatorStack.top();
                 postfix += " ";
                 operatorStack.pop();
@@ -277,6 +276,7 @@ std::string ExpressionManager::postfix()
         {
             while (operatorStack.top()[0] != token[0] - 1 && operatorStack.top()[0] != token[0] - 2)
             {
+                postfixVector.push_back(operatorStack.top());
                 postfix += operatorStack.top();
                 postfix += " ";
                 operatorStack.pop();
@@ -287,6 +287,7 @@ std::string ExpressionManager::postfix()
         // Operands
         else
         {
+            postfixVector.push_back(token);
             postfix += token;
             postfix += " ";
         }
@@ -294,6 +295,7 @@ std::string ExpressionManager::postfix()
 
     while (!operatorStack.empty())
     {
+        postfixVector.push_back(operatorStack.top());
         postfix += operatorStack.top();
         postfix += " ";
         operatorStack.pop();
