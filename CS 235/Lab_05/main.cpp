@@ -59,17 +59,44 @@ int main(int argc, char *argv[])
     }
 
     string line = "";
+    ExpressionManager currentExpression("");
     while (getline(in, line))
     {
-        out << line << endl;
-        cout << line << endl;
+        istringstream is(line);
+        string command;
+        is >> command;
+        out << command;
+        try
+        {
+            if (command == "Expression:")
+            {
+                string expression;
+                getline(is, expression);
+                currentExpression = ExpressionManager(expression);
+                out << expression << endl;
+            }
+            else if (command == "Infix:")
+            {
+                out << currentExpression.infix() << endl;
+            }
+            else if (command == "Postfix:")
+            {
+                out << " " << currentExpression.postfix() << endl;
+            }
+            else if (command == "Prefix:")
+            {
+                out << currentExpression.prefix() << endl;
+            }
+            else if (command == "Value:")
+            {
+                out << " " << currentExpression.value() << endl;
+            }
+        }
+        catch (string &e)
+        {
+            out << e << endl;
+        }
     }
-
-    ExpressionManager expManager("1 + 2 *  3");
-    cout << expManager.infix() << endl;
-    cout << expManager.postfix() << endl;
-
-    return 0;
 }
 
 /*------------------------------------------------ Function Definitions ------------------------------------------------*/

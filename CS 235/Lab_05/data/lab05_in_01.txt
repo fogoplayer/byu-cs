@@ -33,3 +33,7 @@ Infix:
 Postfix:
 Prefix:
 Value:
+
+Expression: 2 * 3 + ( 6 / 4 ) - 9
+Infix:
+Prefix:

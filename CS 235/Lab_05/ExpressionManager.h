@@ -2,6 +2,7 @@
 #define EXPRESSIONMANAGER_H_
 
 #include <vector>
+#include <stack>
 #include <iostream>
 #include <sstream>
 
@@ -12,29 +13,41 @@ class ExpressionManager : public ExpressionManagerInterface
 private:
     std::string expression;
     std::vector<string> expVector;
+    int operatorCount;
+    int operandCount;
 
-    int getPrecedence(const std::string &tokenChar);
+    int
+    getPrecedence(const std::string &tokenChar);
+    void balanceCheck();
+    void otherChecks();
+    void aOperatorB(size_t aIndex, size_t bIndex, std::string operatorString);
 
 public:
-    ExpressionManager(std::string expression) : ExpressionManagerInterface(), expression(expression) {}
+    ExpressionManager(std::string expression) : ExpressionManagerInterface(), expression(expression)
+    {
+    }
     ~ExpressionManager() {}
 
-    virtual int value() { return 1; }
+    virtual int value();
 
     /** Return the infix items from the expression
 		Throw an error if not a valid infix expression as follows:
 		First check to see if the expression is balanced ("Unbalanced"),
 		then throw the appropriate error immediately when an error is found
 		(ie., "Missing Operand", "Illegal Operator", "Missing Operator") */
-    virtual std::string
-    infix()
+    virtual std::string infix()
     {
+        // Push to Vector
         std::istringstream expStream(expression);
         std::string token;
         while (expStream >> token)
         {
             expVector.push_back(token);
         }
+
+        //Error checking
+        // this->balanceCheck();
+        // this->otherChecks();
 
         return this->toString();
     }
@@ -43,10 +56,7 @@ public:
     virtual std::string postfix();
 
     /** Return a prefix representation of the infix expression */
-    virtual std::string prefix()
-    {
-        return "";
-    }
+    virtual std::string prefix();
 
     /** Return the infix vector'd expression items */
     virtual std::string toString() const
@@ -93,6 +103,139 @@ int ExpressionManager::getPrecedence(const std::string &token)
     }
 }
 
+void ExpressionManager::balanceCheck()
+{
+    std::stack<char> grouperStack;
+    for (size_t i = 0; i < expVector.size(); ++i)
+    {
+        std::string token = expVector[i];
+        if (token.compare("(") == 0 ||
+            token.compare("{") == 0 ||
+            token.compare("[") == 0)
+        {
+            grouperStack.push(token[0]); // convert token to char
+        }
+        else if (token.compare(")") == 0 ||
+                 token.compare("}") == 0 ||
+                 token.compare("]") == 0)
+        {
+            if ((token[0] - 1) == grouperStack.top()) // open always has the char code 1 lower than close
+            {
+                grouperStack.pop(); // If they match, pop it
+            }
+            else
+            {
+                throw std::string("Unbalanced");
+            }
+        }
+    }
+    if (grouperStack.size() > 0) // Check if all open operators are accounted for
+    {
+        throw std::string("Unbalanced");
+    }
+}
+
+void ExpressionManager::otherChecks()
+{
+    for (size_t i = 0; i < expVector.size(); ++i)
+    {
+        string token = expVector[i];
+
+        // Missing Operand
+        if (token.compare("+") == 0 ||
+            token.compare("-") == 0 ||
+            token.compare("*") == 0 ||
+            token.compare("/") == 0 ||
+            token.compare("%") == 0)
+        {
+            size_t charBeforeIsAnOperand = string("1234567890(){}[]").find(expVector[i - 1]);
+            size_t charAfterIsAnOperand = string("1234567890(){}[]").find(expVector[i + 1]);
+            if (charBeforeIsAnOperand == string::npos || charAfterIsAnOperand == string::npos)
+            {
+                throw std::string("Missing Operand");
+            }
+        }
+
+        // Illegal Operator
+        if (string("+-*/%(){}[]123457890").find(token[0]) == string::npos)
+        {
+            throw std::string("Illegal Operator");
+        }
+
+        //Missing Operator
+        if (string("1234567890").find(token[0]) != string::npos)
+        {
+            // Check token before unless first token
+            size_t charBeforeIsAnOperand = i == 0 ? 0 : string("+-*/%(){}[]").find(expVector[i - 1]);
+            // Check token after unless last token
+            size_t charAfterIsAnOperand = i == expVector.size() - 1 ? 0 : string("+-*/%(){}[]").find(expVector[i + 1]);
+
+            if (charBeforeIsAnOperand == string::npos || charAfterIsAnOperand == string::npos)
+            {
+                throw std::string("Missing Operand");
+            }
+        }
+    }
+}
+
+void aOperatorB(size_t aIndex, size_t bIndex, std::string operatorString)
+{
+    if (token.compare("(") == 0 ||
+        token.compare("{") == 0 ||
+        token.compare("[") == 0)
+    {
+        //snip out parenthetical
+        std::ostringstream os;
+        for (i = i + 1; i < expVector.size(); i++)
+        {
+            if (expVector[i][0] - 1 == token[0] || expVector[i][0] - 1 == token[0])
+            {
+                break;
+            }
+
+            os << " " << expVector[i];
+        }
+    }
+
+    if (expVector[i] == "+")
+    {
+    }
+    if (expVector[i] == "-")
+    {
+    }
+    if (expVector[i] == "*")
+    {
+    }
+    if (expVector[i] == "/")
+    {
+    }
+    if (expVector[i] == "%")
+    {
+    }
+}
+
+std::string ExpressionManager::value()
+{
+    int totalVal = 0 for (size_t i = 0; i < expVector.size(); ++i)
+    {
+        if (expVector[i] == "+")
+        {
+        }
+        if (expVector[i] == "-")
+        {
+        }
+        if (expVector[i] == "*")
+        {
+        }
+        if (expVector[i] == "/")
+        {
+        }
+        if (expVector[i] == "%")
+        {
+        }
+    }
+}
+
 std::string ExpressionManager::postfix()
 {
     std::string postfix = "";
@@ -132,7 +275,7 @@ std::string ExpressionManager::postfix()
                  token.compare("}") == 0 ||
                  token.compare("]") == 0)
         {
-            while (!operatorStack.top().compare("("))
+            while (operatorStack.top()[0] != token[0] - 1 && operatorStack.top()[0] != token[0] - 2)
             {
                 postfix += operatorStack.top();
                 postfix += " ";
@@ -159,4 +302,53 @@ std::string ExpressionManager::postfix()
     return postfix;
 }
 
+std::string ExpressionManager::prefix()
+{
+    std::string prefix = "";
+    std::stack<std::string> operatorStack;
+    for (size_t i = 0; i < expVector.size(); ++i)
+    {
+        string token = expVector[i];
+
+        // Arithmetic operators
+        if (token.compare("+") == 0 ||
+            token.compare("-") == 0 ||
+            token.compare("*") == 0 ||
+            token.compare("/") == 0 ||
+            token.compare("%") == 0)
+        {
+            prefix = " " + token + prefix;
+        }
+
+        // Operands
+        if (string("1234567890").find(token[0]) != string::npos)
+        {
+            prefix += " " + token;
+        }
+
+        // Open braces
+        if (token.compare("(") == 0 ||
+            token.compare("{") == 0 ||
+            token.compare("[") == 0)
+        {
+            //snip out parenthetical
+            std::ostringstream os;
+            for (i = i + 1; i < expVector.size(); i++)
+            {
+                if (expVector[i][0] - 1 == token[0] || expVector[i][0] - 1 == token[0])
+                {
+                    break;
+                }
+
+                os << " " << expVector[i];
+            }
+
+            ExpressionManager tempExpManager(os.str());
+            tempExpManager.infix();
+            prefix += tempExpManager.prefix();
+        }
+    }
+
+    return prefix;
+}
 #endif
