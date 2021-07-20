@@ -11,9 +11,9 @@ class ExpressionManager : public ExpressionManagerInterface
 {
 private:
     std::string expression;
-    std::vector<std::string> expVector;
+    std::vector<string> expVector;
 
-    int getPrecedence(const char &myChar);
+    int getPrecedence(const std::string &tokenChar);
 
 public:
     ExpressionManager(std::string expression) : ExpressionManagerInterface(), expression(expression) {}
@@ -70,9 +70,11 @@ public:
     }
 };
 
-int ExpressionManager::getPrecedence(const char &myChar)
+int ExpressionManager::getPrecedence(const std::string &token)
 {
-    switch (myChar)
+    char tokenChar = token[0]; // func is only called when token is 1 character
+
+    switch (tokenChar)
     {
     case '+':
     case '-':
@@ -93,62 +95,57 @@ int ExpressionManager::getPrecedence(const char &myChar)
 
 std::string ExpressionManager::postfix()
 {
-    /* std::string postfix = "";
-    stack<char> operatorStack;
+    std::string postfix = "";
+    std::stack<std::string> operatorStack;
 
-    std::string::const_iterator iter = exp.cbegin();
-    while (iter != exp.cend())
+    for (size_t i = 0; i < expVector.size(); ++i)
     {
-        char myChar = *iter++;
-        std::cout << " " << myChar;
+        string token = expVector[i];
 
-        switch (myChar)
-        {
-        case '+':
-        case '-':
-        case '*':
-        case '/':
-        case '%':
+        // Arithmetic operators
+        if (token.compare("+") == 0 ||
+            token.compare("-") == 0 ||
+            token.compare("*") == 0 ||
+            token.compare("/") == 0 ||
+            token.compare("%") == 0)
         {
             while (!operatorStack.empty() &&
-                   this->getPrecedence(myChar) <= getPrecedence(operatorStack.top()))
+                   this->getPrecedence(token) <= getPrecedence(operatorStack.top()))
             {
                 postfix += operatorStack.top();
                 postfix += " ";
                 operatorStack.pop();
             }
-            operatorStack.push(myChar);
-            break;
+            operatorStack.push(token);
         }
 
-        case '(':
-        case '{':
-        case '[':
+        // Open braces
+        else if (token.compare("(") == 0 ||
+                 token.compare("{") == 0 ||
+                 token.compare("[") == 0)
         {
-            operatorStack.push(myChar);
-            break;
+            operatorStack.push(token);
         }
 
-        case ')':
-        case '}':
-        case ']':
+        // Close braces
+        else if (token.compare(")") == 0 ||
+                 token.compare("}") == 0 ||
+                 token.compare("]") == 0)
         {
-            while (operatorStack.top() != '(')
+            while (!operatorStack.top().compare("("))
             {
                 postfix += operatorStack.top();
                 postfix += " ";
                 operatorStack.pop();
             }
             operatorStack.pop(); // Remove open paren
-            break;
         }
 
-        case ' ':
-            break;
-        default: // operands
-            postfix += myChar;
+        // Operands
+        else
+        {
+            postfix += token;
             postfix += " ";
-            break;
         }
     }
 
@@ -159,8 +156,7 @@ std::string ExpressionManager::postfix()
         operatorStack.pop();
     }
 
-    return postfix; */
-    return "";
+    return postfix;
 }
 
 #endif
