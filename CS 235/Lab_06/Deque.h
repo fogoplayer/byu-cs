@@ -41,7 +41,7 @@ public:
             reallocContainer(1);
         }
 
-        int head = head == 0 ? containerSize - 1 : (head - 1) % containerSize;
+        head = head == 0 ? containerSize - 1 : (head - 1) % containerSize;
         container[head] = node;
 
         return;
@@ -118,7 +118,8 @@ public:
      */
     virtual T &at(size_t index)
     {
-        std::cout << "at" << std::endl;
+        size_t realIndex = (head + index) % containerSize;
+        return container[realIndex];
     }
 
     /**
@@ -137,10 +138,12 @@ private:
         T *newContainer = new T[containerSize * 2];
         for (size_t i = 0; i < containerSize; i++)
         {
-            newContainer[i + offset] = container[i];
+            newContainer[i + offset] = this->at(i);
         }
         delete container;
         container = newContainer;
+        head = offset;
+        tail = containerSize - 1 + offset;
         containerSize *= 2;
     }
 

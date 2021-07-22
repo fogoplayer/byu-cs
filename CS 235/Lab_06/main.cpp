@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
     Deque<int> myDeque2 = Deque<int>(testArray2, 5);
 
     myDeque1.push_front(-5);
+    myDeque.push_front(-5);
+    cout << myDeque.at(0) << endl;
     return 0;
 }
 
