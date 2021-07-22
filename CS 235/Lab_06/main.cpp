@@ -53,7 +53,12 @@ int main(int argc, char *argv[])
     }
 
     // -------------------------------------------------------------------------------------------------------------
-
+    int testArray[] = {1, 2, 3, 4};
+    Deque<int> myDeque(testArray, 4);
+    int testArray1[] = {1, 2, 3};
+    Deque<int> myDeque1(testArray1, 3);
+    int testArray2[] = {1, 2, 3, 4, 5};
+    Deque<int> myDeque2 = Deque<int>(testArray2, 5);
     return 0;
 }
 
