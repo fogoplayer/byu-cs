@@ -70,7 +70,9 @@ public:
      */
     virtual void pop_front(void)
     {
-        std::cout << "pop_front" << std::endl;
+        this->at(head) = 0;
+        head = (head + 1) % containerSize;
+        return;
     }
 
     /**
@@ -78,15 +80,17 @@ public:
      */
     virtual void pop_back(void)
     {
-        std::cout << "pop_back" << std::endl;
+        this->at(tail) = 0;
+        tail = (tail - 1) % containerSize;
+        return;
     }
 
     /**
      * 
      */
-    virtual T &front(void)
+    virtual T &front(void) const
     {
-        std::cout << "front" << std::endl;
+        return this->at(head);
     }
 
     /**
@@ -94,7 +98,7 @@ public:
      */
     virtual T &back(void)
     {
-        std::cout << "back" << std::endl;
+        return this->at(tail);
     }
 
     /**
@@ -131,6 +135,7 @@ public:
     }
 
     //TODO Friend insertion member
+    //TODO braces operator?
 
 private:
     void reallocContainer(int offset = 0)

@@ -60,9 +60,12 @@ int main(int argc, char *argv[])
     int testArray2[] = {1, 2, 3, 4, 5};
     Deque<int> myDeque2 = Deque<int>(testArray2, 5);
 
+    myDeque.pop_front();
     myDeque1.push_front(-5);
     myDeque.push_front(-5);
     cout << myDeque.at(0) << endl;
+    myDeque.pop_back();
+
     return 0;
 }
 
