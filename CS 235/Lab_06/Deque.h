@@ -1,8 +1,12 @@
 #ifndef DEQUE_H_
 #define DEQUE_H_
 
+#include <iostream>
+
+#include "DequeInterface.h"
+
 template <typename T>
-class Deque
+class Deque : public DequeInterface
 {
 public:
     /**
@@ -27,10 +31,18 @@ public:
     ~Deque() {}
 
     /**
+     * 
+     */
+    virtual void push_front(const T &value)
+    {
+        std::cout << "push_front" << std::endl;
+    }
+
+    /**
      * Push an element to the back of the deque
      * @param node the node being sent to the back of the deque
      */
-    void push_back(T node)
+    virtual void push_back(T node)
     {
         if (tail == head - 1 ||            // array has wrapped around and is now full
             head == 0 && tail == size - 1) // array is full from beginning to end
@@ -40,6 +52,72 @@ public:
         container[tail + 1] = node;
         ++tail;
     }
+
+    /**
+     * 
+     */
+    virtual void pop_front(void)
+    {
+        std::cout << "pop_front" << std::endl;
+    }
+
+    /**
+     * 
+     */
+    virtual void pop_back(void)
+    {
+        std::cout << "pop_back" << std::endl;
+    }
+
+    /**
+     * 
+     */
+    virtual T &front(void)
+    {
+        std::cout << "front" << std::endl;
+    }
+
+    /**
+     * 
+     */
+    virtual T &back(void)
+    {
+        std::cout << "back" << std::endl;
+    }
+
+    /**
+     * 
+     */
+    virtual size_t size(void) const
+    {
+        std::cout << "size" << std::endl;
+    }
+
+    /**
+     * 
+     */
+    virtual bool empty(void) const
+    {
+        std::cout << "empty" << std::endl;
+    }
+
+    /**
+     * 
+     */
+    virtual T &at(size_t index)
+    {
+        std::cout << "at" << std::endl;
+    }
+
+    /**
+     * 
+     */
+    virtual std::string toString(void) const
+    {
+        std::cout << "toString" << std::endl;
+    }
+
+    //TODO Friend insertion member
 
 private:
     void reallocContainer(int offset = 0)
