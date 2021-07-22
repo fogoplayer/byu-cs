@@ -59,6 +59,8 @@ int main(int argc, char *argv[])
     Deque<int> myDeque1(testArray1, 3);
     int testArray2[] = {1, 2, 3, 4, 5};
     Deque<int> myDeque2 = Deque<int>(testArray2, 5);
+
+    myDeque1.push_front(-5);
     return 0;
 }
 

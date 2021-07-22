@@ -6,7 +6,7 @@
 #include "DequeInterface.h"
 
 template <typename T>
-class Deque : public DequeInterface
+class Deque : public DequeInterface<T>
 {
 public:
     /**
@@ -15,7 +15,7 @@ public:
      * @param seedDataSize the size of the seed data (defaults to 0)
      */
     Deque(T seedData[] = {}, size_t seedDataSize = 0) : container(new T[4]),
-                                                        size(4),
+                                                        containerSize(4),
                                                         head(0),
                                                         tail(0)
     {
@@ -33,24 +33,36 @@ public:
     /**
      * 
      */
-    virtual void push_front(const T &value)
+    virtual void push_front(const T &node)
     {
-        std::cout << "push_front" << std::endl;
+        if (tail == head - 1 ||                     // array has wrapped around and is now full
+            head == 0 && tail == containerSize - 1) // array is full from beginning to end
+        {
+            reallocContainer(1);
+        }
+
+        int head = head == 0 ? containerSize - 1 : (head - 1) % containerSize;
+        container[head] = node;
+
+        return;
     }
 
     /**
      * Push an element to the back of the deque
      * @param node the node being sent to the back of the deque
      */
-    virtual void push_back(T node)
+    virtual void push_back(const T &node)
     {
-        if (tail == head - 1 ||            // array has wrapped around and is now full
-            head == 0 && tail == size - 1) // array is full from beginning to end
+        if (tail == head - 1 ||                     // array has wrapped around and is now full
+            head == 0 && tail == containerSize - 1) // array is full from beginning to end
         {
             reallocContainer();
         }
-        container[tail + 1] = node;
-        ++tail;
+
+        tail = (tail + 1) % containerSize;
+        container[tail] = node;
+
+        return;
     }
 
     /**
@@ -122,17 +134,17 @@ public:
 private:
     void reallocContainer(int offset = 0)
     {
-        T *newContainer = new T[size * 2];
-        for (size_t i = 0; i < size; i++)
+        T *newContainer = new T[containerSize * 2];
+        for (size_t i = 0; i < containerSize; i++)
         {
             newContainer[i + offset] = container[i];
         }
         delete container;
         container = newContainer;
-        size *= 2;
+        containerSize *= 2;
     }
 
-    size_t size;
+    size_t containerSize;
     size_t head;
     size_t tail;
     T *container;
