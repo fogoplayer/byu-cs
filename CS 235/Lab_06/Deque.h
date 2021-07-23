@@ -20,13 +20,17 @@ public:
                                                         head(0),
                                                         tail(0) // FIXME Update so tail is outside of array
     {
-        //First element
-        container[0] = seedData[0];
-
-        //Other elements;
-        for (size_t i = 1; i < seedDataSize; ++i)
+        if (seedDataSize > 0)
         {
-            push_back(seedData[i]);
+            //First element
+            container[0] = seedData[0];
+            ++tail;
+
+            //Other elements;
+            for (size_t i = 1; i < seedDataSize; ++i)
+            {
+                push_back(seedData[i]);
+            }
         }
     }
     ~Deque()
@@ -40,8 +44,8 @@ public:
      */
     virtual void push_front(const T &node)
     {
-        if (tail < (size_t)-1 && tail == head - 1 || // array has wrapped around and is now full
-            head == 0 && tail == containerSize - 1)  // array is full from beginning to end
+        if (tail <= (size_t)-1 && tail == head || // array has wrapped around and is now full
+            head == 0 && tail == containerSize)   // array is full from beginning to end
         {
             reallocContainer(1);
         }
@@ -58,14 +62,14 @@ public:
      */
     virtual void push_back(const T &node)
     {
-        if (tail < (size_t)-1 && tail == head - 1 || // array has wrapped around and is now full
-            head == 0 && tail == containerSize - 1)  // array is full from beginning to end
+        if (tail < (size_t)-1 && tail == head || // array has wrapped around and is now full
+            head == 0 && tail == containerSize)  // array is full from beginning to end
         {
             reallocContainer();
         }
 
-        tail = (tail + 1) % containerSize;
         container[tail] = node;
+        tail = (tail + 1) % containerSize;
 
         return;
     }
@@ -85,8 +89,8 @@ public:
      */
     virtual void pop_back(void)
     {
-        this->at(tail) = 0;
         tail = (tail - 1) % containerSize;
+        this->at(tail) = 0;
         return;
     }
 
@@ -113,7 +117,7 @@ public:
      */
     virtual size_t size(void) const
     {
-        return tail > head ? tail - head : (tail + 1) + (containerSize - head); // # items in front of tail + # items after head
+        return tail > head ? tail - head : (tail) + (containerSize - head); // # items in front of tail + # items after head
     }
 
     /**
@@ -122,7 +126,7 @@ public:
      */
     virtual bool empty(void) const
     {
-        return head == tail && container[head] == 0;
+        return head == tail;
     }
 
     /**
@@ -174,7 +178,7 @@ private:
         delete container;
         container = newContainer;
         head = offset;
-        tail = containerSize - 1 + offset;
+        tail = containerSize + offset;
         containerSize *= 2;
     }
 
