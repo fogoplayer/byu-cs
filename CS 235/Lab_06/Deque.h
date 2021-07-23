@@ -2,6 +2,7 @@
 #define DEQUE_H_
 
 #include <iostream>
+#include <sstream>
 
 #include "DequeInterface.h"
 
@@ -28,7 +29,10 @@ public:
             push_back(seedData[i]);
         }
     }
-    ~Deque() {}
+    ~Deque()
+    {
+        delete container;
+    }
 
     /**
      * 
@@ -131,14 +135,28 @@ public:
      */
     virtual std::string toString(void) const
     {
-        std::cout << "toString" << std::endl;
+        std::ostringstream os;
+        for (size_t i = 0; i < size(); i++)
+        {
+            size_t realIndex = (head + i) % containerSize;
+            os << container[realIndex];
+        }
+        return os.str();
     }
 
-    //TODO Friend insertion member
+    /**
+     * @return an ostream with the contents of the deque
+     */
+    friend std::ostream &operator<<(std::ostream &os, Deque &deque)
+    {
+        os << deque.toString();
+        return os;
+    }
     //TODO braces operator?
 
 private:
-    void reallocContainer(int offset = 0)
+    void
+    reallocContainer(int offset = 0)
     {
         T *newContainer = new T[containerSize * 2];
         for (size_t i = 0; i < containerSize; i++)
