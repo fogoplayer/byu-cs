@@ -35,7 +35,8 @@ public:
     }
 
     /**
-     * 
+     * Add an element to the front of the deque
+     * @param node the node being sent to the front of the deque
      */
     virtual void push_front(const T &node)
     {
@@ -70,7 +71,7 @@ public:
     }
 
     /**
-     * 
+     * Remove the front node of the deque
      */
     virtual void pop_front(void)
     {
@@ -80,7 +81,7 @@ public:
     }
 
     /**
-     * 
+     * Remove the back node of the deque
      */
     virtual void pop_back(void)
     {
@@ -90,7 +91,8 @@ public:
     }
 
     /**
-     * 
+     * Retrieve the first node in the deque
+     * @return a node
      */
     virtual T &front(void)
     {
@@ -98,7 +100,8 @@ public:
     }
 
     /**
-     * 
+     * Retrieve the last node in the deque
+     * @return a node
      */
     virtual T &back(void)
     {
@@ -114,7 +117,8 @@ public:
     }
 
     /**
-     * 
+     * Determine if the deque is empty
+     * @return true if the deque is empty and false if it isn't
      */
     virtual bool empty(void) const
     {
@@ -122,7 +126,8 @@ public:
     }
 
     /**
-     * 
+     * Access the element at a certain index in the deque
+     * @return a node
      */
     virtual T &at(size_t index)
     {
@@ -131,7 +136,7 @@ public:
     }
 
     /**
-     * 
+     * Return a string with the contents of the deque
      */
     virtual std::string toString(void) const
     {
@@ -155,8 +160,11 @@ public:
     //TODO braces operator?
 
 private:
-    void
-    reallocContainer(int offset = 0)
+    /**
+     * Reallocate the container
+     * @param offset how far into the container array to start the array
+     */
+    void reallocContainer(int offset = 0)
     {
         T *newContainer = new T[containerSize * 2];
         for (size_t i = 0; i < containerSize; i++)
