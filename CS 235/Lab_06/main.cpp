@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
     Deque<int> myDeque1(testArray1, 3);
     int testArray2[] = {1, 2, 3, 4, 5};
     Deque<int> myDeque2 = Deque<int>(testArray2, 5);
+    Deque<int> emptyDeque;
 
     myDeque.pop_front();
     myDeque1.push_front(-5);
@@ -72,6 +73,16 @@ int main(int argc, char *argv[])
     cout << "myDeque" << myDeque << endl;
     cout << "myDeque1" << myDeque1 << endl;
     cout << "myDeque2" << myDeque2 << endl;
+
+    cout << emptyDeque.empty() << endl;
+    emptyDeque.push_back(0);
+    cout << emptyDeque.empty() << endl;
+    emptyDeque.push_back(0);
+    cout << emptyDeque.empty() << endl;
+    emptyDeque.pop_back();
+    emptyDeque.pop_back();
+    emptyDeque.push_back(1);
+    cout << emptyDeque.empty() << endl;
 
     return 0;
 }

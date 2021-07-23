@@ -18,7 +18,7 @@ public:
     Deque(T seedData[] = {}, size_t seedDataSize = 0) : container(new T[4]),
                                                         containerSize(4),
                                                         head(0),
-                                                        tail(0)
+                                                        tail(0) // FIXME Update so tail is outside of array
     {
         //First element
         container[0] = seedData[0];
@@ -40,8 +40,8 @@ public:
      */
     virtual void push_front(const T &node)
     {
-        if (tail == head - 1 ||                     // array has wrapped around and is now full
-            head == 0 && tail == containerSize - 1) // array is full from beginning to end
+        if (tail < (size_t)-1 && tail == head - 1 || // array has wrapped around and is now full
+            head == 0 && tail == containerSize - 1)  // array is full from beginning to end
         {
             reallocContainer(1);
         }
@@ -58,8 +58,8 @@ public:
      */
     virtual void push_back(const T &node)
     {
-        if (tail == head - 1 ||                     // array has wrapped around and is now full
-            head == 0 && tail == containerSize - 1) // array is full from beginning to end
+        if (tail < (size_t)-1 && tail == head - 1 || // array has wrapped around and is now full
+            head == 0 && tail == containerSize - 1)  // array is full from beginning to end
         {
             reallocContainer();
         }
@@ -122,7 +122,7 @@ public:
      */
     virtual bool empty(void) const
     {
-        std::cout << "empty" << std::endl;
+        return head == tail && container[head] == 0;
     }
 
     /**
