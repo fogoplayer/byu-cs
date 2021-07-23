@@ -154,6 +154,7 @@ public:
     }
 
     /**
+     * Overload the extraction operator
      * @return an ostream with the contents of the deque
      */
     friend std::ostream &operator<<(std::ostream &os, Deque &deque)
