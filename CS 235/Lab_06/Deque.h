@@ -88,7 +88,7 @@ public:
     /**
      * 
      */
-    virtual T &front(void) const
+    virtual T &front(void)
     {
         return this->at(head);
     }
@@ -106,7 +106,7 @@ public:
      */
     virtual size_t size(void) const
     {
-        std::cout << "size" << std::endl;
+        return tail > head ? tail - head : (tail + 1) + (containerSize - head); // # items in front of tail + # items after head
     }
 
     /**

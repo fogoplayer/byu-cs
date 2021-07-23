@@ -65,6 +65,10 @@ int main(int argc, char *argv[])
     myDeque.push_front(-5);
     cout << myDeque.at(0) << endl;
     myDeque.pop_back();
+    myDeque.push_front(-5);
+    myDeque.push_front(-6);
+    myDeque.push_front(-7);
+    cout << myDeque.size() << endl;
 
     return 0;
 }
