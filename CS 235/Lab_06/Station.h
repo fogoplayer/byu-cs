@@ -76,7 +76,7 @@ public:
     {
         try
         {
-            vector.push(*turntable);
+            vector.push_back(*turntable);
             turntable = nullptr;
             return "OK";
         }
@@ -113,7 +113,7 @@ public:
         try
         {
             *turntable = stack.top();
-            stack.pop;
+            stack.pop();
             return "OK";
         }
         catch (std::string e)
@@ -130,9 +130,9 @@ public:
     {
         try
         {
-            return *turntable.toString();
+            return turntable->toString();
         }
-        catch (string::e)
+        catch (std::string e)
         {
             return e;
         }
@@ -148,7 +148,7 @@ public:
         {
             return stack.top().toString();
         }
-        catch (string::e)
+        catch (std::string e)
         {
             return e;
         }
@@ -164,7 +164,7 @@ public:
         {
             return queue.front().toString();
         }
-        catch (string::e)
+        catch (std::string e)
         {
             return e;
         }
@@ -172,25 +172,25 @@ public:
 
     /** 
      * Get the size of the stack
-     * @return the size as a string
+     * @return the size as a std::string
      */
-    string sizeStack()
+    std::string sizeStack()
     {
         return stack.size();
     }
     /** 
      * Get the size of the queue
-     * @return the size as a string
+     * @return the size as a std::string
      */
-    string sizeQueue()
+    std::string sizeQueue()
     {
         return queue.size();
     }
     /** 
      * Get the size of the train
-     * @return the size as a string
+     * @return the size as a std::string
      */
-    string sizeTrain()
+    std::string sizeTrain()
     {
         return vector.size();
     }

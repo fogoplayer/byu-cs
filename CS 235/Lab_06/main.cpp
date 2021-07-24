@@ -3,11 +3,11 @@
 **/
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 
-#include "Stack.h"
-#include "Vector.h"
-#include "Queue.h"
+#include "Station.h"
+#include "Car.h"
 
 using namespace std;
 
@@ -55,48 +55,79 @@ int main(int argc, char *argv[])
     }
 
     // -------------------------------------------------------------------------------------------------------------
-    int testArray[] = {1, 2, 3, 4};
-    // Deque<int> myDeque(testArray, 4);
-    // int testArray1[] = {1, 2, 3};
-    // Deque<int> myDeque1(testArray1, 3);
-    // int testArray2[] = {1, 2, 3, 4, 5};
-    // Deque<int> myDeque2 = Deque<int>(testArray2, 5);
-    // Deque<int> emptyDeque;
+    Station<Car> station;
 
-    // myDeque.pop_front();
-    // myDeque1.push_front(-5);
-    // myDeque.push_front(-5);
-    // cout << "myDeque " << myDeque << endl;
-    // cout << "myDeque1 " << myDeque1 << endl;
-    // myDeque.pop_back();
-    // myDeque.push_front(-5);
-    // myDeque.push_front(-6);
-    // myDeque.push_front(-7);
-    // cout << myDeque.size() << endl;
-    // cout << "myDeque " << myDeque << endl;
-    // cout << "myDeque1 " << myDeque1 << endl;
-    // cout << "myDeque2 " << myDeque2 << endl;
+    string currLine;
+    while (getline(in, currLine))
+    {
+        size_t delimiterIndex = currLine.find(":");
+        string command = currLine.substr(0, delimiterIndex);
+        string argument = currLine.substr(delimiterIndex + 1);
+        out << currLine;
 
-    // cout << emptyDeque.empty() << endl;
-    // emptyDeque.push_back(0);
-    // cout << emptyDeque.empty() << endl;
-    // emptyDeque.push_back(0);
-    // cout << emptyDeque.empty() << endl;
-    // emptyDeque.pop_back();
-    // emptyDeque.pop_back();
-    // emptyDeque.push_back(1);
-    // cout << emptyDeque.empty() << endl;
+        if (command == "Add")
+        {
+            istringstream is(argument);
+            string target;
+            unsigned int value;
+            is >> target >> value;
 
-    Stack<int> myStack;
-    cout << myStack << endl;
-    myStack.push(1);
-    myStack.push(2);
-    myStack.push(3);
-    myStack.push(4);
-    cout << myStack << endl;
-    cout << myStack.size() << endl;
-    myStack.pop();
-    cout << myStack << endl;
+            if (target == "station")
+            {
+                out << " " << station.addCar(Car(value)) << endl;
+            }
+            else if (target == "queue")
+            {
+                out << " " << station.addQueue() << endl;
+            }
+            else if (target == "stack")
+            {
+                out << " " << station.addStack() << endl;
+            }
+        }
+
+        if (command == "Remove")
+        {
+            istringstream is(argument);
+            string target;
+            unsigned int value;
+            is >> target >> value;
+
+            if (target == "station")
+            {
+                out << " " << station.removeCar() << endl;
+            }
+            else if (target == "queue")
+            {
+                out << " " << station.removeQueue() << endl;
+            }
+            else if (target == "stack")
+            {
+                out << " " << station.removeStack() << endl;
+            }
+        }
+
+        if (command == "Top")
+        {
+            istringstream is(argument);
+            string target;
+            unsigned int value;
+            is >> target >> value;
+
+            if (target == "station")
+            {
+                out << " " << station.topCar() << endl;
+            }
+            else if (target == "queue")
+            {
+                out << " " << station.topQueue() << endl;
+            }
+            else if (target == "stack")
+            {
+                out << " " << station.topStack() << endl;
+            }
+        }
+    }
 
     return 0;
 }

@@ -35,7 +35,7 @@ public:
     }
     ~Deque()
     {
-        delete container;
+        delete[] container;
     }
 
     /**
@@ -176,7 +176,7 @@ private:
         {
             newContainer[i + offset] = this->at(i);
         }
-        delete container;
+        delete[] container;
         container = newContainer;
         head = offset;
         tail = containerSize + offset;
