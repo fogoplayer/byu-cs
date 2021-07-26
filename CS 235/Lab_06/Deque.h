@@ -18,7 +18,7 @@ public:
     Deque(T seedData[] = {}, size_t seedDataSize = 0) : container(new T[4]),
                                                         containerSize(4),
                                                         head(0),
-                                                        tail(0) // FIXME Update so tail is outside of array
+                                                        tail(0)
     {
         if (seedDataSize > 0)
         {
@@ -42,57 +42,23 @@ public:
      * Add an element to the front of the deque
      * @param node the node being sent to the front of the deque
      */
-    virtual void push_front(const T &node)
-    {
-        if (tail <= (size_t)-1 && tail == head || // array has wrapped around and is now full
-            head == 0 && tail == containerSize)   // array is full from beginning to end
-        {
-            reallocContainer(1);
-        }
-
-        head = head == 0 ? containerSize - 1 : (head - 1) % containerSize;
-        container[head] = node;
-
-        return;
-    }
+    virtual void push_front(const T &node);
 
     /**
      * Push an element to the back of the deque
      * @param node the node being sent to the back of the deque
      */
-    virtual void push_back(const T &node)
-    {
-        if (tail < (size_t)-1 && tail == head || // array has wrapped around and is now full
-            head == 0 && tail == containerSize)  // array is full from beginning to end
-        {
-            reallocContainer();
-        }
-
-        container[tail] = node;
-        tail = (tail + 1) % containerSize;
-
-        return;
-    }
+    virtual void push_back(const T &node);
 
     /**
      * Remove the front node of the deque
      */
-    virtual void pop_front(void)
-    {
-        this->at(head) = 0;
-        head = (head + 1) % containerSize;
-        return;
-    }
+    virtual void pop_front(void);
 
     /**
      * Remove the back node of the deque
      */
-    virtual void pop_back(void)
-    {
-        tail = (tail - 1) % containerSize;
-        this->at(tail) = 0;
-        return;
-    }
+    virtual void pop_back(void);
 
     /**
      * Retrieve the first node in the deque
@@ -100,7 +66,7 @@ public:
      */
     virtual T &front(void)
     {
-        return this->at(head);
+        return container[head];
     }
 
     /**
@@ -109,7 +75,7 @@ public:
      */
     virtual T &back(void)
     {
-        return this->at(tail);
+        return container[tail - 1];
     }
 
     /**
@@ -117,7 +83,7 @@ public:
      */
     virtual size_t size(void) const
     {
-        return tail > head ? tail - head : (tail) + (containerSize - head); // # items in front of tail + # items after head
+        return tail >= head ? tail - head : (tail) + (containerSize - head); // # items in front of tail + # items after head
     }
 
     /**
@@ -128,6 +94,13 @@ public:
     {
         return head == tail;
     }
+
+    /**
+     * Find the element in the array
+     * @param node the element to look for
+     * @return a string of the index, or "false"
+     */
+    std::string find(T &node);
 
     /**
      * Access the element at a certain index in the deque
@@ -148,7 +121,7 @@ public:
         for (size_t i = 0; i < size(); i++)
         {
             size_t realIndex = (head + i) % containerSize;
-            os << container[realIndex];
+            os << " " << container[realIndex];
         }
         return os.str();
     }
@@ -162,31 +135,106 @@ public:
         os << deque.toString();
         return os;
     }
-    //TODO braces operator?
 
 private:
     /**
      * Reallocate the container
      * @param offset how far into the container array to start the array
      */
-    void reallocContainer(int offset = 0)
-    {
-        T *newContainer = new T[containerSize * 2];
-        for (size_t i = 0; i < containerSize; i++)
-        {
-            newContainer[i + offset] = this->at(i);
-        }
-        delete[] container;
-        container = newContainer;
-        head = offset;
-        tail = containerSize + offset;
-        containerSize *= 2;
-    }
+    void reallocContainer(int offset = 0);
 
     size_t containerSize;
     size_t head;
     size_t tail;
-    T *container;
+    T *container; // Dynamic circular array
 };
+
+template <typename T>
+void Deque<T>::push_front(const T &node)
+{
+    if (tail <= (size_t)-1 && tail == head - 1 || // array has wrapped around and is now full
+        head == 0 && tail == containerSize - 1)   // array is full from beginning to end
+    {
+        reallocContainer(1);
+    }
+
+    head = head == 0 ? containerSize - 1 : (head - 1) % containerSize;
+    container[head] = node;
+
+    return;
+}
+
+template <typename T>
+void Deque<T>::push_back(const T &node)
+{
+    if (tail < (size_t)-1 && tail == head - 1 || // array has wrapped around and is now full
+        head == 0 && tail == containerSize - 1)  // array is full from beginning to end
+    {
+        reallocContainer();
+    }
+
+    container[tail] = node;
+    tail = (tail + 1) % containerSize;
+
+    return;
+}
+
+template <typename T>
+void Deque<T>::pop_front(void)
+{
+    if (empty())
+    {
+        std::string errMsg = "empty!";
+        throw errMsg;
+    }
+    container[head] = 0;
+    head = (head + 1) % containerSize;
+    return;
+}
+
+template <typename T>
+void Deque<T>::pop_back(void)
+{
+    if (empty())
+    {
+        std::string errMsg = "empty!";
+        throw errMsg;
+    }
+    tail = (tail - 1) % containerSize;
+    container[tail] = 0;
+    return;
+}
+
+template <typename T>
+std::string Deque<T>::find(T &node)
+{
+    for (size_t i = 0; i < size(); i++)
+    {
+        if (node == at(i))
+        {
+            std::ostringstream os;
+            os << i;
+            return os.str();
+        }
+    }
+
+    std::string returnVal = "false";
+    return returnVal;
+}
+
+template <typename T>
+void Deque<T>::reallocContainer(int offset)
+{
+    T *newContainer = new T[containerSize * 2];
+    for (size_t i = 0; i < containerSize; i++)
+    {
+        newContainer[i + offset] = this->at(i);
+    }
+    delete[] container;
+    container = newContainer;
+    head = offset;
+    tail = containerSize - 1 + offset;
+    containerSize *= 2;
+}
 
 #endif

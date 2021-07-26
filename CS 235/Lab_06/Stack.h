@@ -28,7 +28,7 @@ public:
      */
     T &top()
     {
-        return stackDeque.front();
+        return stackDeque.back();
     }
 
     /**
@@ -36,7 +36,7 @@ public:
      */
     void pop()
     {
-        stackDeque.pop_front();
+        stackDeque.pop_back();
     }
 
     /**
@@ -45,7 +45,17 @@ public:
      */
     void push(const T &item)
     {
-        stackDeque.push_front(item);
+        stackDeque.push_back(item);
+    }
+
+    /**
+     * Find the element in the stack
+     * @param node the element to look for
+     * @return a string of the index, or "false"
+     */
+    std::string find(T &node)
+    {
+        return stackDeque.find(node);
     }
 
     /**

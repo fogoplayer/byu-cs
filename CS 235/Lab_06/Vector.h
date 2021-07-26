@@ -47,6 +47,16 @@ public:
     }
 
     /**
+     * Find the element in the array
+     * @param node the element to look for
+     * @return a string of the index, or "false"
+     */
+    std::string find(T &node)
+    {
+        return vectorDeque.find(node);
+    }
+
+    /**
      * Gets the contents of the stack as a string
      * @return a string listing the contents of the stack
      */

@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
 
             if (target == "station")
             {
+
                 out << " " << station.addCar(Car(value)) << endl;
             }
             else if (target == "queue")
@@ -126,6 +127,81 @@ int main(int argc, char *argv[])
             {
                 out << " " << station.topStack() << endl;
             }
+        }
+
+        if (delimiterIndex == string::npos)
+        {
+            istringstream is(argument);
+            string target;
+            unsigned int value;
+            is >> target >> value;
+
+            if (command == "Train")
+            {
+                out << station.trainString() << endl;
+            }
+            else if (command == "Queue")
+            {
+                out << station.queueString() << endl;
+            }
+            else if (command == "Stack")
+            {
+                out << station.stackString() << endl;
+            }
+        }
+
+        if (command == "Size")
+        {
+            istringstream is(argument);
+            string target;
+            unsigned int value;
+            is >> target >> value;
+
+            if (target == "train")
+            {
+                out << " " << station.sizeTrain() << endl;
+            }
+            else if (target == "queue")
+            {
+                out << " " << station.sizeQueue() << endl;
+            }
+            else if (target == "stack")
+            {
+                out << " " << station.sizeStack() << endl;
+            }
+        }
+
+        if (command.substr(0, 4) == "Find")
+        {
+            string searchResult;
+
+            istringstream os(command.substr(4));
+            int arg;
+            os >> arg;
+            Car searchCar(arg);
+
+            searchResult = station.queueFind(searchCar);
+            if (searchResult != "false")
+            {
+                out << " Queue[" + searchResult + "]" << endl;
+                continue;
+            }
+
+            searchResult = station.stackFind(searchCar);
+            if (searchResult != "false")
+            {
+                out << " Stack[" + searchResult + "]" << endl;
+                continue;
+            }
+
+            searchResult = station.trainFind(searchCar);
+            if (searchResult != "false")
+            {
+                out << " Train[" + searchResult + "]" << endl;
+                continue;
+            }
+
+            out << " Not Found!" << endl;
         }
     }
 

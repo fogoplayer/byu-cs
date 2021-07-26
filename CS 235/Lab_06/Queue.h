@@ -49,6 +49,16 @@ public:
     }
 
     /**
+     * Find the element in the queue
+     * @param node the element to look for
+     * @return a string of the index, or "false"
+     */
+    std::string find(T &node)
+    {
+        return queueDeque.find(node);
+    }
+
+    /**
      * Get the size of the queue
      */
     size_t size()
