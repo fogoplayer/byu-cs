@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 
-//#include "main.h"
+#include "Maze.h"
 
 using namespace std;
 
@@ -53,19 +53,16 @@ int main(int argc, char *argv[])
         return 3;
     }
 
-    string currLine;
+    // Top row (dimensions)
     int height;
     int width;
     int layerCount;
-    //Top row (dimensions)
-    getline(in, currLine);
-    istringstream is(currLine);
-    is >> height >> width >> layerCount;
+    in >> height >> width >> layerCount;
+    in.ignore();
 
-    while (getline(in, currLine))
-    {
-        cout << currLine << endl;
-    }
+    // Create and solve maze
+    Maze maze(height, width, layerCount, in);
+    maze.find_maze_path();
 
     return 0;
 }
