@@ -64,8 +64,17 @@ int main(int argc, char *argv[])
 
     // Create and solve maze
     Maze maze(height, width, layerCount, in);
+    out << "Solve Maze:" << endl;
     out << maze << endl;
-    maze.find_maze_path();
+    if (maze.find_maze_path())
+    {
+        out << "Solution:" << endl;
+        out << maze << endl;
+    }
+    else
+    {
+        out << "No Solution Exists!";
+    }
 
     return 0;
 }

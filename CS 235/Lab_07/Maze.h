@@ -5,6 +5,13 @@
 #include <fstream>
 #include <iostream>
 
+#define UP row - 1, col, layer
+#define DOWN row + 1, col, layer
+#define LEFT row, col - 1, layer
+#define RIGHT row, col + 1, layer
+#define OUT row, col, layer - 1
+#define IN row, col, layer + 1
+
 class Maze
 {
 private:
@@ -17,7 +24,7 @@ private:
     {
         OPEN,
         BLOCKED,
-        VISTED,
+        VISITED,
         EXIT,
         L,
         R,
@@ -60,7 +67,7 @@ public:
     {
         for (size_t i = 0; i < layerCount; i++)
         {
-            for (size_t j = 0; j < colCount; j++)
+            for (size_t j = 0; j < rowCount; j++)
             {
                 delete[] maze[i][j];
             }
@@ -87,7 +94,64 @@ public:
 	 */
     virtual bool find_maze_path()
     {
-        return true;
+        return find_maze_path(0, 0, 0);
+    }
+
+    /** 
+     * Recursively solve maze
+	 * @return true if solveable, else false
+	 */
+    virtual bool find_maze_path(int row, int col, int layer)
+    {
+        // Outside of array bounds
+        if (row < 0 || row >= rowCount || col < 0 || col >= colCount || layer < 0 || layer >= layerCount)
+            return false;
+
+        //Blocked and/or already visited
+        if (maze[layer][row][col] != OPEN)
+            return false;
+        if ((row == rowCount - 1) && (col == colCount - 1) && (layer == layerCount - 1))
+        {
+            maze[layer][row][col] = EXIT;
+            return true;
+        }
+
+        std::cout << toString() << std::endl;
+
+        // Direction to the next done in the path
+        maze[layer][row][col] = VISITED;
+        if (find_maze_path(LEFT))
+        {
+            maze[layer][row][col] = L;
+            return true;
+        }
+        if (find_maze_path(RIGHT))
+        {
+            maze[layer][row][col] = R;
+            return true;
+        }
+        if (find_maze_path(UP))
+        {
+            maze[layer][row][col] = U;
+            return true;
+        }
+        if (find_maze_path(DOWN))
+        {
+            maze[layer][row][col] = D;
+            return true;
+        }
+        if (find_maze_path(OUT))
+        {
+            maze[layer][row][col] = O;
+            return true;
+        }
+        if (find_maze_path(IN))
+        {
+            maze[layer][row][col] = I;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -100,6 +164,7 @@ public:
         //Layers
         for (size_t i = 0; i < layerCount; i++)
         {
+            os << "Layer " << i + 1 << std::endl;
             //Rows
             for (size_t j = 0; j < rowCount; j++)
             {
@@ -109,25 +174,55 @@ public:
                     char output;
                     switch (maze[i][j][k])
                     {
+
                     case OPEN:
                         output = '_';
                         break;
-
+                    case VISITED:
+                        output = '*';
+                        break;
                     case BLOCKED:
                         output = 'X';
                         break;
 
+                    case EXIT:
+                        output = 'E';
+                        break;
+
+                    case L:
+                        output = 'L';
+                        break;
+
+                    case R:
+                        output = 'R';
+                        break;
+
+                    case U:
+                        output = 'U';
+                        break;
+
+                    case D:
+                        output = 'D';
+                        break;
+
+                    case O:
+                        output = 'O';
+                        break;
+
+                    case I:
+                        output = 'I';
+                        break;
+
                     default:
+                        output = maze[i][j][k];
                         break;
                     }
 
-                    os << output << " ";
+                    os << " " << output;
                 }
 
                 os << std::endl;
             }
-
-            os << std::endl;
         }
 
         return os.str();
