@@ -1,6 +1,7 @@
 #ifndef MAZE_H_
 #define MAZE_H_
 #include <string>
+#include <limits>
 #include <fstream>
 #include <iostream>
 
@@ -11,6 +12,20 @@ private:
     int colCount;
     int layerCount;
     int ***maze;
+
+    enum
+    {
+        OPEN,
+        BLOCKED,
+        VISTED,
+        EXIT,
+        L,
+        R,
+        U,
+        D,
+        O,
+        I,
+    };
 
 public:
     Maze() : rowCount(0), colCount(0), layerCount(0){};
@@ -23,22 +38,21 @@ public:
         for (size_t i = 0; i < layerCount; i++)
         {
             //Rows
-            in.ignore(); // handle the blank line at the top of each layer
             maze[i] = new int *[rowCount];
             for (size_t j = 0; j < rowCount; j++)
             {
                 //Columns
                 maze[i][j] = new int[colCount];
-
-                std::string currLine;
-                getline(in, currLine);
-                std::istringstream is(currLine);
                 for (size_t k = 0; k < colCount; k++)
                 {
-                    is >> maze[i][j][k];
+                    in >> maze[i][j][k];
+                    int currChar = maze[i][j][k];
+                    std::cout << currChar << " ";
                 }
-                is.ignore();
+
+                std::cout << std::endl;
             }
+            std::cout << std::endl;
         }
     }
 
@@ -48,11 +62,6 @@ public:
         {
             for (size_t j = 0; j < colCount; j++)
             {
-                for (size_t k = 0; k < rowCount; k++)
-                {
-                    // delete[] maze[i][j][k];
-                }
-
                 delete[] maze[i][j];
             }
 
@@ -87,7 +96,51 @@ public:
 	 */
     virtual std::string toString() const
     {
-        return "string";
+        std::ostringstream os;
+        //Layers
+        for (size_t i = 0; i < layerCount; i++)
+        {
+            //Rows
+            for (size_t j = 0; j < rowCount; j++)
+            {
+                //Columns
+                for (size_t k = 0; k < colCount; k++)
+                {
+                    char output;
+                    switch (maze[i][j][k])
+                    {
+                    case OPEN:
+                        output = '_';
+                        break;
+
+                    case BLOCKED:
+                        output = 'X';
+                        break;
+
+                    default:
+                        break;
+                    }
+
+                    os << output << " ";
+                }
+
+                os << std::endl;
+            }
+
+            os << std::endl;
+        }
+
+        return os.str();
+    }
+
+    /**
+     * Overload the insertion operator
+     * @return an ostream with the maze
+     */
+    friend std::ostream &operator<<(std::ostream &os, Maze &maze)
+    {
+        os << maze.toString();
+        return os;
     }
 };
 #endif

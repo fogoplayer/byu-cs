@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <limits>
 
 #include "Maze.h"
 
@@ -58,10 +59,12 @@ int main(int argc, char *argv[])
     int width;
     int layerCount;
     in >> height >> width >> layerCount;
-    in.ignore();
+
+    // in.ignore((numeric_limits<int>::max(), '\n')); // For some reason after ignore, in contains an empty string before moving on to the next line. It's not in the input file, so IDK where it's coming from
 
     // Create and solve maze
     Maze maze(height, width, layerCount, in);
+    out << maze << endl;
     maze.find_maze_path();
 
     return 0;
