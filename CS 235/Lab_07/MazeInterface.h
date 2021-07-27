@@ -26,6 +26,5 @@ public:
 	  @return string of 2D layers
 	*/
 	virtual std::string toString() const = 0;
-
 };
 #endif // MAZE_INTERFACE_H
