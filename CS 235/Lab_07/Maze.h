@@ -5,14 +5,16 @@
 #include <fstream>
 #include <iostream>
 
-#define UP row - 1, col, layer
-#define DOWN row + 1, col, layer
+#include "MazeInterface.h"
+
 #define LEFT row, col - 1, layer
 #define RIGHT row, col + 1, layer
+#define UP row - 1, col, layer
+#define DOWN row + 1, col, layer
 #define OUT row, col, layer - 1
 #define IN row, col, layer + 1
 
-class Maze
+class Maze : public MazeInterface
 {
 private:
     int rowCount;
