@@ -42,15 +42,15 @@ public:
 
         //Layers
         maze = new int **[layerCount];
-        for (size_t i = 0; i < layerCount; i++)
+        for (int i = 0; i < layerCount; i++)
         {
             //Rows
             maze[i] = new int *[rowCount];
-            for (size_t j = 0; j < rowCount; j++)
+            for (int j = 0; j < rowCount; j++)
             {
                 //Columns
                 maze[i][j] = new int[colCount];
-                for (size_t k = 0; k < colCount; k++)
+                for (int k = 0; k < colCount; k++)
                 {
                     in >> maze[i][j][k];
                     int currChar = maze[i][j][k];
@@ -65,15 +65,17 @@ public:
 
     ~Maze(void)
     {
-        for (size_t i = 0; i < layerCount; i++)
+        for (int i = 0; i < layerCount; i++)
         {
-            for (size_t j = 0; j < rowCount; j++)
+            for (int j = 0; j < rowCount; j++)
             {
                 delete[] maze[i][j];
             }
 
             delete[] maze[i];
         }
+
+        delete[] maze;
     }
 
     /** 
@@ -101,132 +103,13 @@ public:
      * Recursively solve maze
 	 * @return true if solveable, else false
 	 */
-    virtual bool find_maze_path(int row, int col, int layer)
-    {
-        // Outside of array bounds
-        if (row < 0 || row >= rowCount || col < 0 || col >= colCount || layer < 0 || layer >= layerCount)
-            return false;
-
-        //Blocked and/or already visited
-        if (maze[layer][row][col] != OPEN)
-            return false;
-        if ((row == rowCount - 1) && (col == colCount - 1) && (layer == layerCount - 1))
-        {
-            maze[layer][row][col] = EXIT;
-            return true;
-        }
-
-        std::cout << toString() << std::endl;
-
-        // Direction to the next done in the path
-        maze[layer][row][col] = VISITED;
-        if (find_maze_path(LEFT))
-        {
-            maze[layer][row][col] = L;
-            return true;
-        }
-        if (find_maze_path(RIGHT))
-        {
-            maze[layer][row][col] = R;
-            return true;
-        }
-        if (find_maze_path(UP))
-        {
-            maze[layer][row][col] = U;
-            return true;
-        }
-        if (find_maze_path(DOWN))
-        {
-            maze[layer][row][col] = D;
-            return true;
-        }
-        if (find_maze_path(OUT))
-        {
-            maze[layer][row][col] = O;
-            return true;
-        }
-        if (find_maze_path(IN))
-        {
-            maze[layer][row][col] = I;
-            return true;
-        }
-
-        return false;
-    }
+    virtual bool find_maze_path(int row, int col, int layer);
 
     /**
      * Output maze (same order as input maze)
 	 * @return string of 2D layers
 	 */
-    virtual std::string toString() const
-    {
-        std::ostringstream os;
-        //Layers
-        for (size_t i = 0; i < layerCount; i++)
-        {
-            os << "Layer " << i + 1 << std::endl;
-            //Rows
-            for (size_t j = 0; j < rowCount; j++)
-            {
-                //Columns
-                for (size_t k = 0; k < colCount; k++)
-                {
-                    char output;
-                    switch (maze[i][j][k])
-                    {
-
-                    case OPEN:
-                        output = '_';
-                        break;
-                    case VISITED:
-                        output = '*';
-                        break;
-                    case BLOCKED:
-                        output = 'X';
-                        break;
-
-                    case EXIT:
-                        output = 'E';
-                        break;
-
-                    case L:
-                        output = 'L';
-                        break;
-
-                    case R:
-                        output = 'R';
-                        break;
-
-                    case U:
-                        output = 'U';
-                        break;
-
-                    case D:
-                        output = 'D';
-                        break;
-
-                    case O:
-                        output = 'O';
-                        break;
-
-                    case I:
-                        output = 'I';
-                        break;
-
-                    default:
-                        output = maze[i][j][k];
-                        break;
-                    }
-
-                    os << " " << output;
-                }
-
-                os << std::endl;
-            }
-        }
-
-        return os.str();
-    }
+    std::string toString() const;
 
     /**
      * Overload the insertion operator
@@ -239,3 +122,126 @@ public:
     }
 };
 #endif
+
+bool Maze::find_maze_path(int row, int col, int layer)
+{
+    // Outside of array bounds
+    if (row < 0 || row >= rowCount || col < 0 || col >= colCount || layer < 0 || layer >= layerCount)
+        return false;
+
+    //Blocked and/or already visited
+    if (maze[layer][row][col] != OPEN)
+        return false;
+    if ((row == rowCount - 1) && (col == colCount - 1) && (layer == layerCount - 1))
+    {
+        maze[layer][row][col] = EXIT;
+        return true;
+    }
+
+    std::cout << toString() << std::endl;
+
+    // Direction to the next done in the path
+    maze[layer][row][col] = VISITED;
+    if (find_maze_path(LEFT))
+    {
+        maze[layer][row][col] = L;
+        return true;
+    }
+    if (find_maze_path(RIGHT))
+    {
+        maze[layer][row][col] = R;
+        return true;
+    }
+    if (find_maze_path(UP))
+    {
+        maze[layer][row][col] = U;
+        return true;
+    }
+    if (find_maze_path(DOWN))
+    {
+        maze[layer][row][col] = D;
+        return true;
+    }
+    if (find_maze_path(OUT))
+    {
+        maze[layer][row][col] = O;
+        return true;
+    }
+    if (find_maze_path(IN))
+    {
+        maze[layer][row][col] = I;
+        return true;
+    }
+
+    return false;
+}
+
+std::string Maze::toString() const
+{
+    std::ostringstream os;
+    //Layers
+    for (int i = 0; i < layerCount; i++)
+    {
+        os << "Layer " << i + 1 << std::endl;
+        //Rows
+        for (int j = 0; j < rowCount; j++)
+        {
+            //Columns
+            for (int k = 0; k < colCount; k++)
+            {
+                char output;
+                switch (maze[i][j][k])
+                {
+
+                case OPEN:
+                    output = '_';
+                    break;
+                case VISITED:
+                    output = '*';
+                    break;
+                case BLOCKED:
+                    output = 'X';
+                    break;
+
+                case EXIT:
+                    output = 'E';
+                    break;
+
+                case L:
+                    output = 'L';
+                    break;
+
+                case R:
+                    output = 'R';
+                    break;
+
+                case U:
+                    output = 'U';
+                    break;
+
+                case D:
+                    output = 'D';
+                    break;
+
+                case O:
+                    output = 'O';
+                    break;
+
+                case I:
+                    output = 'I';
+                    break;
+
+                default:
+                    output = maze[i][j][k];
+                    break;
+                }
+
+                os << " " << output;
+            }
+
+            os << std::endl;
+        }
+    }
+
+    return os.str();
+}
