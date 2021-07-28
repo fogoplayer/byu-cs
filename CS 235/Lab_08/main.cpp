@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-//#include "main.h"
+#include "BST.h"
 
 using namespace std;
 
@@ -55,7 +55,45 @@ int main(int argc, char *argv[])
     string currLine;
     while (getline(in, currLine))
     {
+
         cout << currLine << endl;
+
+        // Int ------------------------------------------------------------------------------------------------------------
+        if (currLine == "INT")
+        {
+            Bst<int> bstInt;
+            while (getline(in, currLine))
+            {
+                string command;
+                istringstream is(currLine);
+                is >> command;
+
+                if (command == add)
+                {
+                    int arg;
+                    is >> arg;
+                    bstInt.addNode(arg);
+                }
+
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        // String ---------------------------------------------------------------------------------------------------------
+        else if (currLine == "STRING")
+        {
+            Bst<string> bstString;
+            if (false)
+            {
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 
     return 0;

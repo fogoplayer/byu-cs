@@ -1,19 +1,34 @@
-#ifndef BST_INTERFACE_H
-#define BST_INTERFACE_H
+#ifndef BST_H
+#define BST_H
 #include <string>
+#include "sstream"
+
+#include "BSTInterface.h"
 
 /** A binary tree node with data, left and right child pointers */
 template <typename T>
-class BSTNode
+class Bst : public BSTInterface<T>
 {
 private:
-    T data;
-    BSTNode *left;
-    BSTNode *right;
+    struct Node
+    {
+        Node(data, left = nullptr, right = nullptr) : data(data), left(left), right(right){};
+        ~Node()
+        {
+            delete left;
+            delete right;
+        }
+
+        T data;
+        Bst *left;
+        Bst *right;
+    };
+
+    Node root;
 
 public:
-    BSTNode(void) {}
-    virtual ~BSTNode(void) {}
+    Bst(void){};
+    virtual ~Bst(void){};
 
     /**
      * Return true if node added to BST, else false
@@ -52,9 +67,9 @@ public:
      * Overload the insertion operator
      * @return an ostream with the contents of all private data members
      */
-    friend std::ostream &operator<<(std::ostream &os, ParentClass &Obj)
+    friend std::ostream &operator<<(std::ostream &os, Bst &bst)
     {
-        os << Obj.toString();
+        os << bst.toString();
         return os;
     }
 };
