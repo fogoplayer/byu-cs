@@ -140,8 +140,6 @@ bool Maze::find_maze_path(int row, int col, int layer)
         return true;
     }
 
-    std::cout << toString() << std::endl;
-
     // Direction to the next done in the path
     maze[layer][row][col] = VISITED;
     if (find_maze_path(LEFT))
