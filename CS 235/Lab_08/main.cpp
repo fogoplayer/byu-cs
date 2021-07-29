@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
                 istringstream is(currLine);
                 is >> command;
 
-                if (command == add)
+                if (command == "add")
                 {
                     int arg;
                     is >> arg;

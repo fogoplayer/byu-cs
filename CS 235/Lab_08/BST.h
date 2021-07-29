@@ -13,28 +13,70 @@ private:
     struct Node
     {
         Node(data, left = nullptr, right = nullptr) : data(data), left(left), right(right){};
-        ~Node()
-        {
-            delete left;
-            delete right;
-        }
+        ~Node() = default;
 
         T data;
-        Bst *left;
-        Bst *right;
+        Node *left;
+        Node *right;
     };
 
-    Node root;
+    Node *root;
 
 public:
-    Bst(void){};
-    virtual ~Bst(void){};
+    Bst(void) : root(nullptr){};
+    virtual ~Bst(void)
+    {
+        delete root[];
+    }
 
     /**
      * Return true if node added to BST, else false
      */
-    virtual bool addNode(const T &)
+    virtual bool addNode(const T &value)
     {
+        if (root = nullptr)
+        {
+            root = new Node(value);
+        }
+        else
+        {
+            Node &currNode = *root;
+            bool nodePlaced = false;
+            while (!nodePlaced)
+            {
+                // Left side
+                if (currNode > value) // FIXME overload comparisons for strings and ints
+                {
+                    if (currNode.left == nullptr)
+                    {
+                        currNode.left == Node(value);
+                    }
+                    else
+                    {
+                        currNode == *currNode.left;
+                    }
+                }
+                // Right side
+                else if (currNode > value)
+                {
+                    if (currNode.right == nullptr)
+                    {
+                        currNode.right == Node(value);
+                    }
+                    else
+                    {
+                        currNode == *currNode.right;
+                    }
+                }
+
+                // Match
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
