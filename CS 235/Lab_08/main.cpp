@@ -67,23 +67,27 @@ int main(int argc, char *argv[])
             Bst<int> bstInt;
             while (getline(in, currLine))
             {
+                // Print out command
                 istringstream is(currLine);
                 is >> command;
                 out << command;
 
+                // Add
                 if (command == "add")
                 {
                     int arg;
                     is >> arg;
-                    // string returnVal = bstInt.addNode(arg) ? "true" : "false";
                     out << " " << arg << " " << (bstInt.addNode(arg) ? "true" : "false");
-                    ;
                 }
+
+                // Print
                 else if (command == "print")
                 {
                     out << ":" << endl
                         << bstInt.toString();
                 }
+
+                // Exceptions
                 else
                 {
                     break;

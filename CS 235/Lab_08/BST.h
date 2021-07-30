@@ -40,7 +40,6 @@ private:
     Node *root;
 
     /** Output nodes at a given level */
-
     bool outLevel(Node *root, int level, std::ostringstream &out) const
     {
         if (root == NULL)
