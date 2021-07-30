@@ -1,6 +1,8 @@
 #ifndef BST_H
 #define BST_H
 #include <string>
+#include <functional>
+
 #include "sstream"
 
 #include "BSTInterface.h"
@@ -13,7 +15,11 @@ private:
     struct Node
     {
         Node(T data, Node *left = nullptr, Node *right = nullptr) : data(data), left(left), right(right) {}
-        ~Node() = default;
+        ~Node()
+        {
+            delete left;
+            delete right;
+        }
 
         T data;
         int depth;
@@ -92,7 +98,7 @@ public:
             while (!nodePlaced)
             {
                 // Left side
-                if (currNode->data > value) // FIXME overload comparisons for strings and ints
+                if (std::less<T>{}(value, currNode->data)) // FIXME overload comparisons for strings and ints
                 {
                     if (currNode->left == nullptr)
                     {
@@ -105,7 +111,7 @@ public:
                     }
                 }
                 // Right side
-                else if (currNode->data < value)
+                else if (std::less<T>{}(currNode->data, value))
                 {
                     if (currNode->right == nullptr)
                     {
@@ -152,13 +158,13 @@ public:
     {
         std::ostringstream os;
         size_t layer = 0;
-        os << layer + 1 << ":";
+        os << "  " << layer + 1 << ":";
 
         while (outLevel(root, layer, os))
         {
             os << std::endl;
             ++layer;
-            os << layer + 1 << ":";
+            os << "  " << layer + 1 << ":";
         }
         return os.str();
     }

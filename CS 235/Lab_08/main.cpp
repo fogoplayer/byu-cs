@@ -56,15 +56,16 @@ int main(int argc, char *argv[])
     while (getline(in, currLine))
     {
 
-        out << currLine << endl;
         string command;
         istringstream is(currLine);
         is >> command;
+        out << command;
 
         // Int ------------------------------------------------------------------------------------------------------------
         if (command == "INT")
         {
             Bst<int> bstInt;
+            out << " true" << endl;
             while (getline(in, currLine))
             {
                 // Print out command
@@ -98,16 +99,37 @@ int main(int argc, char *argv[])
         }
 
         // String ---------------------------------------------------------------------------------------------------------
-        else if (command == "STRING")
+        Bst<string> bstString;
+        out << " true" << endl;
+        while (getline(in, currLine))
         {
-            Bst<string> bstString;
-            if (false)
+            // Print out command
+            istringstream is(currLine);
+            is >> command;
+            out << command;
+
+            // Add
+            if (command == "add")
             {
+                string arg;
+                is >> arg;
+                out << " " << arg << " " << (bstString.addNode(arg) ? "true" : "false");
             }
+
+            // Print
+            else if (command == "print")
+            {
+                out << ":" << endl
+                    << bstString.toString();
+            }
+
+            // Exceptions
             else
             {
                 break;
             }
+
+            out << endl;
         }
     }
 
