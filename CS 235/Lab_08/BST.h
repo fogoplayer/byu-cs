@@ -49,6 +49,22 @@ private:
     /** Output nodes at a given level */
     bool outLevel(Node *root, int level, std::ostringstream &out) const;
 
+    /**
+     * Recursive size function
+     * @param root a pointer to a Node
+     * @return size of the subtree at root
+     */
+    int size(Node *root)
+    {
+        if (root == nullptr)
+        {
+            return 0;
+        }
+        int leftSize = root->left != nullptr ? size(root->left) : 0;
+        int rightSize = root->right != nullptr ? size(root->right) : 0;
+        return 1 + leftSize + rightSize;
+    }
+
 public:
     Bst(void) : root(nullptr){};
     ~Bst(void)
@@ -67,6 +83,14 @@ public:
     virtual bool removeNode(const T &)
     {
         return true;
+    }
+
+    /**
+     * Return the number of nodes in the tree
+     */
+    int size()
+    {
+        return size(root);
     }
 
     /**

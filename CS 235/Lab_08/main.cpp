@@ -81,6 +81,12 @@ int main(int argc, char *argv[])
                     out << " " << arg << " " << (bstInt.addNode(arg) ? "true" : "false");
                 }
 
+                // Size
+                else if (command == "size")
+                {
+                    out << " " << bstInt.size();
+                }
+
                 // Print
                 else if (command == "print")
                 {
@@ -114,6 +120,12 @@ int main(int argc, char *argv[])
                 string arg;
                 is >> arg;
                 out << " " << arg << " " << (bstString.addNode(arg) ? "true" : "false");
+            }
+
+            // Size
+            else if (command == "size")
+            {
+                out << " " << bstString.size();
             }
 
             // Print
