@@ -56,34 +56,45 @@ int main(int argc, char *argv[])
     while (getline(in, currLine))
     {
 
-        cout << currLine << endl;
+        out << currLine << endl;
+        string command;
+        istringstream is(currLine);
+        is >> command;
 
         // Int ------------------------------------------------------------------------------------------------------------
-        if (currLine == "INT")
+        if (command == "INT")
         {
             Bst<int> bstInt;
             while (getline(in, currLine))
             {
-                string command;
                 istringstream is(currLine);
                 is >> command;
+                out << command;
 
                 if (command == "add")
                 {
                     int arg;
                     is >> arg;
-                    bstInt.addNode(arg);
+                    // string returnVal = bstInt.addNode(arg) ? "true" : "false";
+                    out << " " << arg << " " << (bstInt.addNode(arg) ? "true" : "false");
+                    ;
                 }
-
+                else if (command == "print")
+                {
+                    out << ":" << endl
+                        << bstInt.toString();
+                }
                 else
                 {
                     break;
                 }
+
+                out << endl;
             }
         }
 
         // String ---------------------------------------------------------------------------------------------------------
-        else if (currLine == "STRING")
+        else if (command == "STRING")
         {
             Bst<string> bstString;
             if (false)
