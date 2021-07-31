@@ -19,7 +19,9 @@ private:
         ~Node()
         {
             delete left;
+            left = nullptr;
             delete right;
+            right = nullptr;
         }
 
         T data;
@@ -98,6 +100,8 @@ public:
      */
     virtual bool clearTree()
     {
+        delete root;
+        root = nullptr;
         return true;
     }
 
@@ -201,7 +205,15 @@ bool Bst<T>::addNode(const T &value)
 template <typename T>
 std::string Bst<T>::toString() const
 {
+    if (root == nullptr)
+    {
+        std::string errMsg = " empty";
+        return errMsg;
+    }
+
     std::ostringstream os;
+    os << std::endl;
+
     size_t layer = 0;
     os << "  " << layer + 1 << ":";
 

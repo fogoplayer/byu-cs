@@ -1,41 +1,29 @@
 INT true
-add 10 true
-add 9 true
-add 8 true
-add 7 true
-add 6 true
-add 5 true
-add 4 true
-add 3 true
-add 2 true
 add 1 true
+add 2 true
+print:
+  1: 1
+  2: _ 2
 add 0 true
-size 11
+add 4 true
+add 0 false
+add 4 false
 print:
-  1: 10
-  2: 9 _
-  3: 8 _
-  4: 7 _
-  5: 6 _
-  6: 5 _
-  7: 4 _
-  8: 3 _
-  9: 2 _
-  10: 1 _
-  11: 0 _
-clear true
-size 0
+  1: 1
+  2: 0 2
+  3: _ 4
+STRING true
+add dog true
+add cat true
+add pig true
+add horse true
 print:
-  1:
-STRINGadd true
-add with true
-add dreams. true
-add Die true
-size 3
+  1: dog
+  2: cat pig
+  3: horse _
+add cat false
+add horse false
 print:
-  1: with
-  2: dreams. _
-  3: Die _
-clearsize true
-print:
-  1:
+  1: dog
+  2: cat pig
+  3: horse _

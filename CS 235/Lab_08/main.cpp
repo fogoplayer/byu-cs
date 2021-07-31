@@ -81,6 +81,12 @@ int main(int argc, char *argv[])
                     out << " " << arg << " " << (bstInt.addNode(arg) ? "true" : "false");
                 }
 
+                // Clear
+                else if (command == "clear")
+                {
+                    out << " " << (bstInt.clearTree() ? "true" : "false");
+                }
+
                 // Size
                 else if (command == "size")
                 {
@@ -90,8 +96,7 @@ int main(int argc, char *argv[])
                 // Print
                 else if (command == "print")
                 {
-                    out << ":" << endl
-                        << bstInt.toString();
+                    out << ":" << bstInt.toString();
                 }
 
                 // Exceptions
@@ -122,6 +127,12 @@ int main(int argc, char *argv[])
                 out << " " << arg << " " << (bstString.addNode(arg) ? "true" : "false");
             }
 
+            // Clear
+            else if (command == "clear")
+            {
+                out << " " << (bstString.clearTree() ? "true" : "false");
+            }
+
             // Size
             else if (command == "size")
             {
@@ -131,8 +142,7 @@ int main(int argc, char *argv[])
             // Print
             else if (command == "print")
             {
-                out << ":" << endl
-                    << bstString.toString();
+                out << ":" << bstString.toString();
             }
 
             // Exceptions
