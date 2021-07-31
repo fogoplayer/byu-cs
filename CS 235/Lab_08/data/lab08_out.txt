@@ -1,29 +1,35 @@
 INT true
 add 1 true
 add 2 true
-print:
-  1: 1
-  2: _ 2
-add 0 true
-add 4 true
-add 0 false
-add 4 false
-print:
-  1: 1
-  2: 0 2
-  3: _ 4
+add 3 true
+find 0 not found
+find 1 found
+find 2 found
+find 3 found
 STRING true
-add dog true
-add cat true
-add pig true
-add horse true
+find 0 not found
+find 1 not found
+add lazy true
+add lazy false
 print:
-  1: dog
-  2: cat pig
-  3: horse _
-add cat false
-add horse false
+  1: lazy
+add dog. true
+add fox true
+add brown true
+add quick true
+add The true
+size 6
 print:
-  1: dog
-  2: cat pig
-  3: horse _
+  1: lazy
+  2: dog. quick
+  3: brown fox
+  4: The _
+find lazy found
+find fox found
+find dog not found
+size 6
+print:
+  1: lazy
+  2: dog. quick
+  3: brown fox
+  4: The _

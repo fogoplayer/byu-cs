@@ -67,6 +67,29 @@ private:
         return 1 + leftSize + rightSize;
     }
 
+    /**
+     * Recursive find function
+     * @param root a pointer to a Node
+     * @return "found" or "not found"
+     */
+    std::string find(T &value, Node *root)
+    {
+        if (root == nullptr)
+        {
+            return "not found";
+        }
+        else if (root->data == value ||
+                 find(value, root->left) == "found" ||
+                 find(value, root->right) == "found")
+        {
+            return "found";
+        }
+        else
+        {
+            return "not found";
+        }
+    }
+
 public:
     Bst(void) : root(nullptr){};
     ~Bst(void)
@@ -93,6 +116,16 @@ public:
     int size()
     {
         return size(root);
+    }
+
+    /**
+     * Whether or not if a value is in the tree
+     * @param value the value to search for
+     * @return "found" if it's in the tree, "found" if it's not
+     */
+    std::string find(T &value)
+    {
+        return find(value, root);
     }
 
     /**

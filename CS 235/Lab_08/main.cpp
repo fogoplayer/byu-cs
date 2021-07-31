@@ -99,6 +99,14 @@ int main(int argc, char *argv[])
                     out << ":" << bstInt.toString();
                 }
 
+                // Find
+                else if (command == "find")
+                {
+                    int arg;
+                    is >> arg;
+                    out << " " << arg << " " << bstInt.find(arg);
+                }
+
                 // Exceptions
                 else
                 {
@@ -143,6 +151,14 @@ int main(int argc, char *argv[])
             else if (command == "print")
             {
                 out << ":" << bstString.toString();
+            }
+
+            // Find
+            else if (command == "find")
+            {
+                string arg;
+                is >> arg;
+                out << " " << arg << " " << bstString.find(arg);
             }
 
             // Exceptions
