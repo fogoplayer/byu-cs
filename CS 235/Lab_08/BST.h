@@ -72,23 +72,7 @@ private:
      * @param root a pointer to a Node
      * @return "found" or "not found"
      */
-    std::string find(T &value, Node *root)
-    {
-        if (root == nullptr)
-        {
-            return "not found";
-        }
-        else if (root->data == value ||
-                 find(value, root->left) == "found" ||
-                 find(value, root->right) == "found")
-        {
-            return "found";
-        }
-        else
-        {
-            return "not found";
-        }
-    }
+    std::string find(T &value, Node *root);
 
 public:
     Bst(void) : root(nullptr){};
@@ -107,6 +91,13 @@ public:
      */
     virtual bool removeNode(const T &)
     {
+        // if node is NULL, return false
+        // if data < node->data, return delete(node->left, data)
+        // if data > node->data, return delete(node->right, data)
+        // if node has no children, parent = NULL, return true
+        // if node has 1 child, parent = node->(left or right), return true
+        // exchange node->data with in_order_predecessor->data
+        // return delete(node->left, data)
         return true;
     }
 
@@ -182,6 +173,25 @@ bool Bst<T>::outLevel(Bst<T>::Node *root, int level, std::ostringstream &out) co
     if ((level == 1) && root->left && !root->right)
         out << " _";
     return left || right;
+}
+
+template <typename T>
+std::string Bst<T>::find(T &value, Node *root)
+{
+    if (root == nullptr)
+    {
+        return "not found";
+    }
+    else if (root->data == value ||
+             find(value, root->left) == "found" ||
+             find(value, root->right) == "found")
+    {
+        return "found";
+    }
+    else
+    {
+        return "not found";
+    }
 }
 
 template <typename T>
