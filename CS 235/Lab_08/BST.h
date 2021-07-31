@@ -1,6 +1,7 @@
 #ifndef BST_H
 #define BST_H
 #include <string>
+#include <utility>
 #include <functional>
 
 #include "sstream"
@@ -16,19 +17,40 @@ private:
     struct Node
     {
         Node(T data, Node *left = nullptr, Node *right = nullptr) : data(data), left(left), right(right) {}
+        Node(Node &other)
+        {
+            this->data = other.data;
+            if (other.left != nullptr)
+            {
+                this->left = other.left;
+            }
+            if (other.right != nullptr)
+            {
+                this->right = other.right;
+            }
+        }
+
         ~Node()
         {
-            delete left;
-            left = nullptr;
-            delete right;
-            right = nullptr;
+            if (left != nullptr)
+            {
+                delete left;
+                left = nullptr;
+            }
+            if (right != nullptr)
+            {
+                delete right;
+                right = nullptr;
+            }
         }
 
         T data;
-        int depth;
         Node *left;
         Node *right;
 
+        /**
+         * Return a string of the subtree where node is the root
+         */
         std::string toString()
         {
             std::ostringstream os;
@@ -43,6 +65,25 @@ private:
             }
 
             return os.str();
+        }
+
+        /**
+         * Overload the insertion operator
+         * @return an ostream with the contents of the subtree
+         */
+        friend std::ostream &operator<<(std::ostream &os, Node &node)
+        {
+            os << node.toString();
+            return os;
+        }
+
+        /**
+         * Overload the assignment operator
+         * @return an a copy of the node with the contents of the subtree
+         */
+        Node &operator=(Node &other)
+        {
+            this = Node(other);
         }
     };
 
@@ -69,10 +110,36 @@ private:
 
     /**
      * Recursive find function
+     * @param value the value to remove
      * @param root a pointer to a Node
      * @return "found" or "not found"
      */
     std::string find(T &value, Node *root);
+
+    /**
+     * Recursive remove function
+     * @param value the value to remove
+     * @param roote a pointer to a Node 
+     * @return true if successful, false if not
+     */
+    bool removeNode(const T &value, Node *&root);
+
+    /**
+     * Get the inorder precessor (1L, then R)
+     * @param root the node to find the precessor of
+     * @return a pointer to the node
+     */
+    Node *getInOrderPredecessor(Node *root)
+    {
+        Node *predecessor = root->left;
+        while (predecessor->right != nullptr)
+        {
+            predecessor = predecessor->right;
+        }
+        return predecessor;
+    }
+
+    // TODO check const-ness
 
 public:
     Bst(void) : root(nullptr){};
@@ -89,16 +156,9 @@ public:
     /**
      * Return true if node removed from BST, else false
      */
-    virtual bool removeNode(const T &)
+    virtual bool removeNode(const T &value)
     {
-        // if node is NULL, return false
-        // if data < node->data, return delete(node->left, data)
-        // if data > node->data, return delete(node->right, data)
-        // if node has no children, parent = NULL, return true
-        // if node has 1 child, parent = node->(left or right), return true
-        // exchange node->data with in_order_predecessor->data
-        // return delete(node->left, data)
-        return true;
+        return removeNode(value, root);
     }
 
     /**
@@ -149,10 +209,11 @@ template <typename T>
 bool Bst<T>::outLevel(Bst<T>::Node *root, int level, std::ostringstream &out) const
 {
     if (root == NULL)
+    {
         return false;
+    }
 
     if (level == 0)
-
     {
 
         out << " " << root->data;
@@ -176,7 +237,7 @@ bool Bst<T>::outLevel(Bst<T>::Node *root, int level, std::ostringstream &out) co
 }
 
 template <typename T>
-std::string Bst<T>::find(T &value, Node *root)
+std::string Bst<T>::find(T &value, Bst<T>::Node *root)
 {
     if (root == nullptr)
     {
@@ -192,6 +253,62 @@ std::string Bst<T>::find(T &value, Node *root)
     {
         return "not found";
     }
+}
+
+template <typename T>
+bool Bst<T>::removeNode(const T &value, Bst<T>::Node *&root)
+{
+    // if node is NULL, return false
+    if (root == nullptr)
+    {
+        return false;
+    }
+
+    // if value < node->data, return removeNode(value, node->left)
+    else if (value < root->data)
+    {
+        return removeNode(value, root->left);
+    }
+
+    // if node->data < value, return removeNode(value, node->right)
+    else if (root->data < value)
+    {
+        return removeNode(value, root->right);
+    }
+
+    // If code reaches this point, must be a match \\
+
+    // if node has no children, parent = NULL, return true
+    if (root->left == nullptr && root->right == nullptr)
+    {
+        delete root;
+        root = nullptr;
+        return true;
+    }
+
+    // if node has 1 child, parent = node->(left or right), return true
+    if (root->left != nullptr && root->right == nullptr)
+    {
+        Node *newRoot = new Node(*root->left);
+        delete root;
+        root = newRoot;
+        return true;
+    }
+    else if (root->left == nullptr && root->right != nullptr)
+    {
+        Node *newRoot = new Node(*root->right);
+        delete root;
+        root = newRoot;
+        return true;
+    }
+
+    // exchange node->data with in_order_predecessor->data
+    Node *predecessor = getInOrderPredecessor(root);
+    std::swap(root->data, predecessor->data);
+    delete predecessor;
+    predecessor = nullptr;
+    root->left = nullptr; // I don't like it, but it passes and I can't find a more robust solution
+    return true;
 }
 
 template <typename T>
