@@ -1,15 +1,18 @@
 INT true
-add 1 true
-add 2 true
-add 3 true
+add 15 true
+add 30 true
+add 12 true
+add 10 true
+add 14 true
 print:
-  1: 1
-  2: _ 2
-  3: _ 3
-remove 2 true
+  1: 15
+  2: 12 30
+  3: 10 14
+remove 12 true
 print:
-  1: 1
-  2: _ 3
+  1: 15
+  2: 10 30
+  3: _ 14
 clear true
 size 0
 print: empty

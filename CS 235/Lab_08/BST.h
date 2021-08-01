@@ -24,9 +24,18 @@ private:
             {
                 this->left = other.left;
             }
+            else
+            {
+                this->left = nullptr;
+            }
+
             if (other.right != nullptr)
             {
                 this->right = other.right;
+            }
+            else
+            {
+                this->right = nullptr;
             }
         }
 
@@ -208,7 +217,7 @@ public:
 template <typename T>
 bool Bst<T>::outLevel(Bst<T>::Node *root, int level, std::ostringstream &out) const
 {
-    if (root == NULL)
+    if (root == nullptr)
     {
         return false;
     }
@@ -218,7 +227,7 @@ bool Bst<T>::outLevel(Bst<T>::Node *root, int level, std::ostringstream &out) co
 
         out << " " << root->data;
 
-        if ((root->left != NULL) || (root->right != NULL))
+        if ((root->left != nullptr) || (root->right != nullptr))
             return true;
 
         return false;
@@ -258,7 +267,7 @@ std::string Bst<T>::find(T &value, Bst<T>::Node *root)
 template <typename T>
 bool Bst<T>::removeNode(const T &value, Bst<T>::Node *&root)
 {
-    // if node is NULL, return false
+    // if node is nullptr , return false
     if (root == nullptr)
     {
         return false;
@@ -278,7 +287,7 @@ bool Bst<T>::removeNode(const T &value, Bst<T>::Node *&root)
 
     // If code reaches this point, must be a match \\
 
-    // if node has no children, parent = NULL, return true
+    // if node has no children, parent = nullptr , return true
     if (root->left == nullptr && root->right == nullptr)
     {
         delete root;
@@ -305,9 +314,7 @@ bool Bst<T>::removeNode(const T &value, Bst<T>::Node *&root)
     // exchange node->data with in_order_predecessor->data
     Node *predecessor = getInOrderPredecessor(root);
     std::swap(root->data, predecessor->data);
-    delete predecessor;
-    predecessor = nullptr;
-    root->left = nullptr; // I don't like it, but it passes and I can't find a more robust solution
+    removeNode(predecessor->data, root->left);
     return true;
 }
 
