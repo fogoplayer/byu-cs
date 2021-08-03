@@ -1,4 +1,5 @@
 INT
+print
 add 15
 add 30
 add 12

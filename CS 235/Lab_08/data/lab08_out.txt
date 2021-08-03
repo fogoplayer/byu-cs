@@ -1,55 +1,35 @@
 INT true
-add 15 true
-add 30 true
-add 12 true
-add 10 true
-add 14 true
+add 1 true
+add 2 true
+add 3 true
 print:
-  1: 15
-  2: 12 30
-  3: 10 14
-remove 12 true
-print:
-  1: 15
-  2: 10 30
-  3: _ 14
+  1: 1
+  2: _ 2
+  3: _ 3
+remove true
+print: empty
 clear true
 size 0
 print: empty
-STRING true
-add Combing true
-remove Combing true
-add Combing true
+STRINGadd true
+removeadd true
 add Coming true
 add front true
-size 3
-print:
-  1: Combing
-  2: _ Coming
-  3: _ front
-remove front true
 size 2
 print:
-  1: Combing
-  2: _ Coming
+  1: Coming
+  2: _ front
+removesize true
+print: empty
 add back true
 add to true
 add where true
-remove where true
-size 4
-print:
-  1: Combing
-  2: _ Coming
-  3: _ back
-  4: _ to
+removesize true
+print: empty
 add where true
-size 5
+size 1
 print:
-  1: Combing
-  2: _ Coming
-  3: _ back
-  4: _ to
-  5: _ where
+  1: where
 add you true
 add started true
 add is true
@@ -62,37 +42,22 @@ add leavening. true
 add leaving. true
 add -Terry true
 add Pratchett true
-size 17
+size 13
 print:
-  1: Combing
-  2: -Terry Coming
-  3: _ back
-  4: as to
-  5: Pratchett _ started where
-  6: is the _ you
-  7: _ not
-  8: never same
-  9: leavening. _
-  10: _ leaving.
-remove Combing true
-remove leavening. true
-remove computerviruses false
-size 15
-print:
-  1: -Terry
-  2: _ Coming
-  3: _ back
-  4: as to
-  5: Pratchett _ started where
-  6: is the _ you
-  7: _ not
-  8: never same
-  9: leaving. _
+  1: where
+  2: started you
+  3: is the
+  4: as not
+  5: -Terry _ never same
+  6: _ Pratchett leavening. _
+  7: _ leaving.
+removeremove true
+removesize true
+print: empty
 clear true
 size 0
 print: empty
 clear true
-remove "string" false
-remove -Terry false
+removeremove true
 size 0
 print: empty

@@ -1,7 +1,6 @@
 #ifndef BST_H
 #define BST_H
 #include <string>
-#include <utility>
 #include <functional>
 
 #include "sstream"
@@ -17,82 +16,30 @@ private:
     struct Node
     {
         Node(T data, Node *left = nullptr, Node *right = nullptr) : data(data), left(left), right(right) {}
-        Node(Node &other)
-        {
-            this->data = other.data;
-            if (other.left != nullptr)
-            {
-                this->left = other.left;
-            }
-            else
-            {
-                this->left = nullptr;
-            }
-
-            if (other.right != nullptr)
-            {
-                this->right = other.right;
-            }
-            else
-            {
-                this->right = nullptr;
-            }
-        }
-
         ~Node()
         {
-            if (left != nullptr)
-            {
-                delete left;
-                left = nullptr;
-            }
-            if (right != nullptr)
-            {
-                delete right;
-                right = nullptr;
-            }
+            delete left;
+            left = nullptr;
+            delete right;
+            right = nullptr;
         }
 
         T data;
+        int depth;
         Node *left;
         Node *right;
 
-        /**
-         * Return a string of the subtree where node is the root
-         */
-        std::string toString()
-        {
-            std::ostringstream os;
-            os << data << " ";
-            if (left)
-            {
-                os << left->toString() << " ";
-            }
-            if (right)
-            {
-                os << right->toString() << " ";
-            }
-
-            return os.str();
-        }
+        /** Tostring function for Node */
+        std::string toString() const;
 
         /**
          * Overload the insertion operator
-         * @return an ostream with the contents of the subtree
+         * @return an ostream with the contents of the node
          */
         friend std::ostream &operator<<(std::ostream &os, Node &node)
         {
             os << node.toString();
             return os;
-        }
-
-        /**
-         * Overload the assignment operator
-         * @return an a copy of the node with the contents of the subtree
-         */
-        Node &operator=(Node &other)
-        {
-            this = Node(other);
         }
     };
 
@@ -106,49 +53,14 @@ private:
      * @param root a pointer to a Node
      * @return size of the subtree at root
      */
-    int size(Node *root)
-    {
-        if (root == nullptr)
-        {
-            return 0;
-        }
-        int leftSize = root->left != nullptr ? size(root->left) : 0;
-        int rightSize = root->right != nullptr ? size(root->right) : 0;
-        return 1 + leftSize + rightSize;
-    }
+    int size(Node *root) const;
 
     /**
      * Recursive find function
-     * @param value the value to remove
      * @param root a pointer to a Node
      * @return "found" or "not found"
      */
-    std::string find(T &value, Node *root);
-
-    /**
-     * Recursive remove function
-     * @param value the value to remove
-     * @param roote a pointer to a Node 
-     * @return true if successful, false if not
-     */
-    bool removeNode(const T &value, Node *&root);
-
-    /**
-     * Get the inorder precessor (1L, then R)
-     * @param root the node to find the precessor of
-     * @return a pointer to the node
-     */
-    Node *getInOrderPredecessor(Node *root)
-    {
-        Node *predecessor = root->left;
-        while (predecessor->right != nullptr)
-        {
-            predecessor = predecessor->right;
-        }
-        return predecessor;
-    }
-
-    // TODO check const-ness
+    std::string find(T &value, Node *root) const;
 
 public:
     Bst(void) : root(nullptr){};
@@ -165,15 +77,15 @@ public:
     /**
      * Return true if node removed from BST, else false
      */
-    virtual bool removeNode(const T &value)
+    virtual bool removeNode(const T &)
     {
-        return removeNode(value, root);
+        return true;
     }
 
     /**
      * Return the number of nodes in the tree
      */
-    int size()
+    int size() const
     {
         return size(root);
     }
@@ -183,7 +95,7 @@ public:
      * @param value the value to search for
      * @return "found" if it's in the tree, "found" if it's not
      */
-    std::string find(T &value)
+    std::string find(T &value) const
     {
         return find(value, root);
     }
@@ -215,19 +127,35 @@ public:
 };
 
 template <typename T>
-bool Bst<T>::outLevel(Bst<T>::Node *root, int level, std::ostringstream &out) const
+std::string Bst<T>::Node::toString() const
 {
-    if (root == nullptr)
+    std::ostringstream os;
+    os << data << " ";
+    if (left)
     {
-        return false;
+        os << left->toString() << " ";
+    }
+    if (right)
+    {
+        os << right->toString() << " ";
     }
 
+    return os.str();
+}
+
+template <typename T>
+bool Bst<T>::outLevel(Bst<T>::Node *root, int level, std::ostringstream &out) const
+{
+    if (root == NULL)
+        return false;
+
     if (level == 0)
+
     {
 
         out << " " << root->data;
 
-        if ((root->left != nullptr) || (root->right != nullptr))
+        if ((root->left != NULL) || (root->right != NULL))
             return true;
 
         return false;
@@ -246,7 +174,19 @@ bool Bst<T>::outLevel(Bst<T>::Node *root, int level, std::ostringstream &out) co
 }
 
 template <typename T>
-std::string Bst<T>::find(T &value, Bst<T>::Node *root)
+int Bst<T>::size(Node *root) const
+{
+    if (root == nullptr)
+    {
+        return 0;
+    }
+    int leftSize = root->left != nullptr ? size(root->left) : 0;
+    int rightSize = root->right != nullptr ? size(root->right) : 0;
+    return 1 + leftSize + rightSize;
+}
+
+template <typename T>
+std::string Bst<T>::find(T &value, Node *root) const
 {
     if (root == nullptr)
     {
@@ -265,60 +205,6 @@ std::string Bst<T>::find(T &value, Bst<T>::Node *root)
 }
 
 template <typename T>
-bool Bst<T>::removeNode(const T &value, Bst<T>::Node *&root)
-{
-    // if node is nullptr , return false
-    if (root == nullptr)
-    {
-        return false;
-    }
-
-    // if value < node->data, return removeNode(value, node->left)
-    else if (value < root->data)
-    {
-        return removeNode(value, root->left);
-    }
-
-    // if node->data < value, return removeNode(value, node->right)
-    else if (root->data < value)
-    {
-        return removeNode(value, root->right);
-    }
-
-    // If code reaches this point, must be a match \\
-
-    // if node has no children, parent = nullptr , return true
-    if (root->left == nullptr && root->right == nullptr)
-    {
-        delete root;
-        root = nullptr;
-        return true;
-    }
-
-    // if node has 1 child, parent = node->(left or right), return true
-    if (root->left != nullptr && root->right == nullptr)
-    {
-        Node *newRoot = new Node(*root->left);
-        delete root;
-        root = newRoot;
-        return true;
-    }
-    else if (root->left == nullptr && root->right != nullptr)
-    {
-        Node *newRoot = new Node(*root->right);
-        delete root;
-        root = newRoot;
-        return true;
-    }
-
-    // exchange node->data with in_order_predecessor->data
-    Node *predecessor = getInOrderPredecessor(root);
-    std::swap(root->data, predecessor->data);
-    removeNode(predecessor->data, root->left);
-    return true;
-}
-
-template <typename T>
 bool Bst<T>::addNode(const T &value)
 {
     if (root == nullptr)
@@ -332,7 +218,7 @@ bool Bst<T>::addNode(const T &value)
         while (!nodePlaced)
         {
             // Left side
-            if (std::less<T>{}(value, currNode->data)) // FIXME overload comparisons for strings and ints
+            if (std::less<T>{}(value, currNode->data))
             {
                 if (currNode->left == nullptr)
                 {
@@ -393,4 +279,4 @@ std::string Bst<T>::toString() const
     return os.str();
 }
 
-#endif // BST_INTERFACE_H
+#endif

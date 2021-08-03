@@ -81,14 +81,6 @@ int main(int argc, char *argv[])
                     out << " " << arg << " " << (bstInt.addNode(arg) ? "true" : "false");
                 }
 
-                // Remove
-                else if (command == "remove")
-                {
-                    int arg;
-                    is >> arg;
-                    out << " " << arg << " " << (bstInt.removeNode(arg) ? "true" : "false");
-                }
-
                 // Clear
                 else if (command == "clear")
                 {
@@ -141,14 +133,6 @@ int main(int argc, char *argv[])
                 string arg;
                 is >> arg;
                 out << " " << arg << " " << (bstString.addNode(arg) ? "true" : "false");
-            }
-
-            // Remove
-            else if (command == "remove")
-            {
-                string arg;
-                is >> arg;
-                out << " " << arg << " " << (bstString.removeNode(arg) ? "true" : "false");
             }
 
             // Clear
