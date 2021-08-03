@@ -1,126 +1,59 @@
+/**
+ * Zarin Loosli - 8/3/21
+**/
 #include <iostream>
+#include <fstream>
 #include <string>
-#include <sstream>
-#include <set>
+
+#include "HashMap.h"
+#include "Set.h"
+
 using namespace std;
 
-/*******************************************************/
-/** Generic Templates */
+#ifdef _MSC_VER
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#define VS_MEM_CHECK _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#else
+#define VS_MEM_CHECK
+#endif
 
-/** Hash Function Objects Template */
-template<typename Key_Type>
-struct myHash {};
+/*------------------------------------------------ Function Declarations ------------------------------------------------*/
 
-/** Pair Function Objects Template */
-template<typename T1, typename T2>
-struct Pair {};
-
-/** Map Function Objects Template */
-template<typename KEY, typename VALUE>
-class HashMap {};
-
-/*******************************************************/
-/** Specializations */
-template<>
-struct myHash<string>
+/**
+ * main
+ * @param int argc the number of arguments passed to main
+ * @param int char* argv[] the file address | input file | output file
+**/
+int main(int argc, char *argv[])
 {
-	size_t operator()(const string& s)
-	{
-		return s[0];
-	}
-};
+    VS_MEM_CHECK
+    // Inputs -------------------------------------------------------------------------------------------------------------
+    // Check number of inputs
+    if (argc < 3)
+    {
+        cerr << "Please provide name of input and output files";
+        return 1;
+    }
+    // Try to open input file
+    cout << "Input file: " << argv[1] << endl;
+    std::ifstream in(argv[1]);
+    if (!in)
+    {
+        cerr << "Unable to open " << argv[1] << " for input";
+        return 2;
+    }
+    // Try to open output file
+    cout << "Output file: " << argv[2] << endl;
+    std::ofstream out(argv[2]);
+    if (!out)
+    {
+        in.close();
+        cerr << "Unable to open " << argv[2] << " for output";
+        return 3;
+    }
 
-template<>
-struct Pair<string, string>
-{
-	string first;
-	string second;
-	friend ostream& operator<<(ostream& out, const Pair& pair)
-	{
-		out << pair.first << " -> " << pair.second;
-		return out;
-	}
-};
-
-template<>
-struct Pair<string, set<string>>
-{
-	string first;
-	set<string> second;
-	friend ostream& operator<<(ostream& out, const Pair& pair)
-	{
-		out << pair.first << " ->";
-		typename set<string>::iterator iter = pair.second.begin();
-		while (iter != pair.second.end())
-		{
-			cout << " " << *iter++;
-		}
-		return out;
-	}
-};
-
-/** Specialzed Map Function Objects Template */
-#define DEFAULT_CAPACITY	5
-
-template<typename VALUE>
-class HashMap<string, VALUE>
-{
-private:
-	size_t capacity;
-	Pair<string, VALUE>* myPairs;
-public:
-	HashMap() : capacity(DEFAULT_CAPACITY),
-		myPairs(new Pair<string, VALUE>[DEFAULT_CAPACITY]) {}
-	~HashMap() = default;
-
-	VALUE& operator[](const string& key)
-	{
-		// check load factor and maybe rehash...
-		size_t hashIndex = myHash<string>()(key) % capacity;
-		int k = -1;
-		while (1)
-		{
-			if (myPairs[hashIndex].first.length() == 0)
-			{
-				myPairs[hashIndex].first = key;
-				break;
-			}
-			if (myPairs[hashIndex].first == key) break;
-			cout << endl << "Collision of " << key << " with " << myPairs[hashIndex].first;
-			k = k + 2;
-			hashIndex = (hashIndex + k) % capacity;
-		}
-		return myPairs[hashIndex].second;
-	}
-	friend ostream& operator<<(ostream& os, const HashMap& hmap)
-	{
-		for (size_t i = 0; i < hmap.capacity; ++i)
-		{
-			os << endl << " [" << i << ":";
-			if (hmap.myPairs[i].first != "") os << hmap.myPairs[i];
-			os << "]";
-		}
-		return os;
-	}
-};
-
-
-int main()
-{
-	HashMap<string, string> pokemon;
-	pokemon["Sharmander"] = "fire";
-	pokemon["Squirtle"] = "water";
-
-	cout << endl << "pokemon[\"Sharmander\"] = " << pokemon["Sharmander"];
-	cout << endl << "pokemon[\"DogFace\"] = " << pokemon["DogFace"];
-
-	pokemon["DogFace"] = "dog food";
-	cout << endl << endl << "pokemon:" << pokemon;
-
-	HashMap<string, set<string>> effectivies;
-	effectivies["grass"] = { "water", "ground", "rock" };
-	effectivies["fire"] = { "grass", "ice", "bug", "steel" };
-	cout << endl << endl << "effectivies:" << effectivies;
-
-	return 0;
+    return 0;
 }
+
+/*------------------------------------------------ Function Definitions ------------------------------------------------*/
