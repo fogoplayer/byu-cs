@@ -53,6 +53,12 @@ int main(int argc, char *argv[])
         return 3;
     }
 
+    string currLine;
+    while(getline(in, currLine))
+    {
+        cout << currLine << endl;
+    }
+
     return 0;
 }
 

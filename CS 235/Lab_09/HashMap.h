@@ -6,8 +6,8 @@
 
 #include "HashMapInterface.h"
 
-template <typename T>
-class HashMap : public HashMapInterface
+template <typename K, typename V>
+class HashMap : public HashMapInterface<K, V>
 {
 private:
 public:
