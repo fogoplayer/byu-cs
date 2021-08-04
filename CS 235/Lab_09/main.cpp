@@ -53,10 +53,13 @@ int main(int argc, char *argv[])
         return 3;
     }
 
+    HashMap<string, string> pokemonMap = HashMap<string, string>();
+    HashMap<string, string> movesMap = HashMap<string, string>();
+
     string command;
     while (in >> command)
     {
-        out << command << flush;
+        out << command;
 
         if (command == "Set:")
         {
@@ -75,8 +78,38 @@ int main(int argc, char *argv[])
             out << "  [" << stringSet << "]" << endl;
         }
 
+        else if (command == "Pokemon:") // Input command
+        {
+            string key;
+            string val;
+            in >> key >> val;
+            pokemonMap[key] = val;
+            out << " " << key << " " << val;
+        }
+
+        else if (command == "Pokemon") // Print command
+        {
+            out << ": " << pokemonMap;
+        }
+
+        else if (command == "Move:") // Input command
+        {
+            string key;
+            string val;
+            in >> key >> val;
+            movesMap[key] = val;
+            out << " " << key << " " << val;
+        }
+
+        else if (command == "Moves") // Print command
+        {
+            out << ": " << movesMap;
+        }
+
         out << endl;
     }
+
+    pokemonMap.~HashMap();
 
     return 0;
 }
