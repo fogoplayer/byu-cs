@@ -53,10 +53,29 @@ int main(int argc, char *argv[])
         return 3;
     }
 
-    string currLine;
-    while(getline(in, currLine))
+    string command;
+    while (in >> command)
     {
-        cout << currLine << endl;
+        out << command;
+
+        if (command == "Set:")
+        {
+            Set<string> stringSet;
+
+            string setValues;
+            getline(in, setValues);
+            out << setValues << endl;
+            istringstream setValuesStream(setValues);
+
+            while (setValuesStream >> command)
+            {
+                stringSet.insert(command);
+            }
+
+            out << "  [" << stringSet << "]" << endl;
+        }
+
+        out << endl;
     }
 
     return 0;

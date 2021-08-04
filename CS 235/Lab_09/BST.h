@@ -5,11 +5,9 @@
 
 #include "sstream"
 
-#include "BSTInterface.h"
-
 /** A binary tree container */
 template <typename T>
-class Bst : public BSTInterface<T>
+class Bst
 {
 private:
     /** A binary tree node with data, left and right child pointers */
@@ -62,6 +60,20 @@ private:
      */
     std::string find(T &value, Node *root) const;
 
+    /**
+     * Recursive inorder traversal of a BST as a string
+     */
+    virtual std::string toString(Node *node) const
+    {
+        std::ostringstream os;
+
+        std::string leftSide = node->left != nullptr ? toString(node->left) : "";
+        std::string rightSide = node->right != nullptr ? toString(node->right) : "";
+
+        os << leftSide << "," << node->data << rightSide;
+        return os.str();
+    }
+
 public:
     Bst(void) : root(nullptr){};
     ~Bst(void)
@@ -73,14 +85,6 @@ public:
      * Return true if node added to BST, else false
      */
     virtual bool addNode(const T &value);
-
-    /**
-     * Return true if node removed from BST, else false
-     */
-    virtual bool removeNode(const T &)
-    {
-        return true;
-    }
 
     /**
      * Return the number of nodes in the tree
@@ -111,9 +115,18 @@ public:
     }
 
     /**
-     * Return a level order traversal of a BST as a string
+     * Return an inorder traversal of a BST as a string
      */
-    virtual std::string toString() const;
+    virtual std::string toString() const
+    {
+        if (root == nullptr)
+        {
+            std::string errMsg = " empty";
+            return errMsg;
+        }
+
+        return toString(root).substr(1);
+    }
 
     /**
      * Overload the insertion operator
@@ -253,30 +266,6 @@ bool Bst<T>::addNode(const T &value)
     }
 
     return true;
-}
-
-template <typename T>
-std::string Bst<T>::toString() const
-{
-    if (root == nullptr)
-    {
-        std::string errMsg = " empty";
-        return errMsg;
-    }
-
-    std::ostringstream os;
-    os << std::endl;
-
-    size_t layer = 0;
-    os << "  " << layer + 1 << ":";
-
-    while (outLevel(root, layer, os))
-    {
-        os << std::endl;
-        ++layer;
-        os << "  " << layer + 1 << ":";
-    }
-    return os.str();
 }
 
 #endif
