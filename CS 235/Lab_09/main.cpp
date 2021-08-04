@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     string command;
     while (in >> command)
     {
-        out << command;
+        out << command << flush;
 
         if (command == "Set:")
         {
