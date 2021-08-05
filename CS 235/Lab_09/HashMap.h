@@ -51,12 +51,15 @@ public:
 
         while (1)
         {
+            // size_t k = 1; // Quadratic probing
             if (pairArray[tableIndex].first != K())
             {
                 if (pairArray[tableIndex].first == key)
                 {
                     break;
                 }
+                // k += 2; // Quadratic probing
+                // tableIndex = (tableIndex + k) % capacity; // Quadratic probing
                 tableIndex = (tableIndex + 1) % capacity;
                 continue;
             }

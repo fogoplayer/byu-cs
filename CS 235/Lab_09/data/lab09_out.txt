@@ -31,8 +31,8 @@ Move: earthquake ground
 Move: body_slam normal
 Pokemon: 10/31
   [0:Squirtle->water]
-  [1:Pikachu->electric]
-  [2:Snorlax->normal]
+  [1:Snorlax->normal]
+  [3:Pikachu->electric]
   [6:Machoke->fighting]
   [7:Dugtrio->ground]
   [8:Pidgeotto->flying]
