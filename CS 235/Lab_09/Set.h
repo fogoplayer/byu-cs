@@ -37,7 +37,7 @@ public:
     /** @return: return 1 if contains element equivalent to item, else 0. */
     virtual size_t count(const T &item)
     {
-        return 999;
+        return (bst.find(item) == "found") ? 1 : 0;
     };
 
     /** @return: string representation of items in Set. */

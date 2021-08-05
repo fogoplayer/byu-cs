@@ -58,7 +58,7 @@ private:
      * @param root a pointer to a Node
      * @return "found" or "not found"
      */
-    std::string find(T &value, Node *root) const;
+    std::string find(const T &value, Node *root) const;
 
     /**
      * Recursive inorder traversal of a BST as a string
@@ -99,7 +99,7 @@ public:
      * @param value the value to search for
      * @return "found" if it's in the tree, "found" if it's not
      */
-    std::string find(T &value) const
+    std::string find(const T &value) const
     {
         return find(value, root);
     }
@@ -199,7 +199,7 @@ int Bst<T>::size(Node *root) const
 }
 
 template <typename T>
-std::string Bst<T>::find(T &value, Node *root) const
+std::string Bst<T>::find(const T &value, Node *root) const
 {
     if (root == nullptr)
     {

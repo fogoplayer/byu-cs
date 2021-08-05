@@ -53,8 +53,10 @@ int main(int argc, char *argv[])
         return 3;
     }
 
-    HashMap<string, string> pokemonMap = HashMap<string, string>();
-    HashMap<string, string> movesMap = HashMap<string, string>();
+    HashMap<string, string> pokemonMap;
+    HashMap<string, string> movesMap;
+    HashMap<string, Set<string>> effective;
+    HashMap<string, Set<string>> ineffective;
 
     string command;
     while (in >> command)
@@ -106,10 +108,133 @@ int main(int argc, char *argv[])
             out << ": " << movesMap;
         }
 
+        else if (command == "Effective:")
+        {
+            string key;
+            in >> key;
+            out << " " << key;
+
+            string rest;
+            getline(in, rest);
+            istringstream restStream(rest);
+
+            string currSetVal;
+            while (restStream >> currSetVal)
+            {
+                effective[key].insert(currSetVal);
+                out << " " << currSetVal;
+            }
+        }
+
+        else if (command == "Effectivities")
+        {
+            out << ": " << effective;
+        }
+
+        else if (command == "Ineffective:")
+        {
+            string key;
+            in >> key;
+            out << " " << key;
+
+            string rest;
+            getline(in, rest);
+            istringstream restStream(rest);
+
+            string currSetVal;
+            while (restStream >> currSetVal)
+            {
+                ineffective[key].insert(currSetVal);
+                out << " " << currSetVal;
+            }
+        }
+
+        else if (command == "Ineffectivities")
+        {
+            out << ": " << ineffective;
+        }
+
+        else if (command == "Battle:")
+        {
+            string pokemon1, move1, pokemon2, move2;
+            in >> pokemon1 >> move1 >> pokemon2 >> move2;
+            out << " " << pokemon1 << " " << move1 << " " << pokemon2 << " " << move2 << endl;
+            out << "  " << pokemon1 << " (" << move1 << ") vs " << pokemon2 << " (" << move2 << ")" << endl;
+
+            string pokemon1Type = pokemonMap[pokemon1];
+            string pokemon2Type = pokemonMap[pokemon2];
+            string move1Type = movesMap[move1];
+            string move2Type = movesMap[move2];
+            string effectivity;
+
+            out << "  " << pokemon1 << " is a " << pokemon1Type << " type Pokemon." << endl;
+            out << "  " << pokemon2 << " is a " << pokemon2Type << " type Pokemon." << endl;
+            out << "  " << move1 << " is a " << move1Type << " type move." << endl;
+            out << "  " << move2 << " is a " << move2Type << " type move." << endl;
+
+            // Move info
+            out << "  " << move1 << " is super effective against [" << effective[move1Type] << "] type Pokemon." << endl;
+            out << "  " << move1 << " is ineffective against [" << ineffective[move1Type] << "] type Pokemon." << endl;
+
+            // Determine effectivity
+            if (effective[move1Type].count(pokemon2Type) > 0)
+            {
+                effectivity = "super effective";
+            }
+            else if (ineffective[move1Type].count(pokemon2Type) > 0)
+            {
+                effectivity = "ineffective";
+            }
+            else
+            {
+                effectivity = "effective";
+            }
+
+            out << "  " << pokemon1 << "'s " << move1 << " is " << effectivity << " against " << pokemon2 << endl;
+
+            // Move info
+            out << "  " << move2 << " is super effective against [" << effective[move2Type] << "] type Pokemon." << endl;
+            out << "  " << move2 << " is ineffective against [" << ineffective[move2Type] << "] type Pokemon." << endl;
+
+            // Determine effectivity
+            if (effective[move2Type].count(pokemon1Type) > 0)
+            {
+                effectivity = "super effective";
+            }
+            else if (ineffective[move2Type].count(pokemon1Type) > 0)
+            {
+                effectivity = "ineffective";
+            }
+            else
+            {
+                effectivity = "effective";
+            }
+
+            out << "  " << pokemon2 << "'s " << move2 << " is " << effectivity << " against " << pokemon1 << endl;
+
+            // Damage done
+            int damage1To2 = effective[move1Type].count(pokemon2Type) - ineffective[move1Type].count(pokemon2Type);
+            int damage2To1 = effective[move2Type].count(pokemon1Type) - ineffective[move2Type].count(pokemon1Type);
+
+            if ((damage1To2 - damage2To1) > 0)
+            {
+                out << "  In the battle between " << pokemon1 << " and " << pokemon2 << ", " << pokemon1 << " wins!";
+            }
+            else if ((damage1To2 - damage2To1) < 0)
+            {
+                out << "  In the battle between " << pokemon1 << " and " << pokemon2 << ", " << pokemon2 << " wins!";
+            }
+            else
+            {
+                out << "  The battle between " << pokemon1 << " and " << pokemon2 << " is a tie.";
+            }
+
+            out << endl
+                << endl;
+        }
+
         out << endl;
     }
-
-    pokemonMap.~HashMap();
 
     return 0;
 }
