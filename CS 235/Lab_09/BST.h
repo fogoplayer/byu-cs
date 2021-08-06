@@ -65,6 +65,11 @@ private:
      */
     virtual std::string toString(Node *node) const
     {
+        if (node)
+        {
+            /* code */
+        }
+
         std::ostringstream os;
         std::string leftSide = node->left != nullptr ? toString(node->left) : "";
         std::string rightSide = node->right != nullptr ? toString(node->right) : "";

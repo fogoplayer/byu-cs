@@ -17,6 +17,37 @@ private:
 
     int getHashVal(const K &key);
 
+    void checkAndRehash()
+    {
+        int tableLoad = size() * 100 / capacity;
+        if (tableLoad <= LOAD_THRESHOLD)
+        {
+            return;
+        }
+
+        size_t old_capacity = capacity;
+        capacity = capacity * 2;
+        Pair<K, V> *new_pairArray = new Pair<K, V>[capacity];
+        for (size_t index = 0; index < old_capacity; ++index)
+        {
+            if (pairArray[index].first != "")
+            {
+                size_t hashIndex = getHashVal(pairArray[index].first);
+                int probe = -1;
+                while (new_pairArray[hashIndex].first != "")
+                {
+                    probe = probe + 2;
+                    hashIndex = (hashIndex + probe) % capacity;
+                }
+                // **Deep assignment
+                new_pairArray[hashIndex] = pairArray[index];
+            }
+        }
+        delete[] pairArray;
+        pairArray = new_pairArray;
+        return;
+    }
+
 public:
     HashMap() : pairArray(new Pair<K, V>[DEFAULT_MAP_HASH_TABLE_SIZE]), capacity(DEFAULT_MAP_HASH_TABLE_SIZE){};
     ~HashMap()
@@ -96,6 +127,8 @@ int HashMap<K, V>::getHashVal(const K &key)
 template <typename K, typename V>
 V &HashMap<K, V>::operator[](const K &key)
 {
+    checkAndRehash();
+
     int tableIndex = getHashVal(key);
     size_t k = 1; // Quadratic probing
 

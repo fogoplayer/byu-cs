@@ -600,6 +600,7 @@ Move: psyshock psychic
 Move: psystrike psychic
 Move: psywave psychic
 Move: pulverizing_pancake normal
+Move: pummeling fighting
 Move: punishment dark
 Move: purify poison
 Move: pursuit dark
