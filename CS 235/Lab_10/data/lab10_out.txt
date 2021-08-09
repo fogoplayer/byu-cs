@@ -1,0 +1,8 @@
+QuickSort 10
+CapacityPLACEHOLDER
+QuickSort 1000
+CapacityPLACEHOLDER
+ClearCLEARED
+CapacityPLACEHOLDER
+QuickSort 1
+CapacityPLACEHOLDER
