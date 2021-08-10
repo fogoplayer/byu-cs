@@ -46,6 +46,22 @@ public:
     }
 
     /**
+     * @return studentAddress as string
+    **/
+    std::string getStudentAddress() const
+    {
+        return this->studentAddress;
+    }
+
+    /**
+     * @return studentPhone as string
+    **/
+    std::string getStudentPhone() const
+    {
+        return this->studentPhone;
+    }
+
+    /**
      * @return a 4-line string with the contents of all private data members
     **/
     std::string to_string()

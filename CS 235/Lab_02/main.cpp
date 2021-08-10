@@ -65,13 +65,13 @@ int main(int argc, char *argv[])
     out << "Input Strings:" << endl;
     while (getline(in, currLine))
     {
-        out << currLine;
 
         size_t parenPosition = currLine.find("(");
         string command = currLine.substr(0, parenPosition);
 
         if (command == "snap") // snap(12345,Charlie Brown,Manager,555-1234)
         {
+            out << currLine;
             currLine = currLine.substr(parenPosition + 1); // 12345,Charlie Brown,Manager,555-1234)
 
             int id;
@@ -98,8 +98,9 @@ int main(int argc, char *argv[])
             snapVec.push_back(snap);
         }
 
-        if (command == "csg") // csg(CS101,12345,A)
+        else if (command == "csg") // csg(CS101,12345,A)
         {
+            out << currLine;
             currLine = currLine.substr(parenPosition + 1); // CS101,12345,A)
 
             string name;
@@ -121,8 +122,9 @@ int main(int argc, char *argv[])
             csgVec.push_back(csg);
         }
 
-        if (command == "cdh") // cdh(CS101,M,9AM)
+        else if (command == "cdh") // cdh(CS101,M,9AM)
         {
+            out << currLine;
             currLine = currLine.substr(parenPosition + 1); // CS101,M,9AM)
 
             string name;
@@ -143,8 +145,9 @@ int main(int argc, char *argv[])
             cdhVec.push_back(cdh);
         }
 
-        if (command == "cr") // cr(CS101,1170 TMCB)
+        else if (command == "cr") // cr(CS101,1170 TMCB)
         {
+            out << currLine;
             currLine = currLine.substr(parenPosition + 1); // CS101,1170 TMCB)
 
             string name;
@@ -159,8 +162,12 @@ int main(int argc, char *argv[])
             Cr cr(name, room);
             crVec.push_back(cr);
         }
-    }
 
+        else
+        {
+            out << "**Error: " << currLine;
+        }
+    }
     out << endl
         << endl;
 
@@ -183,12 +190,54 @@ int main(int argc, char *argv[])
     }
     out << endl;
 
-    out << "Course Grades" << endl;
+    out << "Course Grades:" << endl;
     for (size_t i = 0; i < csgVec.size(); i++)
     {
         out << csgVec[i].getCourseName() << ","
             << findStudentNameByID(csgVec[i].getStudentID(), snapVec) << ","
             << csgVec[i].getStudentGrade() << endl;
+    }
+    out << endl;
+
+    out << "Student Schedules:" << endl;
+    for (size_t i = 0; i < snapVec.size(); i++)
+    {
+        // Print student
+        Snap student = snapVec[i];
+        out << student.getStudentName() << ", " << student.getStudentID() << ", " << student.getStudentAddress() << ", " << student.getStudentPhone() << endl;
+
+        for (size_t i = 0; i < csgVec.size(); i++)
+        {
+            Csg course = csgVec[i];
+            if (course.getStudentID() == student.getStudentID())
+            {
+                string courseName = course.getCourseName();
+                string courseDays = "";
+                string courseTime = "";
+                string courseRoom = "";
+
+                for (size_t i = 0; i < cdhVec.size(); i++)
+                {
+                    Cdh cdh = cdhVec[i];
+                    if (cdh.getCourseName() == courseName)
+                    {
+                        courseDays += cdh.getCourseDay();
+                        courseTime = courseTime == "" ? cdh.getCourseTime() : courseTime;
+                    }
+                }
+
+                for (size_t i = 0; i < crVec.size(); i++)
+                {
+                    Cr cr = crVec[i];
+                    if (cr.getCourseName() == courseName)
+                    {
+                        courseRoom = cr.getRoom();
+                    }
+                }
+
+                out << "  " << courseName << " " << courseDays << " " << courseTime << ", " << courseRoom << endl;
+            }
+        }
     }
 
     return 0;
