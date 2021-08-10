@@ -145,6 +145,15 @@ void newQuickSort(istream &in, ostream &out)
             out << " OK";
         }
 
+        else if (command == "Sort")
+        {
+            size_t arg1, arg2;
+            in >> arg1 >> arg2;
+            out << " " << arg1 << "," << arg2;
+            qs.sort(arg1, arg2);
+            out << " OK";
+        }
+
         // Insert here
 
         else if (command == "QuickSort")

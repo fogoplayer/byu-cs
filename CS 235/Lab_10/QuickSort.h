@@ -19,6 +19,7 @@ private:
 	void resize()
 	{
 		T *newPtrArray = new T[capacityCounter * 2];
+
 		for (size_t i = 0; i < capacityCounter; i++)
 		{
 			newPtrArray[i] = ptrArray[i];
@@ -58,7 +59,6 @@ public:
 	/** Add an element to the QuickSort array. Dynamically grow array as needed. */
 	virtual bool addElement(T element)
 	{
-
 		if (ptrArray[capacityCounter - 1] != T())
 		{
 			resize();
@@ -73,6 +73,7 @@ public:
 	/** Sort the elements of a QuickSort subarray using median and partition functions. */
 	virtual bool sort(size_t left, size_t right)
 	{
+		recursiveSort(left, right);
 		return true;
 	}
 
