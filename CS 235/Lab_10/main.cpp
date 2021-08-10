@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-//#include "main.h"
+#include "QuickSort.h"
 
 using namespace std;
 
@@ -18,6 +18,8 @@ using namespace std;
 #endif
 
 /*------------------------------------------------ Function Declarations ------------------------------------------------*/
+
+void newQuickSort(istream &in, ostream &out);
 
 /**
  * main
@@ -52,6 +54,7 @@ int main(int argc, char *argv[])
         return 3;
     }
 
+    // Execute Commands ---------------------------------------------------------------------------------------------------
     string command;
     while (in >> command)
     {
@@ -59,25 +62,50 @@ int main(int argc, char *argv[])
 
         if (command == "QuickSort")
         {
-            int capacity;
-            in >> capacity;
-            out << " " << capacity;
+            newQuickSort(in, out);
         }
-
-        else if (command == "Capacity")
-        {
-            out << "PLACEHOLDER";
-        }
-
-        else if (command == "Clear")
-        {
-            out << "CLEARED";
-        }
-
-        out << endl;
     }
 
     return 0;
 }
 
 /*------------------------------------------------ Function Definitions ------------------------------------------------*/
+
+void newQuickSort(istream &in, ostream &out)
+{
+    string command;
+
+    int capacity;
+    in >> capacity;
+    out << " " << capacity << endl;
+
+    QuickSort<string> qs(capacity);
+
+    while (in >> command)
+    {
+        out << command;
+
+        if (command == "Capacity")
+        {
+            out << " "
+                << qs.capacity();
+        }
+
+        else if (command == "Clear")
+        {
+            out << " "
+                << qs.clear()
+                ? "true"
+                : "false";
+        }
+
+        // Insert here
+
+        else if (command == "QuickSort")
+        {
+            newQuickSort(in, out);
+        }
+
+        out << endl;
+    }
+}
