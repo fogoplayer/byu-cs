@@ -79,7 +79,7 @@ void newQuickSort(istream &in, ostream &out)
     in >> capacity;
     out << " " << capacity << " OK" << endl;
 
-    QuickSort<string> qs(capacity);
+    QuickSort<int> qs(capacity);
 
     while (in >> command)
     {
@@ -102,7 +102,7 @@ void newQuickSort(istream &in, ostream &out)
             getline(in, command);
             istringstream is(command);
 
-            string arg;
+            int arg;
 
             // First one
             is >> arg;
@@ -135,6 +135,14 @@ void newQuickSort(istream &in, ostream &out)
             in >> arg1 >> arg2;
             out << " " << arg1 << "," << arg2;
             out << " = " << qs.medianOfThree(arg1, arg2);
+        }
+
+        else if (command == "Partition")
+        {
+            int arg1, arg2, arg3;
+            in >> arg1 >> arg2 >> arg3;
+            out << " " << arg1 << "," << arg2 << "," << arg3;
+            out << " = " << qs.partition(arg1, arg2, arg3);
         }
 
         // Insert here

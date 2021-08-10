@@ -104,7 +104,7 @@ public:
 		if (ptrArray == nullptr ||				// Array is empty
 			left < 0 || left >= sizeCounter ||	// Left is out of bounds
 			right < 0 || right > sizeCounter || // Right is out of bounds
-			left >= right)						// Left isn't less than right
+			left >= right - 1)					// Left isn't less than right
 		{
 			return -1;
 		}
@@ -147,7 +147,42 @@ public:
 	*/
 	virtual int partition(size_t left, size_t right, size_t pivotIndex)
 	{
-		return 999999;
+		if (ptrArray == nullptr ||				// Array is empty
+			left < 0 || left >= sizeCounter ||	// Left is out of bounds
+			right < 0 || right > sizeCounter || // Right is out of bounds
+			left >= right - 1)					// Left is less than right
+		{
+			return -1;
+		}
+
+		size_t up = left + 1;
+		size_t down = right - 1;
+		T pivotVal = ptrArray[pivotIndex];
+
+		swap(ptrArray[left], ptrArray[pivotIndex]);
+
+		do
+		{
+			while ((up != right - 1) && !(pivotVal < ptrArray[up]))
+			{
+				++up;
+			}
+
+			while (pivotVal < ptrArray[down])
+			{
+				--down;
+			}
+
+			if (up < down)
+			{
+				swap(ptrArray[up], ptrArray[down]);
+			}
+
+		} while (up < down);
+
+		swap(ptrArray[left], ptrArray[down]);
+
+		return down;
 	}
 
 	/** @return: comma delimited string representation of the array. */
