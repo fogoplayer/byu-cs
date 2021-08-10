@@ -11,5 +11,5 @@ MedianOfThree 6 12
 PrintArray
 MedianOfThree 0 1
 PrintArray
-MedianOfThree 0 1
+MedianOfThree 2 1
 PrintArray
