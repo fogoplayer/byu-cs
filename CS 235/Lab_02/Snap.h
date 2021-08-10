@@ -32,7 +32,7 @@ public:
     /**
      * @return studentID as int
     **/
-    int getStudentID()
+    int getStudentID() const
     {
         return this->studentID;
     }
@@ -40,7 +40,7 @@ public:
     /**
      * @return studentName as string
     **/
-    std::string getStudentName()
+    std::string getStudentName() const
     {
         return this->studentName;
     }

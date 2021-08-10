@@ -13,6 +13,9 @@
 
 using namespace std;
 
+/*-------------------------------Function Declarations-------------------------------*/
+string findStudentNameByID(int ID, const vector<Snap> &snapVec);
+
 #ifdef _MSC_VER
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -110,9 +113,9 @@ int main(int argc, char *argv[])
             arg >> studentId;
             currLine = currLine.substr(commaPosition + 1); // A)
 
-            char grade;
+            string grade;
             parenPosition = currLine.find(')');
-            grade = currLine[0]; // A
+            grade = currLine.substr(0, parenPosition); // A
 
             Csg csg(name, studentId, grade);
             csgVec.push_back(csg);
@@ -178,8 +181,30 @@ int main(int argc, char *argv[])
     {
         out << crVec[i] << endl;
     }
+    out << endl;
+
+    out << "Course Grades" << endl;
+    for (size_t i = 0; i < csgVec.size(); i++)
+    {
+        out << csgVec[i].getCourseName() << ","
+            << findStudentNameByID(csgVec[i].getStudentID(), snapVec) << ","
+            << csgVec[i].getStudentGrade() << endl;
+    }
 
     return 0;
 }
 
 /*-------------------------------Function Definitions-------------------------------*/
+string findStudentNameByID(int ID, const vector<Snap> &snapVec)
+{
+    for (size_t i = 0; i < snapVec.size(); i++)
+    {
+        int studentID = snapVec[i].getStudentID();
+        if (studentID == ID)
+        {
+            return snapVec[i].getStudentName();
+        }
+    }
+    string errMsg = "Not Found";
+    throw(errMsg);
+}

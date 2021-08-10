@@ -7,11 +7,11 @@
 
 #include "CourseInterface.h"
 
-class Csg : CourseInterface
+class Csg : public CourseInterface
 {
 private:
     int studentID;
-    char studentGrade;
+    std::string studentGrade;
 
 public:
     /**
@@ -19,7 +19,7 @@ public:
      * @param studentID defaults to 0
      * @param studentGrade defaults to 'Z'
     **/
-    Csg(std::string courseName = "No Name Provided", int studentID = 0, char studentGrade = 'Z') : CourseInterface(courseName), studentID(studentID), studentGrade(studentGrade) {}
+    Csg(std::string courseName = "No Name Provided", int studentID = 0, std::string studentGrade = "Z") : CourseInterface(courseName), studentID(studentID), studentGrade(studentGrade) {}
 
     ~Csg() {}
 
@@ -32,9 +32,9 @@ public:
     }
 
     /**
-     * @return student grade as char
+     * @return student grade as string
     **/
-    int getStudentGrade()
+    std::string getStudentGrade()
     {
         return this->studentGrade;
     }
