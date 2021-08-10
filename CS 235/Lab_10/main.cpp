@@ -145,6 +145,12 @@ void newQuickSort(istream &in, ostream &out)
             out << " = " << qs.partition(arg1, arg2, arg3);
         }
 
+        else if (command == "SortAll")
+        {
+            qs.sortAll();
+            out << " OK";
+        }
+
         // Insert here
 
         else if (command == "QuickSort")

@@ -29,13 +29,33 @@ private:
 		capacityCounter *= 2;
 	}
 
+	bool recursiveSort(int first, int last)
+	{
+		int pivot = medianOfThree(first, last);
+		if (pivot > 0) // Negative pivot means too small range
+		{
+			pivot = partition(first, last, pivot);
+			recursiveSort(first, pivot);
+			recursiveSort(pivot + 1, last);
+		}
+		return true;
+	}
+
 public:
 	QuickSort(size_t capacityCounter) : capacityCounter(capacityCounter), ptrArray(new T[capacityCounter]), sizeCounter(0){};
-	virtual ~QuickSort() { clear(); }
+	virtual ~QuickSort()
+	{
+		if (ptrArray != nullptr)
+		{
+			delete[] ptrArray;
+			ptrArray = nullptr;
+		}
+	}
 
 	/** Add an element to the QuickSort array. Dynamically grow array as needed. */
 	virtual bool addElement(T element)
 	{
+
 		if (ptrArray[capacityCounter - 1] != T())
 		{
 			resize();
@@ -56,18 +76,13 @@ public:
 	/** Sort all elements of the QuickSort array using median and partition functions. */
 	virtual bool sortAll()
 	{
+		recursiveSort(0, sizeCounter);
 		return true;
 	}
 
 	/** Removes all items from the QuickSort array. */
 	virtual bool clear()
 	{
-		if (ptrArray != nullptr)
-		{
-			delete[] ptrArray;
-			ptrArray = nullptr;
-		}
-
 		sizeCounter = 0;
 
 		return true;
@@ -188,7 +203,7 @@ public:
 	/** @return: comma delimited string representation of the array. */
 	virtual std::string toString() const
 	{
-		if (ptrArray == nullptr)
+		if (sizeCounter == 0)
 		{
 			return " Empty";
 		}
