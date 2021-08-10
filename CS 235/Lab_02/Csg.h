@@ -45,9 +45,9 @@ public:
     std::string to_string()
     {
         std::ostringstream objectStream;
-        objectStream << "Name: " << courseName << "\n";
-        objectStream << "ID: " << studentID << "\n";
-        objectStream << "Grade: " << studentGrade << "\n";
+        objectStream << "csg(" << courseName;
+        objectStream << "," << studentID;
+        objectStream << "," << studentGrade << ")";
 
         return objectStream.str();
     }

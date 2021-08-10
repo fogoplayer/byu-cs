@@ -10,16 +10,16 @@ private:
     int studentID;
     std::string studentName;
     std::string studentAddress;
-    int studentPhone;
+    std::string studentPhone;
 
 public:
     /**
      * @param studentID defaults to 0
      * @param studentName defaults to "No Name Provided"
      * @param studentAddress defaults to "No Address Provided"
-     * @param studentPhone defaults to 0
+     * @param studentPhone defaults to "No Phone Provided"
     **/
-    Snap(int studentID = 0, std::string studentName = "No Name Provided", std::string studentAddress = "No Address Provided", int studentPhone = 0)
+    Snap(int studentID = 0, std::string studentName = "No Name Provided", std::string studentAddress = "No Address Provided", std::string studentPhone = "No Phone Provided")
     {
         this->studentID = studentID;
         this->studentName = studentName;
@@ -51,10 +51,10 @@ public:
     std::string to_string()
     {
         std::ostringstream objectStream;
-        objectStream << "ID: " << studentID << "\n";
-        objectStream << "Name: " << studentName << "\n";
-        objectStream << "Address: " << studentAddress << "\n";
-        objectStream << "Phone: " << studentPhone << "\n";
+        objectStream << "snap(" << studentID;
+        objectStream << "," << studentName;
+        objectStream << "," << studentAddress;
+        objectStream << "," << studentPhone << ")";
 
         return objectStream.str();
     }

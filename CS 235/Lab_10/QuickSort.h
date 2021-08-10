@@ -16,36 +16,11 @@ private:
 	size_t sizeCounter;
 	T *ptrArray;
 
-	void resize()
-	{
-		T *newPtrArray = new T[capacityCounter * 2];
+	/** Double the capacity of the array */
+	void resize();
 
-		for (size_t i = 0; i < sizeCounter; i++)
-		{
-			newPtrArray[i] = ptrArray[i];
-		}
-
-		for (size_t i = sizeCounter; i < capacityCounter * 2; i++)
-		{
-			newPtrArray[i] = 0;
-		}
-
-		delete[] ptrArray;
-		ptrArray = newPtrArray;
-		capacityCounter *= 2;
-	}
-
-	bool recursiveSort(int first, int last)
-	{
-		int pivot = medianOfThree(first, last);
-		pivot = partition(first, last, pivot);
-		if (pivot > 0) // Negative pivot means too small range
-		{
-			recursiveSort(first, pivot);
-			recursiveSort(pivot + 1, last);
-		}
-		return true;
-	}
+	/** Keep partitioning until array is sorted */
+	bool recursiveSort(int first, int last);
 
 public:
 	QuickSort(size_t capacityCounter) : capacityCounter(capacityCounter), ptrArray(new T[capacityCounter]()), sizeCounter(0)
@@ -62,18 +37,7 @@ public:
 	}
 
 	/** Add an element to the QuickSort array. Dynamically grow array as needed. */
-	virtual bool addElement(T element)
-	{
-		if (ptrArray[capacityCounter - 1] != T())
-		{
-			resize();
-		}
-
-		ptrArray[sizeCounter] = element;
-		++sizeCounter;
-
-		return true;
-	}
+	virtual bool addElement(T element);
 
 	/** Sort the elements of a QuickSort subarray using median and partition functions. */
 	virtual bool sort(size_t left, size_t right)
@@ -123,36 +87,7 @@ public:
 	              2) if either of the given integers is out of bounds,
 	              3) or if the left index is not less than the right index.
 	*/
-	virtual int medianOfThree(size_t left, size_t right)
-	{
-		if (ptrArray == nullptr ||				// Array is empty
-			left < 0 || left >= sizeCounter ||	// Left is out of bounds
-			right < 0 || right > sizeCounter || // Right is out of bounds
-			left > right - 1)					// Left isn't less than right
-		{
-			return -1;
-		}
-
-		size_t middle = (left + right) / 2;
-		right = right - 1;
-		// Initial: [3,2,1]
-		if (ptrArray[left] > ptrArray[middle])
-		{
-			swap(ptrArray[left], ptrArray[middle]); // [2,3,1]
-		}
-
-		if (ptrArray[middle] > ptrArray[right])
-		{
-			swap(ptrArray[middle], ptrArray[right]); // [2,1,3]
-		}
-
-		if (ptrArray[left] > ptrArray[middle])
-		{
-			swap(ptrArray[left], ptrArray[middle]); // [1,2,3]
-		}
-
-		return middle; // Return middle index
-	}
+	virtual int medianOfThree(size_t left, size_t right);
 
 	/** Partitions a subarray around a pivot value selected according
 	to median-of-three pivot selection. Because there are multiple ways
@@ -169,63 +104,10 @@ public:
 	              2) if any of the given indexes are out of bounds,
 	              3) if the left index is not less than the right index.
 	*/
-	virtual int partition(size_t left, size_t right, size_t pivotIndex)
-	{
-		if (ptrArray == nullptr ||				// Array is empty
-			left < 0 || left >= sizeCounter ||	// Left is out of bounds
-			right < 0 || right > sizeCounter || // Right is out of bounds
-			left >= right - 1)					// Left is less than right
-		{
-			return -1;
-		}
-
-		size_t up = left + 1;
-		size_t down = right - 1;
-		T pivotVal = ptrArray[pivotIndex];
-
-		swap(ptrArray[left], ptrArray[pivotIndex]);
-
-		do
-		{
-			while ((up != right - 1) && !(pivotVal < ptrArray[up]))
-			{
-				++up;
-			}
-
-			while (pivotVal < ptrArray[down])
-			{
-				--down;
-			}
-
-			if (up < down)
-			{
-				swap(ptrArray[up], ptrArray[down]);
-			}
-
-		} while (up < down);
-
-		swap(ptrArray[left], ptrArray[down]);
-
-		return down;
-	}
+	virtual int partition(size_t left, size_t right, size_t pivotIndex);
 
 	/** @return: comma delimited string representation of the array. */
-	virtual std::string toString() const
-	{
-		if (sizeCounter == 0)
-		{
-			return " Empty";
-		}
-
-		ostringstream os;
-
-		os << " " << ptrArray[0];
-		for (size_t i = 1; i < sizeCounter; i++)
-		{
-			os << "," << ptrArray[i];
-		}
-		return os.str();
-	}
+	virtual std::string toString() const;
 
 	/**
 	 * Overload the insertion operator
@@ -237,5 +119,143 @@ public:
 		return os;
 	}
 };
+
+template <typename T>
+void QuickSort<T>::resize()
+{
+	T *newPtrArray = new T[capacityCounter * 2];
+
+	for (size_t i = 0; i < sizeCounter; i++)
+	{
+		newPtrArray[i] = ptrArray[i];
+	}
+
+	for (size_t i = sizeCounter; i < capacityCounter * 2; i++)
+	{
+		newPtrArray[i] = 0;
+	}
+
+	delete[] ptrArray;
+	ptrArray = newPtrArray;
+	capacityCounter *= 2;
+}
+
+template <typename T>
+bool QuickSort<T>::recursiveSort(int first, int last)
+{
+	int pivot = medianOfThree(first, last);
+	pivot = partition(first, last, pivot);
+	if (pivot > 0) // Negative pivot means too small range
+	{
+		recursiveSort(first, pivot);
+		recursiveSort(pivot + 1, last);
+	}
+	return true;
+}
+
+template <typename T>
+bool QuickSort<T>::addElement(T element)
+{
+	if (ptrArray[capacityCounter - 1] != T())
+	{
+		resize();
+	}
+
+	ptrArray[sizeCounter] = element;
+	++sizeCounter;
+
+	return true;
+}
+
+template <typename T>
+int QuickSort<T>::medianOfThree(size_t left, size_t right)
+{
+	if (ptrArray == nullptr ||				// Array is empty
+		left < 0 || left >= sizeCounter ||	// Left is out of bounds
+		right < 0 || right > sizeCounter || // Right is out of bounds
+		left > right - 1)					// Left isn't less than right
+	{
+		return -1;
+	}
+
+	size_t middle = (left + right) / 2;
+	right = right - 1;
+	// Initial: [3,2,1]
+	if (ptrArray[left] > ptrArray[middle])
+	{
+		swap(ptrArray[left], ptrArray[middle]); // [2,3,1]
+	}
+
+	if (ptrArray[middle] > ptrArray[right])
+	{
+		swap(ptrArray[middle], ptrArray[right]); // [2,1,3]
+	}
+
+	if (ptrArray[left] > ptrArray[middle])
+	{
+		swap(ptrArray[left], ptrArray[middle]); // [1,2,3]
+	}
+
+	return middle; // Return middle index
+}
+
+template <typename T>
+int QuickSort<T>::partition(size_t left, size_t right, size_t pivotIndex)
+{
+	if (ptrArray == nullptr ||				// Array is empty
+		left < 0 || left >= sizeCounter ||	// Left is out of bounds
+		right < 0 || right > sizeCounter || // Right is out of bounds
+		left >= right - 1)					// Left is less than right
+	{
+		return -1;
+	}
+
+	size_t up = left + 1;
+	size_t down = right - 1;
+	T pivotVal = ptrArray[pivotIndex];
+
+	swap(ptrArray[left], ptrArray[pivotIndex]);
+
+	do
+	{
+		while ((up != right - 1) && !(pivotVal < ptrArray[up]))
+		{
+			++up;
+		}
+
+		while (pivotVal < ptrArray[down])
+		{
+			--down;
+		}
+
+		if (up < down)
+		{
+			swap(ptrArray[up], ptrArray[down]);
+		}
+
+	} while (up < down);
+
+	swap(ptrArray[left], ptrArray[down]);
+
+	return down;
+}
+
+template <typename T>
+std::string QuickSort<T>::toString() const
+{
+	if (sizeCounter == 0)
+	{
+		return " Empty";
+	}
+
+	ostringstream os;
+
+	os << " " << ptrArray[0];
+	for (size_t i = 1; i < sizeCounter; i++)
+	{
+		os << "," << ptrArray[i];
+	}
+	return os.str();
+}
 
 #endif /* QUICKSORT_H_ */

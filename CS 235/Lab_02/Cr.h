@@ -30,8 +30,8 @@ public:
     std::string to_string()
     {
         std::ostringstream objectStream;
-        objectStream << "Name: " << courseName << "\n";
-        objectStream << "Room: " << room << "\n";
+        objectStream << "cr(" << courseName;
+        objectStream << "," << room << ")";
 
         return objectStream.str();
     }

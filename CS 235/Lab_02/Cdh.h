@@ -45,9 +45,9 @@ public:
     std::string to_string()
     {
         std::ostringstream objectStream;
-        objectStream << "Name: " << courseName << "\n";
-        objectStream << "Day: " << day << "\n";
-        objectStream << "Time: " << time << "\n";
+        objectStream << "cdh(" << courseName;
+        objectStream << "," << day;
+        objectStream << "," << time << ")";
 
         return objectStream.str();
     }
