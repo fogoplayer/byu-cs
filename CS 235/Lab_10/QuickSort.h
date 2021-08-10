@@ -32,9 +32,9 @@ private:
 	bool recursiveSort(int first, int last)
 	{
 		int pivot = medianOfThree(first, last);
+		pivot = partition(first, last, pivot);
 		if (pivot > 0) // Negative pivot means too small range
 		{
-			pivot = partition(first, last, pivot);
 			recursiveSort(first, pivot);
 			recursiveSort(pivot + 1, last);
 		}
@@ -42,7 +42,10 @@ private:
 	}
 
 public:
-	QuickSort(size_t capacityCounter) : capacityCounter(capacityCounter), ptrArray(new T[capacityCounter]), sizeCounter(0){};
+	QuickSort(size_t capacityCounter) : capacityCounter(capacityCounter), ptrArray(new T[capacityCounter]()), sizeCounter(0)
+	{
+		// ptrArray = {0};
+	}
 	virtual ~QuickSort()
 	{
 		if (ptrArray != nullptr)
@@ -119,7 +122,7 @@ public:
 		if (ptrArray == nullptr ||				// Array is empty
 			left < 0 || left >= sizeCounter ||	// Left is out of bounds
 			right < 0 || right > sizeCounter || // Right is out of bounds
-			left >= right - 1)					// Left isn't less than right
+			left > right - 1)					// Left isn't less than right
 		{
 			return -1;
 		}

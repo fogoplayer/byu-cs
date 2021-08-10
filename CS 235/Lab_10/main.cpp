@@ -56,14 +56,107 @@ int main(int argc, char *argv[])
 
     // Execute Commands ---------------------------------------------------------------------------------------------------
     string command;
+    int capacity;
+
+    in >> command;
+    in >> capacity;
+
+    out << command << " " << capacity << " OK" << endl;
+
+    QuickSort<int> qs(capacity);
+
     while (in >> command)
     {
         out << command;
 
+        if (command == "Capacity")
+        {
+            out << " "
+                << qs.capacity();
+        }
+
+        else if (command == "Clear")
+        {
+            qs.clear();
+            out << " OK";
+        }
+
+        else if (command == "AddToArray")
+        {
+            getline(in, command);
+            istringstream is(command);
+
+            int arg;
+
+            // First one
+            is >> arg;
+            out << "  " << arg;
+            qs.addElement(arg);
+
+            // Others
+            while (is >> arg)
+            {
+                out << "," << arg;
+                qs.addElement(arg);
+            }
+
+            out << " OK";
+        }
+
+        else if (command == "PrintArray")
+        {
+            out << qs;
+        }
+
+        else if (command == "Size")
+        {
+            out << " " << qs.size();
+        }
+
+        else if (command == "MedianOfThree")
+        {
+            size_t arg1, arg2;
+            in >> arg1 >> arg2;
+            out << " " << arg1 << "," << arg2;
+            out << " = " << qs.medianOfThree(arg1, arg2);
+        }
+
+        else if (command == "Partition")
+        {
+            int arg1, arg2, arg3;
+            in >> arg1 >> arg2 >> arg3;
+            out << " " << arg1 << "," << arg2 << "," << arg3;
+            out << " = " << qs.partition(arg1, arg2, arg3);
+        }
+
+        else if (command == "SortAll")
+        {
+            qs.sortAll();
+            out << " OK";
+        }
+
+        // Insert here
+
+        else if (command == "QuickSort")
+        {
+            in >> command;
+            in >> capacity;
+
+            out << command << " " << capacity << " OK";
+
+            qs = QuickSort<int>(capacity);
+
+            // newQuickSort(in, out);
+        }
+
+        out << endl;
+
+        /* out << command;
+
         if (command == "QuickSort")
         {
             newQuickSort(in, out);
-        }
+        } */
     }
 
     return 0;
@@ -74,10 +167,10 @@ int main(int argc, char *argv[])
 void newQuickSort(istream &in, ostream &out)
 {
     string command;
-
     int capacity;
-    in >> capacity;
-    out << " " << capacity << " OK" << endl;
+
+    in >> command >> capacity;
+    out << command << " " << capacity << " OK" << endl;
 
     QuickSort<int> qs(capacity);
 
@@ -155,7 +248,6 @@ void newQuickSort(istream &in, ostream &out)
 
         else if (command == "QuickSort")
         {
-            newQuickSort(in, out);
         }
 
         out << endl;
