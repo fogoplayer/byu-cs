@@ -2,6 +2,7 @@
 #define QUICKSORT_H_
 #include <string>
 #include <sstream>
+#include <utility>
 
 #include "QSInterface.h"
 
@@ -100,7 +101,33 @@ public:
 	*/
 	virtual int medianOfThree(size_t left, size_t right)
 	{
-		return 999999;
+		if (ptrArray == nullptr ||				// Array is empty
+			left < 0 || left >= sizeCounter ||	// Left is out of bounds
+			right < 0 || right > sizeCounter || // Right is out of bounds
+			left >= right)						// Left isn't less than right
+		{
+			return -1;
+		}
+
+		size_t middle = (left + right) / 2;
+		right = right - 1;
+		// Initial: [3,2,1]
+		if (ptrArray[left] > ptrArray[middle])
+		{
+			swap(ptrArray[left], ptrArray[middle]); // [2,3,1]
+		}
+
+		if (ptrArray[middle] > ptrArray[right])
+		{
+			swap(ptrArray[middle], ptrArray[right]); // [2,1,3]
+		}
+
+		if (ptrArray[left] > ptrArray[middle])
+		{
+			swap(ptrArray[left], ptrArray[middle]); // [1,2,3]
+		}
+
+		return middle; // Return middle index
 	}
 
 	/** Partitions a subarray around a pivot value selected according

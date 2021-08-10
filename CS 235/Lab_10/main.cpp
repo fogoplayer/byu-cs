@@ -129,6 +129,14 @@ void newQuickSort(istream &in, ostream &out)
             out << " " << qs.size();
         }
 
+        else if (command == "MedianOfThree")
+        {
+            size_t arg1, arg2;
+            in >> arg1 >> arg2;
+            out << " " << arg1 << "," << arg2;
+            out << " = " << qs.medianOfThree(arg1, arg2);
+        }
+
         // Insert here
 
         else if (command == "QuickSort")
