@@ -1,6 +1,7 @@
 #ifndef QUICKSORT_H_
 #define QUICKSORT_H_
 #include <string>
+#include <sstream>
 
 #include "QSInterface.h"
 
@@ -11,20 +12,51 @@ class QuickSort : public QSInterface<T>
 {
 private:
 	size_t capacityCounter;
+	size_t sizeCounter;
 	T *ptrArray;
 
+	void resize()
+	{
+		T *newPtrArray = new T[capacityCounter * 2];
+		for (size_t i = 0; i < capacityCounter; i++)
+		{
+			newPtrArray[i] = ptrArray[i];
+		}
+
+		delete[] ptrArray;
+		ptrArray = newPtrArray;
+		capacityCounter *= 2;
+	}
+
 public:
-	QuickSort(size_t capacityCounter) : capacityCounter(capacityCounter), ptrArray(new T[capacityCounter]){};
+	QuickSort(size_t capacityCounter) : capacityCounter(capacityCounter), ptrArray(new T[capacityCounter]), sizeCounter(0){};
 	virtual ~QuickSort() { clear(); }
 
 	/** Add an element to the QuickSort array. Dynamically grow array as needed. */
-	virtual bool addElement(T element) { return true; }
+	virtual bool addElement(T element)
+	{
+		if (ptrArray[capacityCounter - 1] != T())
+		{
+			resize();
+		}
+
+		ptrArray[sizeCounter] = element;
+		++sizeCounter;
+
+		return true;
+	}
 
 	/** Sort the elements of a QuickSort subarray using median and partition functions. */
-	virtual bool sort(size_t left, size_t right) { return true; }
+	virtual bool sort(size_t left, size_t right)
+	{
+		return true;
+	}
 
 	/** Sort all elements of the QuickSort array using median and partition functions. */
-	virtual bool sortAll() { return true; }
+	virtual bool sortAll()
+	{
+		return true;
+	}
 
 	/** Removes all items from the QuickSort array. */
 	virtual bool clear()
@@ -34,14 +66,23 @@ public:
 			delete[] ptrArray;
 			ptrArray = nullptr;
 		}
+
+		sizeCounter = 0;
+
 		return true;
 	}
 
 	/** Return size of the QuickSort array. */
-	virtual size_t capacity() const { return capacityCounter; }
+	virtual size_t capacity() const
+	{
+		return capacityCounter;
+	}
 
 	/** Return number of elements in the QuickSort array. */
-	virtual size_t size() const { return 999999; }
+	virtual size_t size() const
+	{
+		return sizeCounter;
+	}
 
 	/** The median of three pivot selection has two parts:
 	1) Calculates the middle index by averaging the given left and right indices:
@@ -57,7 +98,10 @@ public:
 	              2) if either of the given integers is out of bounds,
 	              3) or if the left index is not less than the right index.
 	*/
-	virtual int medianOfThree(size_t left, size_t right) { return 999999; }
+	virtual int medianOfThree(size_t left, size_t right)
+	{
+		return 999999;
+	}
 
 	/** Partitions a subarray around a pivot value selected according
 	to median-of-three pivot selection. Because there are multiple ways
@@ -74,10 +118,28 @@ public:
 	              2) if any of the given indexes are out of bounds,
 	              3) if the left index is not less than the right index.
 	*/
-	virtual int partition(size_t left, size_t right, size_t pivotIndex) { return 999999; }
+	virtual int partition(size_t left, size_t right, size_t pivotIndex)
+	{
+		return 999999;
+	}
 
 	/** @return: comma delimited string representation of the array. */
-	virtual std::string toString() const { return ""; }
+	virtual std::string toString() const
+	{
+		if (ptrArray == nullptr)
+		{
+			return " Empty";
+		}
+
+		ostringstream os;
+
+		os << " " << ptrArray[0];
+		for (size_t i = 1; i < sizeCounter; i++)
+		{
+			os << "," << ptrArray[i];
+		}
+		return os.str();
+	}
 
 	/**
 	 * Overload the insertion operator

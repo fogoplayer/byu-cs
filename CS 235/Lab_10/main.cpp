@@ -77,7 +77,7 @@ void newQuickSort(istream &in, ostream &out)
 
     int capacity;
     in >> capacity;
-    out << " " << capacity << endl;
+    out << " " << capacity << " OK" << endl;
 
     QuickSort<string> qs(capacity);
 
@@ -93,10 +93,40 @@ void newQuickSort(istream &in, ostream &out)
 
         else if (command == "Clear")
         {
-            out << " "
-                << qs.clear()
-                ? "true"
-                : "false";
+            qs.clear();
+            out << " OK";
+        }
+
+        else if (command == "AddToArray")
+        {
+            getline(in, command);
+            istringstream is(command);
+
+            string arg;
+
+            // First one
+            is >> arg;
+            out << " " << arg;
+            qs.addElement(arg);
+
+            // Others
+            while (is >> arg)
+            {
+                out << "," << arg;
+                qs.addElement(arg);
+            }
+
+            out << " OK";
+        }
+
+        else if (command == "PrintArray")
+        {
+            out << qs;
+        }
+
+        else if (command == "Size")
+        {
+            out << " " << qs.size();
         }
 
         // Insert here
