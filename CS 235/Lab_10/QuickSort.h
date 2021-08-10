@@ -20,9 +20,14 @@ private:
 	{
 		T *newPtrArray = new T[capacityCounter * 2];
 
-		for (size_t i = 0; i < capacityCounter; i++)
+		for (size_t i = 0; i < sizeCounter; i++)
 		{
 			newPtrArray[i] = ptrArray[i];
+		}
+
+		for (size_t i = sizeCounter; i < capacityCounter * 2; i++)
+		{
+			newPtrArray[i] = 0;
 		}
 
 		delete[] ptrArray;
