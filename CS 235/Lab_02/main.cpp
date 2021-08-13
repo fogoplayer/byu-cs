@@ -14,7 +14,7 @@
 using namespace std;
 
 /*-------------------------------Function Declarations-------------------------------*/
-string findStudentNameByID(int ID, const vector<Snap> &snapVec);
+string findStudentNameByID(string ID, const vector<Snap> &snapVec);
 
 #ifdef _MSC_VER
 #define _CRTDBG_MAP_ALLOC
@@ -71,13 +71,12 @@ int main(int argc, char *argv[])
 
         if (command == "snap") // snap(12345,Charlie Brown,Manager,555-1234)
         {
-            out << currLine;
+            out << currLine << endl;
             currLine = currLine.substr(parenPosition + 1); // 12345,Charlie Brown,Manager,555-1234)
 
-            int id;
+            string id;
             int commaPosition = currLine.find(',');
-            istringstream arg(currLine.substr(0, commaPosition)); // 12345
-            arg >> id;
+            id = currLine.substr(0, commaPosition);        // 12345
             currLine = currLine.substr(commaPosition + 1); // Charlie Brown,Manager,555-1234)
 
             string name;
@@ -100,7 +99,7 @@ int main(int argc, char *argv[])
 
         else if (command == "csg") // csg(CS101,12345,A)
         {
-            out << currLine;
+            out << currLine << endl;
             currLine = currLine.substr(parenPosition + 1); // CS101,12345,A)
 
             string name;
@@ -108,10 +107,9 @@ int main(int argc, char *argv[])
             name = currLine.substr(0, commaPosition);      // CS101
             currLine = currLine.substr(commaPosition + 1); // 12345,A)
 
-            int studentId;
+            string studentId;
             commaPosition = currLine.find(',');
-            istringstream arg(currLine.substr(0, commaPosition)); // 12345
-            arg >> studentId;
+            studentId = currLine.substr(0, commaPosition); // 12345
             currLine = currLine.substr(commaPosition + 1); // A)
 
             string grade;
@@ -124,7 +122,7 @@ int main(int argc, char *argv[])
 
         else if (command == "cdh") // cdh(CS101,M,9AM)
         {
-            out << currLine;
+            out << currLine << endl;
             currLine = currLine.substr(parenPosition + 1); // CS101,M,9AM)
 
             string name;
@@ -147,7 +145,7 @@ int main(int argc, char *argv[])
 
         else if (command == "cr") // cr(CS101,1170 TMCB)
         {
-            out << currLine;
+            out << currLine << endl;
             currLine = currLine.substr(parenPosition + 1); // CS101,1170 TMCB)
 
             string name;
@@ -165,11 +163,10 @@ int main(int argc, char *argv[])
 
         else
         {
-            out << "**Error: " << currLine;
-        }
+            out << "**Error: " << currLine << endl;
+        };
     }
-    out << endl
-        << endl;
+    out << endl;
 
     out << "Vectors:" << endl;
     for (size_t i = 0; i < snapVec.size(); i++)
@@ -244,11 +241,11 @@ int main(int argc, char *argv[])
 }
 
 /*-------------------------------Function Definitions-------------------------------*/
-string findStudentNameByID(int ID, const vector<Snap> &snapVec)
+string findStudentNameByID(string ID, const vector<Snap> &snapVec)
 {
     for (size_t i = 0; i < snapVec.size(); i++)
     {
-        int studentID = snapVec[i].getStudentID();
+        string studentID = snapVec[i].getStudentID();
         if (studentID == ID)
         {
             return snapVec[i].getStudentName();

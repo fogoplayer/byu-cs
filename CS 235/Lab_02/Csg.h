@@ -10,7 +10,7 @@
 class Csg : public CourseInterface
 {
 private:
-    int studentID;
+    std::string studentID;
     std::string studentGrade;
 
 public:
@@ -19,14 +19,14 @@ public:
      * @param studentID defaults to 0
      * @param studentGrade defaults to 'Z'
     **/
-    Csg(std::string courseName = "No Name Provided", int studentID = 0, std::string studentGrade = "Z") : CourseInterface(courseName), studentID(studentID), studentGrade(studentGrade) {}
+    Csg(std::string courseName = "No Name Provided", std::string studentID = 0, std::string studentGrade = "Z") : CourseInterface(courseName), studentID(studentID), studentGrade(studentGrade) {}
 
     ~Csg() {}
 
     /**
-     * @return studentID as int
+     * @return studentID as string
     **/
-    int getStudentID()
+    std::string getStudentID()
     {
         return this->studentID;
     }

@@ -7,7 +7,7 @@
 class Snap
 {
 private:
-    int studentID;
+    std::string studentID;
     std::string studentName;
     std::string studentAddress;
     std::string studentPhone;
@@ -19,7 +19,7 @@ public:
      * @param studentAddress defaults to "No Address Provided"
      * @param studentPhone defaults to "No Phone Provided"
     **/
-    Snap(int studentID = 0, std::string studentName = "No Name Provided", std::string studentAddress = "No Address Provided", std::string studentPhone = "No Phone Provided")
+    Snap(std::string studentID = "0", std::string studentName = "No Name Provided", std::string studentAddress = "No Address Provided", std::string studentPhone = "No Phone Provided")
     {
         this->studentID = studentID;
         this->studentName = studentName;
@@ -32,7 +32,7 @@ public:
     /**
      * @return studentID as int
     **/
-    int getStudentID() const
+    std::string getStudentID() const
     {
         return this->studentID;
     }
