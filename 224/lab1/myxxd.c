@@ -48,7 +48,13 @@ FILE *parseCommandLine(int argc, char **argv, int *bits)
  **/
 void printDataAsHex(unsigned char *data, size_t size)
 {
-  printf("TODO 1: printDataAsHex (2)");
+  for(int i = 0; i < 16; i++)
+  {
+    printf("%x", data[i]);
+    if(i % 2 == 1) {
+      printf(" ");
+    }
+  }
 }
 
 /**
@@ -61,7 +67,7 @@ void printDataAsHex(unsigned char *data, size_t size)
  **/
 void printDataAsChars(unsigned char *data, size_t size)
 {
-  printf("TODO 2: printDataAsChars (3)");
+  printf("%s", data);
 }
 
 void readAndPrintInputAsHex(FILE *input)
