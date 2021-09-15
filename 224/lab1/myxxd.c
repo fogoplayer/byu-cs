@@ -73,6 +73,40 @@ void printDataAsHex(unsigned char *data, size_t size)
 }
 
 /**
+ * Writes data to stdout in hexadecimal.
+ *
+ * See myxxd.md for details.
+ *
+ * data: an array of no more than 16 characters
+ * size: the size of the array
+ **/
+void printDataAsBits(unsigned char *data, size_t size)
+{
+  const int BIT_COUNT = 16;
+  const int MISSING_BITS = BIT_COUNT - size;
+  const int SPACE_PER_BYTE = 1;
+
+  // Print data, spacing every 2 bytes
+  for (int i = 0; i < size; i++)
+  {
+    if (i % 2 == 0)
+    {
+      printf(" ");
+    }
+    printf("%x", data[i]);
+  }
+
+  // Print trailing space on last line
+  if (MISSING_BITS != 0)
+  {
+    for (int i = 0; i < ((MISSING_BITS + SPACE_PER_BYTE) * 2); i++)
+    {
+      printf(" ");
+    }
+  }
+}
+
+/**
  * Writes data to stdout as characters.
  *
  * See myxxd.md for details.
@@ -115,7 +149,19 @@ void readAndPrintInputAsHex(FILE *input)
  **/
 void readAndPrintInputAsBits(FILE *input)
 {
-  printf("TODO 3: readAndPrintInputAsBits\n");
+  unsigned char data[16];
+  int numBytesRead = fread(data, 1, 16, input);
+  unsigned int offset = 0;
+  while (numBytesRead != 0)
+  {
+    printf("%08x:", offset);
+    offset += numBytesRead;
+    printDataAsBits(data, numBytesRead);
+    printf("  ");
+    printDataAsChars(data, numBytesRead);
+    printf("\n");
+    numBytesRead = fread(data, 1, 16, input);
+  }
 }
 
 int main(int argc, char **argv)
