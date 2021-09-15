@@ -52,6 +52,7 @@ void printDataAsHex(unsigned char *data, size_t size)
   const int MISSING_BITS = BIT_COUNT - size;
   const int SPACE_PER_BYTE = 1;
 
+  // Print data, spacing every 2 bytes
   for (int i = 0; i < size; i++)
   {
     if (i % 2 == 0)
@@ -61,7 +62,7 @@ void printDataAsHex(unsigned char *data, size_t size)
     printf("%x", data[i]);
   }
 
-  // printf("PRINT %ld", (BIT_COUNT - size + SPACE_PER_BYTE));
+  // Print trailing space on last line
   if (MISSING_BITS != 0)
   {
     for (int i = 0; i < ((MISSING_BITS + SPACE_PER_BYTE) * 2); i++)
@@ -81,7 +82,7 @@ void printDataAsHex(unsigned char *data, size_t size)
  **/
 void printDataAsChars(unsigned char *data, size_t size)
 {
-  // printf("%s", data); Why doesn't this work!!!!!!!!!!!!!!!!!!!!
+  // printf("%s", data); Why doesn't this work!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   for (int i = 0; i < size; i++)
   {
     printf("%c", data[i]);
