@@ -48,10 +48,24 @@ FILE *parseCommandLine(int argc, char **argv, int *bits)
  **/
 void printDataAsHex(unsigned char *data, size_t size)
 {
-  for(int i = 0; i < 16; i++)
+  const int BIT_COUNT = 16;
+  const int MISSING_BITS = BIT_COUNT - size;
+  const int SPACE_PER_BYTE = 1;
+
+  for (int i = 0; i < size; i++)
   {
+    if (i % 2 == 0)
+    {
+      printf(" ");
+    }
     printf("%x", data[i]);
-    if(i % 2 == 1) {
+  }
+
+  // printf("PRINT %ld", (BIT_COUNT - size + SPACE_PER_BYTE));
+  if (MISSING_BITS != 0)
+  {
+    for (int i = 0; i < ((MISSING_BITS + SPACE_PER_BYTE) * 2); i++)
+    {
       printf(" ");
     }
   }
@@ -67,7 +81,11 @@ void printDataAsHex(unsigned char *data, size_t size)
  **/
 void printDataAsChars(unsigned char *data, size_t size)
 {
-  printf("%s", data);
+  // printf("%s", data); Why doesn't this work!!!!!!!!!!!!!!!!!!!!
+  for (int i = 0; i < size; i++)
+  {
+    printf("%c", data[i]);
+  }
 }
 
 void readAndPrintInputAsHex(FILE *input)
