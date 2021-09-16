@@ -73,6 +73,36 @@ void printDataAsHex(unsigned char *data, size_t size)
 }
 
 /**
+ * Converts a hexadecimal number into a string of binary digits
+ * @param hex the hexadecimal value
+ * @param returnVal a nine-element array/8 char string
+ **/
+void printHexAsBinary(int hex)
+{
+  const int BYTE_SIZE = 8;
+  const char ASCII_ZERO = 48;
+  const char ASCII_ONE = 49;
+  char returnVal[BYTE_SIZE];
+  returnVal[BYTE_SIZE] = 0;
+
+  for (int i = BYTE_SIZE - 1; i >= 0; i--)
+  {
+    const int bit = hex % 2;
+    if (bit)
+    {
+      returnVal[i] = ASCII_ONE;
+    }
+    else
+    {
+      returnVal[i] = ASCII_ZERO;
+    }
+
+    hex /= 2;
+  }
+  printf("%s", returnVal);
+}
+
+/**
  * Writes data to stdout in hexadecimal.
  *
  * See myxxd.md for details.
@@ -86,14 +116,11 @@ void printDataAsBits(unsigned char *data, size_t size)
   const int MISSING_BITS = BIT_COUNT - size;
   const int SPACE_PER_BYTE = 1;
 
-  // Print data, spacing every 2 bytes
+  // Print data, spacing every 2 bytes for (int i = 0; i < size; i++)
   for (int i = 0; i < size; i++)
   {
-    if (i % 2 == 0)
-    {
-      printf(" ");
-    }
-    printf("%x", data[i]);
+    printf(" ");
+    printHexAsBinary(data[i]);
   }
 
   // Print trailing space on last line
@@ -116,7 +143,6 @@ void printDataAsBits(unsigned char *data, size_t size)
  **/
 void printDataAsChars(unsigned char *data, size_t size)
 {
-  // printf("%s", data); Why doesn't this work!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   for (int i = 0; i < size; i++)
   {
     printf("%c", data[i]);
