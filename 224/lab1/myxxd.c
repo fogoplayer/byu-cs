@@ -49,8 +49,9 @@ FILE *parseCommandLine(int argc, char **argv, int *bits)
 void printDataAsHex(unsigned char *data, size_t size)
 {
   const int BIT_COUNT = 16;
-  const int MISSING_BITS = BIT_COUNT - size;
-  const int SPACE_PER_BYTE = 1;
+  const int BYTE_SIZE = 2;
+  const int MISSING_BYTES = BIT_COUNT - size;
+  const float SPACE_PER_BYTE = 1;
 
   // Print data, spacing every 2 bytes
   for (int i = 0; i < size; i++)
@@ -63,9 +64,9 @@ void printDataAsHex(unsigned char *data, size_t size)
   }
 
   // Print trailing space on last line
-  if (MISSING_BITS != 0)
+  if (MISSING_BYTES != 0)
   {
-    for (int i = 0; i < ((MISSING_BITS + SPACE_PER_BYTE) * 2); i++)
+    for (int i = 0; i < ((BYTE_SIZE * MISSING_BYTES) + (int)(SPACE_PER_BYTE * MISSING_BYTES / 2)); i++)
     {
       printf(" ");
     }
