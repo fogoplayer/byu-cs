@@ -112,7 +112,8 @@ void printHexAsBinary(int hex)
  **/
 void printDataAsBits(unsigned char *data, size_t size)
 {
-  const int BIT_COUNT = 16;
+  const int BIT_COUNT = 6;
+  const int BIT_SIZE = 8;
   const int MISSING_BITS = BIT_COUNT - size;
   const int SPACE_PER_BYTE = 1;
 
@@ -126,7 +127,7 @@ void printDataAsBits(unsigned char *data, size_t size)
   // Print trailing space on last line
   if (MISSING_BITS != 0)
   {
-    for (int i = 0; i < ((MISSING_BITS + SPACE_PER_BYTE) * 2); i++)
+    for (int i = 0; i < ((BIT_SIZE + SPACE_PER_BYTE) * MISSING_BITS); i++)
     {
       printf(" ");
     }
@@ -175,8 +176,8 @@ void readAndPrintInputAsHex(FILE *input)
  **/
 void readAndPrintInputAsBits(FILE *input)
 {
-  unsigned char data[16];
-  int numBytesRead = fread(data, 1, 16, input);
+  unsigned char data[6];
+  int numBytesRead = fread(data, 1, 6, input);
   unsigned int offset = 0;
   while (numBytesRead != 0)
   {
@@ -186,7 +187,7 @@ void readAndPrintInputAsBits(FILE *input)
     printf("  ");
     printDataAsChars(data, numBytesRead);
     printf("\n");
-    numBytesRead = fread(data, 1, 16, input);
+    numBytesRead = fread(data, 1, 6, input);
   }
 }
 
