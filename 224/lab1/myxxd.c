@@ -60,7 +60,7 @@ void printDataAsHex(unsigned char *data, size_t size)
     {
       printf(" ");
     }
-    printf("%x", data[i]);
+    printf("%02x", data[i]);
   }
 
   // Print trailing space on last line
