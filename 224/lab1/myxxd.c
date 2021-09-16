@@ -83,7 +83,7 @@ void printHexAsBinary(int hex)
   const int BYTE_SIZE = 8;
   const char ASCII_ZERO = 48;
   const char ASCII_ONE = 49;
-  char returnVal[BYTE_SIZE];
+  char returnVal[BYTE_SIZE + 1];
   returnVal[BYTE_SIZE] = 0;
 
   for (int i = BYTE_SIZE - 1; i >= 0; i--)
