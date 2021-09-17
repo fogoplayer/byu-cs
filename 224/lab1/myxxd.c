@@ -147,6 +147,11 @@ void printDataAsChars(unsigned char *data, size_t size)
 {
   for (int i = 0; i < size; i++)
   {
+    if (data[i] < 32 || data[i] > 126)
+    {
+      data[i] = '.';
+    }
+
     printf("%c", data[i]);
   }
 }
