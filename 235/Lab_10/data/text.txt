@@ -1,5 +1,0 @@
-QuickSort 10
-Capacity
-AddToArray
-Capacity
-PrintArray

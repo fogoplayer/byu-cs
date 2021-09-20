@@ -1,8 +1,0 @@
-QuickSort 10
-Capacity
-QuickSort 1000
-Capacity
-Clear
-Capacity
-QuickSort 1
-Capacity
