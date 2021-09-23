@@ -1,0 +1,78 @@
+* {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+body,
+html,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+header {
+  background-color: darkgreen;
+  color: white;
+  padding: 1rem;
+  /* Media Query
+  position: sticky;
+  top: 0;
+  z-index: 9999; */
+}
+
+header ul,
+#products ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+header ul li a {
+  display: block;
+  padding: 1rem;
+  width: max-content;
+  color: currentColor;
+  text-decoration: none;
+}
+
+section {
+  padding: 2rem;
+  position: relative;
+  isolation: isolate;
+}
+
+section.hero {
+  padding: 0;
+}
+
+section.hero .hero-text {
+  height: min-content;
+  width: max-content;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  margin-left: 0;
+  padding: 3vw;
+
+  color: white;
+  font-family: sans-serif;
+  font-weight: 900;
+  font-size: 10vw;
+  z-index: 5;
+}
+
+section.hero .hero-text span {
+  display: block;
+}
+
+section.hero img {
+  filter: brightness(0.4);
+}
