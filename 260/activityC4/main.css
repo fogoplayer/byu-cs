@@ -55,6 +55,7 @@ section {
 
 section.hero {
   padding: 0;
+  font-size: min(10vw, 10rem);
 }
 
 section.hero .hero-text {
@@ -68,7 +69,6 @@ section.hero .hero-text {
 
   color: white;
   font-weight: 900;
-  font-size: min(10vw, 10rem);
   z-index: 5;
 }
 
@@ -79,7 +79,7 @@ section.hero .hero-text span {
 section.hero img {
   filter: brightness(0.4);
   width: 100%;
-  max-height: 50vh;
+  max-height: 500px;
   object-fit: cover;
 }
 
