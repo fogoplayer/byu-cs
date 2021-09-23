@@ -150,3 +150,13 @@ section#contact table th {
 section#contact table td {
   padding: 0 1em;
 }
+
+/* Careers ------------------------------------------------------------------ */
+section#careers img {
+  float: right;
+  width: 100%;
+  max-width: 400px;
+  min-width: 50%;
+  margin: 1em;
+  margin-right: 0;
+}
