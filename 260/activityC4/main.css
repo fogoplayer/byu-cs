@@ -15,6 +15,7 @@ h6 {
   margin: 0;
 }
 
+/* Header ------------------------------------------------------------------- */
 header {
   background-color: darkgreen;
   color: white;
@@ -45,10 +46,12 @@ header ul li a {
 }
 
 section {
-  padding: 2rem;
+  padding: 4rem 2rem;
   position: relative;
   isolation: isolate;
 }
+
+/* Hero --------------------------------------------------------------------- */
 
 section.hero {
   padding: 0;
@@ -61,7 +64,7 @@ section.hero .hero-text {
   inset: 0;
   margin: auto;
   margin-left: 0;
-  padding: 3vw;
+  padding: 3vw; /* Fixme Standardize (2em) */
 
   color: white;
   font-weight: 900;
@@ -78,6 +81,7 @@ section.hero img {
   /* Fixme set width/height */
 }
 
+/* Products ----------------------------------------------------------------- */
 section#products ul {
   display: flex;
   padding: 1em;
@@ -131,4 +135,16 @@ section#products li .price {
 
 section#products li .price::before {
   content: "$";
+}
+
+/* Contact ------------------------------------------------------------------ */
+section#contact {
+  background: rgba(0, 100, 0, 0.3);
+}
+section#contact table th {
+  padding: 0.5em 0;
+  text-align: left;
+}
+section#contact table td {
+  padding: 0 1em;
 }
