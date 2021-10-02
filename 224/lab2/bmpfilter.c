@@ -77,9 +77,17 @@ void applyGrayscaleToPixel(unsigned char* pixel) {
 }
 
 void applyThresholdToPixel(unsigned char* pixel) {
-  // unsigned char* r = pixel;
-  // unsigned char* g = pixel + 1;
-  // unsigned char* b = 
+  unsigned char* b = pixel;
+  unsigned char* g = pixel + 1;
+  unsigned char* r = pixel + 2;
+  
+  unsigned char avg = getAverageIntensity(*r, *g, *b);
+
+  avg = avg < 128 ? 0 : 255;
+
+  *r = avg;
+  *g = avg;
+  *b = avg;
 }
 
 void applyFilterToPixel(unsigned char* pixel, int isGrayscale) {
@@ -106,9 +114,6 @@ void applyFilterToPixelArray(unsigned char* pixelArray, int width, int height, i
 
   for (int i = 0; i < (width * 3 + padding) * height ; i += width * 3 + padding) { // May need to be fixed with padding
     applyFilterToRow(pixelArray + i, width, isGrayscale);
-    // for (int j = 0; i < padding; ++i){
-    //   printf()
-    // }
   }
 }
 
