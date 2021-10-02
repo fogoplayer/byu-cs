@@ -7,6 +7,14 @@
         "version": 1,
         "index": 1131
       }
+    ],
+    "224/lab2/bmpfilter.c": [
+      {
+        "id": "a52f5198-7d3b-4b31-936a-4ae6b0399dc7",
+        "line": 105,
+        "version": 1532,
+        "index": 2498
+      }
     ]
   }
 }

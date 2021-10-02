@@ -1,0 +1,8 @@
+fileSizeInBytes = 480054
+offsetFirstBytePixelArray = 54
+width = 400
+height = 400
+bmpbmpbmpb = 0x7fb22e2ea010
+pixelArray = 0x7fb22e2ea010
+padding = 0
+pixelArray = 0x7fb22e2ea010

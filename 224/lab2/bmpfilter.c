@@ -65,19 +65,15 @@ unsigned char getAverageIntensity(unsigned char blue, unsigned char green, unsig
 }
 
 void applyGrayscaleToPixel(unsigned char* pixel) {
-  unsigned char* r = pixel;
+  unsigned char* b = pixel;
   unsigned char* g = pixel + 1;
-  unsigned char* b = pixel + 2;
+  unsigned char* r = pixel + 2;
   
   unsigned char avg = getAverageIntensity(*r, *g, *b);
 
   *r = avg;
   *g = avg;
   *b = avg;
-
-  #ifdef DEBUG
-    printf("grayscale\n");
-   #endif
 }
 
 void applyThresholdToPixel(unsigned char* pixel) {
@@ -95,7 +91,7 @@ void applyFilterToPixel(unsigned char* pixel, int isGrayscale) {
 }
 
 void applyFilterToRow(unsigned char* row, int width, int isGrayscale) {
-  for (unsigned int i = 0; i < width; ++i){
+  for (unsigned int i = 0; i < width * 3; i += 3){
     applyFilterToPixel(row + i, isGrayscale);
   }
 }
@@ -107,8 +103,8 @@ void applyFilterToPixelArray(unsigned char* pixelArray, int width, int height, i
 #ifdef DEBUG
   printf("padding = %d\n", padding);
 #endif  
-  
-  for (int i = 0; i < width * height; i += width) {
+
+  for (int i = 0; i < (width * 3 + padding) * height ; i += width * 3 + padding) { // May need to be fixed with padding
     applyFilterToRow(pixelArray + i, width, isGrayscale);
     // for (int j = 0; i < padding; ++i){
     //   printf()
@@ -125,13 +121,12 @@ void parseHeaderAndApplyFilter(unsigned char* bmpFileAsBytes, int isGrayscale) {
   offsetFirstBytePixelArray = *(int*)(bmpFileAsBytes + 10);
   width = *(int*)(bmpFileAsBytes + 18);
   height = *(int*)(bmpFileAsBytes + 22);
-  pixelArray = (bmpFileAsBytes + 54);
+  pixelArray = (bmpFileAsBytes + offsetFirstBytePixelArray);
 
 #ifdef DEBUG
   printf("offsetFirstBytePixelArray = %u\n", offsetFirstBytePixelArray);
   printf("width = %u\n", width);
   printf("height = %u\n", height);
-  printf("pixelArray = %p\n", pixelArray);
 #endif
 
   applyFilterToPixelArray(pixelArray, width, height, isGrayscale);
