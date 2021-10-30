@@ -3,10 +3,25 @@
 
 #include "utils.h"
 
+#define DEBUG = true;
+
 const int MAX_MEM_SIZE  = (1 << 13);
 
 void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordType *valP) {
- 
+  wordType PC = getPC();
+  byteType byte = getByteFromMemory(PC);
+  printf("byte: %x\n", byte);
+  *icode = (byte >> 4) & 0x01;
+  *ifun = byte & 0x01;
+
+  if(*icode == HALT){
+    printf("Halt");  
+  }else if (*icode == NOP){
+    printf("NOP");
+    *valP = PC + 1;
+  }
+
+  return;
 }
 
 void decodeStage(int icode, int rA, int rB, wordType *valA, wordType *valB) {
@@ -26,7 +41,7 @@ void writebackStage(int icode, int rA, int rB, wordType valE, wordType valM) {
 }
 
 void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType valM) {
-  
+  setPC(valP);
 }
 
 void stepMachine(int stepMode) {
@@ -80,14 +95,14 @@ int main(int argc, char **argv) {
   loadMemory(input);
 
   applyStepMode(stepMode);
-  while (getStatus() != STAT_HLT) {
+  // while (getStatus() != STAT_HLT) {
     stepMachine(stepMode);
     applyStepMode(stepMode);
 #ifdef DEBUG
     printMachineState();
     printf("\n");
 #endif
-  }
+  // }
   printMachineState();
   return 0;
 }
