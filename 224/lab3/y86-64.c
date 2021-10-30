@@ -7,18 +7,43 @@
 
 const int MAX_MEM_SIZE  = (1 << 13);
 
+void getNibbles(byteType byte, int *n1, int *n2){
+  *n1 = (byte >> 4) & 0x0f;
+  *n2 = byte & 0x0f;
+}
+
 void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordType *valP) {
   wordType PC = getPC();
   byteType byte = getByteFromMemory(PC);
-  printf("byte: %x\n", byte);
-  *icode = (byte >> 4) & 0x01;
-  *ifun = byte & 0x01;
+  printf("\nbyte: %x\n", byte);
+  getNibbles(byte, icode, ifun);
+  printf("icode: %x, ifun %x\n",*icode, *ifun);
 
+  // HALT
   if(*icode == HALT){
-    printf("Halt"); 
+    printf("halt");
     *valP = PC + 1; 
+  // NOP
   }else if (*icode == NOP){
-    printf("NOP");
+    printf("nop\n");
+    *valP = PC + 1;
+  // RRMOVQ
+  }else if(*icode == RRMOVQ){
+    printf("rrmovq\n");
+    byteType args = getByteFromMemory(PC + 1);
+    getNibbles(args, rA, rB);
+    *valP = PC + 2;
+  }
+  // IRMOVQ 
+  else if (*icode == IRMOVQ){
+    printf("IRMOVQ\n");
+    *rB = getByteFromMemory(PC + 1);
+    *valC = getWordFromMemory(PC + 2);
+    *valP = PC + 10;
+  }
+
+  //Temp to just keep things moving
+  else {
     *valP = PC + 1;
   }
 
@@ -26,11 +51,18 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
 }
 
 void decodeStage(int icode, int rA, int rB, wordType *valA, wordType *valB) {
- 
+  if(icode == RRMOVQ){
+    *valA = rA;
+    *valB = rB;
+    printf("ra: %x, rb: %x\n",rA, rB);
+  }
 }
 
 void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType valC, wordType *valE, bool *Cnd) {
-  
+  // IRMOVQ
+  if(icode == IRMOVQ){
+    *valE = 0 + valC;
+  }
 }
 
 void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordType *valM) {
@@ -38,7 +70,7 @@ void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordTyp
 }
 
 void writebackStage(int icode, int rA, int rB, wordType valE, wordType valM) {
- 
+  setRegister(rB,valE);
 }
 
 void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType valM) {
@@ -47,6 +79,7 @@ void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType v
   if(icode == HALT){
     setStatus(STAT_HLT);
   }
+
 }
 
 void stepMachine(int stepMode) {
