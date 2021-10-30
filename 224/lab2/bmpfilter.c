@@ -106,7 +106,7 @@ void applyFilterToRow(unsigned char* row, int width, int isGrayscale) {
 
 void applyFilterToPixelArray(unsigned char* pixelArray, int width, int height, int isGrayscale) {
   int padding = 0;
-  padding = (4 - (width % 4)) % 4;
+  padding = (4 - (width * 3 % 4)) % 4;
 
 #ifdef DEBUG
   printf("padding = %d\n", padding);
