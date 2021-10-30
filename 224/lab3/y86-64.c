@@ -15,7 +15,8 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
   *ifun = byte & 0x01;
 
   if(*icode == HALT){
-    printf("Halt");  
+    printf("Halt"); 
+    *valP = PC + 1; 
   }else if (*icode == NOP){
     printf("NOP");
     *valP = PC + 1;
@@ -42,6 +43,10 @@ void writebackStage(int icode, int rA, int rB, wordType valE, wordType valM) {
 
 void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType valM) {
   setPC(valP);
+
+  if(icode == HALT){
+    setStatus(STAT_HLT);
+  }
 }
 
 void stepMachine(int stepMode) {
@@ -95,14 +100,14 @@ int main(int argc, char **argv) {
   loadMemory(input);
 
   applyStepMode(stepMode);
-  // while (getStatus() != STAT_HLT) {
+  while (getStatus() != STAT_HLT) {
     stepMachine(stepMode);
     applyStepMode(stepMode);
 #ifdef DEBUG
     printMachineState();
     printf("\n");
 #endif
-  // }
+  }
   printMachineState();
   return 0;
 }
