@@ -59,6 +59,10 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
     getNibbles(args, rA, rB);
     *valC = getWordFromMemory(PC + 2);
     *valP = PC + 10;
+  // JXX
+  }else if(*icode == JXX){
+    *valC = getWordFromMemory(PC + 1);
+    *valP = PC + 9;
   }
 
 
@@ -145,6 +149,10 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
   else if(icode == POPQ) {
     *valE = valB + 8;
   }
+  // JXX
+  else if(icode == JXX){
+    *Cnd = Cond(ifun);
+  }
 }
 
 void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordType *valM) {
@@ -188,7 +196,7 @@ void writebackStage(int icode, int rA, int rB, wordType valE, wordType valM) {
 }
 
 void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType valM) {
-  setPC(valP);
+  setPC(Cnd ? Cnd : valP );
 
   if(icode == HALT){
     setStatus(STAT_HLT);
