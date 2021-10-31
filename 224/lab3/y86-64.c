@@ -52,14 +52,18 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
 }
 
 void decodeStage(int icode, int rA, int rB, wordType *valA, wordType *valB) {
+  // RRMOVQ
   if(icode == RRMOVQ){
     *valA = rA;
-    *valB = rB;
     printf("ra: %x, rb: %x\n",rA, rB);
   }
 }
 
 void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType valC, wordType *valE, bool *Cnd) {
+  // RRMOVQ
+  if(icode == RRMOVQ){
+    *valE = 0 + valA;
+  }
   // IRMOVQ
   if(icode == IRMOVQ){
     *valE = 0 + valC;
@@ -72,7 +76,10 @@ void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordTyp
 }
 
 void writebackStage(int icode, int rA, int rB, wordType valE, wordType valM) {
-  setRegister(rB,valE);
+  if (icode == IRMOVQ ||
+      icode == RRMOVQ ){
+    setRegister(rB,valE);
+  }
 }
 
 void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType valM) {
@@ -81,7 +88,6 @@ void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType v
   if(icode == HALT){
     setStatus(STAT_HLT);
   }
-
 }
 
 void stepMachine(int stepMode) {
