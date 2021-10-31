@@ -28,14 +28,17 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
     printf("nop\n");
     *valP = PC + 1;
   // RRMOVQ
-  }else if(*icode == RRMOVQ){
-    printf("rrmovq\n");
+  // OPq
+  }else if (*icode == RRMOVQ ||
+            *icode == OPQ ){
+    printf("rrmovq | OPQ\n");
     byteType args = getByteFromMemory(PC + 1);
     getNibbles(args, rA, rB);
     *valP = PC + 2;
   }
   // IRMOVQ 
   // RMMOVQ
+  // MRMOVQ
   else if  (*icode == IRMOVQ ||
             *icode == RMMOVQ ||
             *icode == MRMOVQ){
@@ -45,6 +48,7 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
     *valC = getWordFromMemory(PC + 2);
     *valP = PC + 10;
   }
+
 
   //Temp to just keep things moving
   else {
@@ -60,7 +64,9 @@ void decodeStage(int icode, int rA, int rB, wordType *valA, wordType *valB) {
     *valA = getRegister(rA);
   }
   // RMMOVQ
-  else if (icode == RMMOVQ) {
+  // OPQ
+  else if (icode == RMMOVQ ||
+           icode == OPQ) {
     *valA = getRegister(rA);
     *valB = getRegister(rB);
   }
@@ -85,7 +91,26 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
   if(icode == RMMOVQ) {
     *valE = valB + valC;
   }
-  printf("valE: %lx", *valE);
+  // OPQ
+  if(icode == OPQ) {
+    if(ifun == ADD){
+      *valE = valB + valA;
+      bool overflow = (valA < 0 == valB < 0) && (*valE <0 != valA < 0); // I think this is only valid for addition, but I'll have to fix that later
+    }else if(ifun == SUB){
+      *valE = valB - valA;
+    }else if(ifun == AND){
+      *valE = valB & valA;
+    }else if(ifun == XOR){
+      *valE = valB ^ valA;
+    }
+
+    setFlags(
+      (*valE < 0), // SF
+      (*valE == 0), // ZF
+      (valA < 0 == valB < 0) && (*valE <0 != valA < 0) //OF
+    );
+  }
+  printf("valE: %lx\n", *valE);
 }
 
 void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordType *valM) {
