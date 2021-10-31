@@ -35,16 +35,11 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
     *valP = PC + 2;
   }
   // IRMOVQ 
-  else if (*icode == IRMOVQ){
-    printf("IRMOVQ\n");
-    byteType args = getByteFromMemory(PC + 1);
-    getNibbles(args, rA, rB);
-    *valC = getWordFromMemory(PC + 2);
-    *valP = PC + 10;
-  }
   // RMMOVQ
-  else if (*icode == RMMOVQ){
-    printf("RMMOVQ\n");
+  else if  (*icode == IRMOVQ ||
+            *icode == RMMOVQ ||
+            *icode == MRMOVQ){
+    printf("IRMOVQ | RMMOVQ | MRMOVQ\n");
     byteType args = getByteFromMemory(PC + 1);
     getNibbles(args, rA, rB);
     *valC = getWordFromMemory(PC + 2);
@@ -62,11 +57,15 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
 void decodeStage(int icode, int rA, int rB, wordType *valA, wordType *valB) {
   // RRMOVQ
   if(icode == RRMOVQ){
-    *valA = rA;
+    *valA = getRegister(rA);
   }
   // RMMOVQ
   else if (icode == RMMOVQ) {
     *valA = getRegister(rA);
+    *valB = getRegister(rB);
+  }
+  // MRMOVQ
+  else if (icode == MRMOVQ){
     *valB = getRegister(rB);
   }
   printf("ra: %x, rb: %x\n",rA, rB);
@@ -82,6 +81,7 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
     *valE = 0 + valC;
   }
   // RMMOVQ
+  // MRMOVQ
   if(icode == RMMOVQ) {
     *valE = valB + valC;
   }
@@ -92,6 +92,11 @@ void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordTyp
   // RMMOVQ
   if(icode == RMMOVQ) {
     setWordInMemory(valA, valE);
+  }
+
+  // MRMOVQ
+  if(icode == MRMOVQ) {
+    *valM = getWordFromMemory(valE);
   }
 }
 
@@ -107,6 +112,11 @@ void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType v
 
   if(icode == HALT){
     setStatus(STAT_HLT);
+  }
+
+  printf("Registers:\n");
+  for(int i = 0; i < 15; i++){
+    printf("Register %x: %ld\n", i, getRegister(i));
   }
 }
 
