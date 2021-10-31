@@ -13,18 +13,20 @@ void getNibbles(byteType byte, int *n1, int *n2){
 }
 
 void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordType *valP) {
+#ifdef DEBUG
+  printf("---------\n");
+#endif
   wordType PC = getPC();
   byteType byte = getByteFromMemory(PC);
-#ifdef DEBUG
-  printf("\nbyte: %x\n", byte);
-#endif
   getNibbles(byte, icode, ifun);
-#ifdef DEBUG
-  printf("icode: %x, ifun %x\n",*icode, *ifun);
-#endif
 
+  if (*icode == HALT){
+#ifdef DEBUG
+      printf("HALT\n");
+#endif    
+  }
   // NOP
-  if (*icode == NOP){
+  else if (*icode == NOP){
 #ifdef DEBUG
       printf("nop\n");
 #endif
@@ -38,7 +40,7 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
             *icode == PUSHQ  ||
             *icode == POPQ){
 #ifdef DEBUG
-      printf("rrmovq | OPQ\n");
+      printf("rrmovq | OPQ | PUSH | POP %x\n", *icode);
 #endif
     byteType args = getByteFromMemory(PC + 1);
     getNibbles(args, rA, rB);
@@ -87,12 +89,12 @@ void decodeStage(int icode, int rA, int rB, wordType *valA, wordType *valB) {
   // PUSHQ
   else if (icode == PUSHQ) {
     *valA = getRegister(rA);
-    *valB = getRegister(4);
+    *valB = getRegister(RSP);
   }
   // POPQ
   else if (icode == POPQ) {
-    *valA = getRegister(4);
-    *valB = getRegister(4);
+    *valA = getRegister(RSP);
+    *valB = getRegister(RSP);
   }
 #ifdef DEBUG
   printf("ra: %x, rb: %x\n",rA, rB);
@@ -132,7 +134,7 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
     setFlags(
       (*valE < 0), // SF
       (*valE == 0), // ZF
-      ((valA < 0) == (valB < 0)) && ((*valE < 0) != (valA < 0)) //OF
+      overflow //OF
     );
   }
   // PUSHQ
@@ -140,13 +142,9 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
     *valE = valB - 8;
   }
   // POPQ
-  else if(icode == PUSHQ) {
+  else if(icode == POPQ) {
     *valE = valB + 8;
   }
-
-#ifdef DEBUG
-  printf("valE: %lx\n", *valE);
-#endif
 }
 
 void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordType *valM) {
@@ -177,13 +175,14 @@ void writebackStage(int icode, int rA, int rB, wordType valE, wordType valM) {
       icode == OPQ){
     setRegister(rB,valE);
   }
+
   // PUSHQ
   else if (icode == PUSHQ){
-    setRegister(4, valE);
+    setRegister(RSP, valE);
   }
   // POPQ
   else if (icode == POPQ){
-    setRegister(4, valE);
+    setRegister(RSP, valE);
     setRegister(rA, valM);
   }
 }
@@ -195,10 +194,10 @@ void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType v
     setStatus(STAT_HLT);
   }
 #ifdef DEBUG
-  printf("Registers:\n");
-  for(int i = 0; i < 15; i++){
-    printf("Register %x: %ld\n", i, getRegister(i));
-  }
+  // printf("Registers:\n");
+  // for(int i = 0; i < 15; i++){
+  //   printf("Register %x: %ld\n", i, getRegister(i));
+  // }
 #endif
 }
 
