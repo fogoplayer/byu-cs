@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-// #define DEBUG = true;
+#define DEBUG = true;
 
 const int MAX_MEM_SIZE  = (1 << 13);
 
@@ -23,22 +23,20 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
   printf("icode: %x, ifun %x\n",*icode, *ifun);
 #endif
 
-  // HALT
-  if(*icode == HALT){
-#ifdef DEBUG
-    printf("halt");
-#endif
-    *valP = PC + 1; 
   // NOP
-  }else if (*icode == NOP){
+  if (*icode == NOP){
 #ifdef DEBUG
       printf("nop\n");
 #endif
     *valP = PC + 1;
   // RRMOVQ
   // OPq
+  // PUSHQ
+  // POPQ
   }else if (*icode == RRMOVQ ||
-            *icode == OPQ ){
+            *icode == OPQ    ||
+            *icode == PUSHQ  ||
+            *icode == POPQ){
 #ifdef DEBUG
       printf("rrmovq | OPQ\n");
 #endif
@@ -86,6 +84,16 @@ void decodeStage(int icode, int rA, int rB, wordType *valA, wordType *valB) {
   else if (icode == MRMOVQ){
     *valB = getRegister(rB);
   }
+  // PUSHQ
+  else if (icode == PUSHQ) {
+    *valA = getRegister(rA);
+    *valB = getRegister(4);
+  }
+  // POPQ
+  else if (icode == POPQ) {
+    *valA = getRegister(4);
+    *valB = getRegister(4);
+  }
 #ifdef DEBUG
   printf("ra: %x, rb: %x\n",rA, rB);
 #endif
@@ -97,21 +105,24 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
     *valE = 0 + valA;
   }
   // IRMOVQ
-  if(icode == IRMOVQ){
+  else if(icode == IRMOVQ){
     *valE = 0 + valC;
   }
   // RMMOVQ
   // MRMOVQ
-  if(icode == RMMOVQ) {
+  else if(icode == RMMOVQ) {
     *valE = valB + valC;
   }
   // OPQ
-  if(icode == OPQ) {
+  else if(icode == OPQ) {
+    bool overflow = 0; // FALSE
+
     if(ifun == ADD){
       *valE = valB + valA;
-      // bool overflow = ((valA < 0) == (valB < 0)) && ((*valE < 0) != (valA < 0)); // I think this is only valid for addition, but I'll have to fix that later
+      overflow = ((valA < 0) == (valB < 0)) && ((*valE < 0) != (valA < 0)); // I think this is only valid for addition, but I'll have to fix that later (Maybe fixed?)
     }else if(ifun == SUB){
       *valE = valB - valA;
+      overflow = ((valA < 0) == (valB < 0)) && ((*valE < 0) != (valA < 0));
     }else if(ifun == AND){
       *valE = valB & valA;
     }else if(ifun == XOR){
@@ -124,6 +135,15 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
       ((valA < 0) == (valB < 0)) && ((*valE < 0) != (valA < 0)) //OF
     );
   }
+  // PUSHQ
+  else if(icode == PUSHQ) {
+    *valE = valB - 8;
+  }
+  // POPQ
+  else if(icode == PUSHQ) {
+    *valE = valB + 8;
+  }
+
 #ifdef DEBUG
   printf("valE: %lx\n", *valE);
 #endif
@@ -136,8 +156,18 @@ void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordTyp
   }
 
   // MRMOVQ
-  if(icode == MRMOVQ) {
+  else if(icode == MRMOVQ) {
     *valM = getWordFromMemory(valE);
+  }
+
+  // PUSHQ
+  else if(icode == PUSHQ){
+    setWordInMemory(valE,valA);
+  }
+
+  // POPQ
+  else if (icode == POPQ) {
+    *valM = getWordFromMemory(valA);
   }
 }
 
@@ -146,6 +176,15 @@ void writebackStage(int icode, int rA, int rB, wordType valE, wordType valM) {
       icode == RRMOVQ ||
       icode == OPQ){
     setRegister(rB,valE);
+  }
+  // PUSHQ
+  else if (icode == PUSHQ){
+    setRegister(4, valE);
+  }
+  // POPQ
+  else if (icode == POPQ){
+    setRegister(4, valE);
+    setRegister(rA, valM);
   }
 }
 
