@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-#define DEBUG = true;
+// #define DEBUG = true;
 
 const int MAX_MEM_SIZE  = (1 << 13);
 
@@ -15,23 +15,33 @@ void getNibbles(byteType byte, int *n1, int *n2){
 void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordType *valP) {
   wordType PC = getPC();
   byteType byte = getByteFromMemory(PC);
+#ifdef DEBUG
   printf("\nbyte: %x\n", byte);
+#endif
   getNibbles(byte, icode, ifun);
+#ifdef DEBUG
   printf("icode: %x, ifun %x\n",*icode, *ifun);
+#endif
 
   // HALT
   if(*icode == HALT){
+#ifdef DEBUG
     printf("halt");
+#endif
     *valP = PC + 1; 
   // NOP
   }else if (*icode == NOP){
-    printf("nop\n");
+#ifdef DEBUG
+      printf("nop\n");
+#endif
     *valP = PC + 1;
   // RRMOVQ
   // OPq
   }else if (*icode == RRMOVQ ||
             *icode == OPQ ){
-    printf("rrmovq | OPQ\n");
+#ifdef DEBUG
+      printf("rrmovq | OPQ\n");
+#endif
     byteType args = getByteFromMemory(PC + 1);
     getNibbles(args, rA, rB);
     *valP = PC + 2;
@@ -42,7 +52,9 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
   else if  (*icode == IRMOVQ ||
             *icode == RMMOVQ ||
             *icode == MRMOVQ){
+#ifdef DEBUG
     printf("IRMOVQ | RMMOVQ | MRMOVQ\n");
+#endif
     byteType args = getByteFromMemory(PC + 1);
     getNibbles(args, rA, rB);
     *valC = getWordFromMemory(PC + 2);
@@ -74,7 +86,9 @@ void decodeStage(int icode, int rA, int rB, wordType *valA, wordType *valB) {
   else if (icode == MRMOVQ){
     *valB = getRegister(rB);
   }
+#ifdef DEBUG
   printf("ra: %x, rb: %x\n",rA, rB);
+#endif
 }
 
 void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType valC, wordType *valE, bool *Cnd) {
@@ -95,7 +109,7 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
   if(icode == OPQ) {
     if(ifun == ADD){
       *valE = valB + valA;
-      bool overflow = (valA < 0 == valB < 0) && (*valE <0 != valA < 0); // I think this is only valid for addition, but I'll have to fix that later
+      // bool overflow = ((valA < 0) == (valB < 0)) && ((*valE < 0) != (valA < 0)); // I think this is only valid for addition, but I'll have to fix that later
     }else if(ifun == SUB){
       *valE = valB - valA;
     }else if(ifun == AND){
@@ -107,10 +121,12 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
     setFlags(
       (*valE < 0), // SF
       (*valE == 0), // ZF
-      (valA < 0 == valB < 0) && (*valE <0 != valA < 0) //OF
+      ((valA < 0) == (valB < 0)) && ((*valE < 0) != (valA < 0)) //OF
     );
   }
+#ifdef DEBUG
   printf("valE: %lx\n", *valE);
+#endif
 }
 
 void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordType *valM) {
@@ -127,7 +143,8 @@ void memoryStage(int icode, wordType valA, wordType valP, wordType valE, wordTyp
 
 void writebackStage(int icode, int rA, int rB, wordType valE, wordType valM) {
   if (icode == IRMOVQ ||
-      icode == RRMOVQ ){
+      icode == RRMOVQ ||
+      icode == OPQ){
     setRegister(rB,valE);
   }
 }
@@ -138,11 +155,12 @@ void pcUpdateStage(int icode, wordType valC, wordType valP, bool Cnd, wordType v
   if(icode == HALT){
     setStatus(STAT_HLT);
   }
-
+#ifdef DEBUG
   printf("Registers:\n");
   for(int i = 0; i < 15; i++){
     printf("Register %x: %ld\n", i, getRegister(i));
   }
+#endif
 }
 
 void stepMachine(int stepMode) {
