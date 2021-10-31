@@ -37,7 +37,8 @@ void fetchStage(int *icode, int *ifun, int *rA, int *rB, wordType *valC, wordTyp
   // IRMOVQ 
   else if (*icode == IRMOVQ){
     printf("IRMOVQ\n");
-    *rB = getByteFromMemory(PC + 1);
+    byte = getByteFromMemory(PC + 1);
+    getNibbles(byte, rA, rB);
     *valC = getWordFromMemory(PC + 2);
     *valP = PC + 10;
   }
@@ -62,6 +63,7 @@ void executeStage(int icode, int ifun, wordType valA, wordType valB, wordType va
   // IRMOVQ
   if(icode == IRMOVQ){
     *valE = 0 + valC;
+    printf("valE: %lx", *valE);
   }
 }
 
